@@ -1118,9 +1118,6 @@ subquestion: |
 
   ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
 ---
-mandatory: True
-question: Here is your document.
-event: some_event
 attachment:
   - name: Michigan Statutory Will
     filename: Michigan Statutory Will
