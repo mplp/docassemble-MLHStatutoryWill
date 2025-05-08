@@ -5,16 +5,6 @@ include:
   - docassemble.mlhframework:mlh_interview_framework.yml
   - docassemble.ALToolbox:collapse_template.yml
 ---
-objects:
-  - users: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - children: ALPeopleList.using(there_are_any=True)
-  - guardians: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - spouse: ALPeopleList
-  - tangible_property: DAList.using(object_type = Individual, complete_attribute="complete")
-  - representatives: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - giftee: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - conservators: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
----
 metadata:
   title: Michigan Statutory Will
   short title: Michigan Statutory
@@ -28,6 +18,9 @@ metadata:
     - Pratibha Bharti
     - Anshuman Tiwari
     - Kelly McGuire
+---
+code:  |
+  github_repo_name = 'docassemble-MLHStatutoryWill' if get_config('debug') else 'docassemble-UserFeedback'
 ---
 features:
   labels above fields: True
@@ -45,11 +38,38 @@ sections:
   - conservators: "Conservators"
   - bond: "Bond"
   - done: "Done"
+  - review_full: "✎ <u>Review / Edit</u>"
 ---
-id: interview_order_response_to_motion_regarding_change_of_domicile
+code: |
+  survey_link_url_only = "https://www.surveymonkey.com/EXAMPLE_URL"
+---
+template: survey_embed_script
+content: |
+  <script>
+    UNIQUE SCRIPT GOES HERE
+  </script>
+---
+# set intro landing screen variables
+code: |
+  MLH_form_type = "forms"
+  MLH_time_min = 15
+  MLH_time_max = 30
+---
+objects:
+  - users: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - children: ALPeopleList.using(there_are_any=True)
+  - guardians: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - spouse: ALPeopleList
+  - tangible_property: DAList.using(object_type = Individual, complete_attribute="complete")
+  - representatives: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - giftee: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - conservators: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+---
+id: interview_order_michigan_statutory_will
 mandatory: True
 code: |
   nav.set_section("review_intro")
+  MLH_standard_intro_pages
   intro_screen
   intro_screen_2
   if intro_screen_3 == 'Exit':
@@ -57,28 +77,28 @@ code: |
   intro_screen_4
   
   nav.set_section("Do you qualify?")
-  mental_capacity
-  what_you_own
-  if what_you_own:
+  mental_capacity_explanation
+  know_what_you_own
+  if know_what_you_own:
     closest_relatives
     if closest_relatives:
-      planning_making_a_will
-      if planning_making_a_will:
-        signing_a_will
-        if signing_a_will:
+      understands_making_a_will
+      if understands_making_a_will:
+        understands_signing_a_will
+        if understands_signing_a_will:
           force_or_threat
-          pressured
-          if not pressured:
-            coerced_pressured
-            if not coerced_pressured:
-              not_valid_until
-              statement_status
-              if statement_status:
-                low_income_over_sixty
-                if low_income_over_sixty == 'Exit':
+          was_pressured
+          if not was_pressured:
+            was_coerced
+            if not was_coerced:
+              witness_explanation
+              has_complicated_situations
+              if has_complicated_situations:
+                complicated_warning
+                if complicated_warning == 'Exit':
                   command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              existing_will
-              if existing_will:
+              has_existing_will
+              if has_existing_will:
                 replace_existing_will
                 if replace_existing_will == 'change_one':
                   if undo_and_change == 'Exit':
@@ -113,41 +133,42 @@ code: |
                   if has_children:
                     children.target_number
                     children.gather(children.target_number)
-                    minor_child
+                    has_minor_child
                   nav.set_section("cash_gifts")
                   if leave_cash_gifts:
                     giftee.gather()
                   nav.set_section("personal_and_household")
-                  person_household_item
+                  tangible_gifts
                   if tangible_property.there_are_any:
                     tangible_property.gather()
                   else:
                     blank_list_print
                   nav.set_section("residue")
-                  residue_status
-                  residue_status_heirs
-                  residue_status_stepchild
-                  residue_status_no_spouse_child
+                  residue_general_explanation
+                  residue_heirs_explanation
+                  residue_distribution_explanation
+                  residue_distribution
                   nav.set_section("personal_representatives")
                   personal_representatives
                   personal_enough_money_property
                   representatives.gather()
                   nav.set_section("guardians")
-                  guardians_status
-                  if not serve_as_guardian:
+                  guardians_explanation
+                  if not appoint_guardian:
                     guardian_warning
-                  if serve_as_guardian:
+                  if appoint_guardian:
                     guardians.gather()
                   nav.set_section("conservators")
-                  if not conservators_status:
+                  if not appoint_conservator:
                     conservators_warning
-                  if conservators_status:
+                  if appoint_conservator:
                     conservators.gather()
                   nav.set_section("bond")
                   require_bond
                   nav.set_section("done")
-                  finished_done
-                michigan_statutory_will_download
+                  answers_complete
+                MLH_outro_saving_answers
+                MLH_download
               if has_trust:
                 if undo_and_change == 'Exit':
                   command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
@@ -155,6 +176,12 @@ code: |
             command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
   if exit_or_undo == 'Exit':
     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+---
+comment: |
+  resource_page_url_only needs to be updated once Emily sends the correct link
+code: |
+  resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
+  resource_page_name = "Michigan Statutory Will"
 ---
 generic object: ALIndividual
 code: |
@@ -280,17 +307,17 @@ subquestion: |
 
 continue button field: intro_screen_4
 ---
-id: mental_capacity
+id: mental_capacity_explanation
 question: |
   To make a valid will, you must have the mental capacity to do so. This is also known as being of sound mind.
   
-continue button field: mental_capacity
+continue button field: mental_capacity_explanation
 ---
-id: what_you_own
+id: know_what_you_own
 question: |
   What you own and its value.
 fields:
-  - Do you know what you own and about how much it is worth?: what_you_own
+  - Do you know what you own and about how much it is worth?: know_what_you_own
     datatype: yesnoradio
 ---
 id: closest_relatives
@@ -309,20 +336,20 @@ subquestion: |
 buttons:
   - Exit
 ---
-id: planning_making_a_will
+id: understands_making_a_will
 question: |
   Planning your will.
 fields:
-  - Do you understand that making a will means planning to distribute your property after your death?: planning_making_a_will
+  - Do you understand that making a will means planning to distribute your property after your death?: understands_making_a_will
     datatype: yesnoradio 
 ---
-id: signing_a_will
+id: understands_signing_a_will
 question: |
   Signing a will.
 subquestion: |
   ${ collapse_template(help_signing_will) }
 fields:
-  - Do you understand generally the effect of signing a will?: signing_a_will
+  - Do you understand generally the effect of signing a will?: understands_signing_a_will
     datatype: yesnoradio
 ---
 template: help_signing_will
@@ -339,11 +366,11 @@ subquestion: |
 
 continue button field: force_or_threat
 ---
-id: pressured
+id: was_pressured
 question: |
   Outside pressure.
 fields:
-  - Has anyone told you what to put in your will?: pressured
+  - Has anyone told you what to put in your will?: was_pressured
     datatype: yesnoradio
 ---
 id: go_back_and_change
@@ -359,22 +386,22 @@ subquestion: |
 buttons:
   - Exit
 ---
-id: coerced_pressured
+id: was_coerced
 question: |
   Creating a will is your choice.
 fields:
-  - Has anyone threatened, coerced, or pressured you into preparing a will against your free choice?: coerced_pressured
+  - Has anyone threatened, coerced, or pressured you into preparing a will against your free choice?: was_coerced
     datatype: yesnoradio
 ---
-id: not_valid_until
+id: witness_explanation
 question: |
   **Warning!** 
 subquestion: |
   Your will is not valid until it is signed by witnesses. Before they sign, the witnesses must determine whether you made the will freely. If any interested parties suspect after your death that the will was made under conditions of duress, fraud, or improper influence, it can be challenged in court. Your witnesses will be asked to testify.
 
-continue button field: not_valid_until
+continue button field: witness_explanation
 ---
-id: statement_status
+id: has_complicated_situations
 question: |
   The statutory will is a simple but effective will. 
 subquestion: |
@@ -388,11 +415,11 @@ subquestion: |
   - I have a child with special needs.
   - I own a business.
 fields:
-  - Are any of these statements true for you?: statement_status
+  - Are any of these statements true for you?: has_complicated_situations
     datatype: yesnoradio
 ---
-id: low_income_over_sixty
-field: low_income_over_sixty
+id: complicated_warning
+field: complicated_warning
 question: |
   **Warning!** 
 subquestion: |
@@ -404,11 +431,11 @@ buttons:
   - Continue
   - Exit
 ---
-id: existing_will
+id: has_existing_will
 question: |
   Existing wills.
 fields:
-  - Do you already have a will?: existing_will
+  - Do you already have a will?: has_existing_will
     datatype: yesnoradio
 ---
 id: replace_existing_will
@@ -595,11 +622,11 @@ fields:
   - code: |
       children[i].name_fields()
 ---
-id: minor_child
+id: has_minor_child
 question: |
   Minor children.
 fields: 
-  - Do you have a child who is under the age of 18?: minor_child
+  - Do you have a child who is under the age of 18?: has_minor_child
     datatype: yesnoradio
 ---
 id: leave_cash_gifts
@@ -744,7 +771,7 @@ code: |
   if len(giftee.complete_elements()) >= 2:
      giftee.there_is_another = False
 ---
-id: person_household_item
+id: tangible_gifts
 question: |
   You can choose to leave gifts of specific personal or household items to anyone you wish. 
 subquestion: |
@@ -753,7 +780,7 @@ subquestion: |
 
   You can execute your will without having this list prepared. You can prepare the list at any time. You can include as many or as few items on the list as you wish.
   
-continue button field: person_household_item
+continue button field: tangible_gifts
 ---
 id: wants_to_list_property
 question: |
@@ -811,18 +838,17 @@ question: |
 subquestion: |
   If you decide to leave gifts of your personal property, fill in the list. Be sure to identify the item and the recipient as specifically as possible. Then sign and date the bottom of the list.
 ---
-id: residue_status
+id: residue_general_explanation
 question: |
   Everything you own that you have not already listed is called the residue of your estate. 
 subquestion: |
   The cash gifts you named and the property you put on the list are **not** included in the residue. Those will be taken from your estate before the residue is distributed.
 
-
   Under this will, the residue of your estate will go to your children in equal shares. If any of your children died before you, but had children who are still living (your grandchildren), those descendants get equal shares of what your deceased child would have inherited.
   
-continue button field: residue_status
+continue button field: residue_general_explanation
 ---
-id: residue_status_heirs
+id: residue_heirs_explanation
 question: |
   If no spouse, children, or descendants of your children survive you, the residue will be distributed to your other relatives. 
 subquestion: |
@@ -830,9 +856,9 @@ subquestion: |
 
   Your heirs are determined by law, the same way they would be if you died without a will. First, your parents or their descendants (your siblings, nieces, or nephews) would inherit. If none of those people survive you, then your grandparents or their descendants (your aunts, uncles, or cousins) would inherit. If the court can’t identify any surviving relatives in these categories, the residue of your estate will go to the state of Michigan.
   
-continue button field: residue_status_heirs
+continue button field: residue_heirs_explanation
 ---
-id: residue_status_stepchild
+id: residue_distribution_explanation
 question: |
   If no spouse, child, or descendent of your child is living when you die.
 subquestion: |
@@ -840,21 +866,21 @@ subquestion: |
 
   You can only choose one of these options. If you want to distribute your property differently, you may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
   
-continue button field: residue_status_stepchild
+continue button field: residue_distribution_explanation
 ---
-id: residue_status_no_spouse_child
+id: residue_distribution
 question: |
   Residue distribution.
 fields:
-  - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_status_no_spouse_child
+  - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
     choices:
-      - I want half my property to be given to my heirs and half to be given to my spouse’s heirs.
-      - I want all my property to be given to my heirs.
+      - I want half my property to be given to my heirs and half to be given to my spouse’s heirs.: own_heirs_and_spouse_heirs
+      - I want all my property to be given to my heirs.: own_heirs
 ---
 id: personal_representatives
 question: |
-  The Michigan statutory will requires you to choose a **personal representative.**
+  The Michigan statute will requires you to choose a **personal representative.**
 subquestion: |
   Your personal representative is the person who will make sure your property is distributed according to your wishes. The personal representative also pays any final bills you have when you die, usually by using or selling property from your estate.
 
@@ -941,7 +967,7 @@ code: |
   if len(representatives.complete_elements()) >= 2:
      representatives.there_is_another = False
 ---
-id: guardians_status
+id: guardians_explanation
 question: |
   You can name a guardian to take care of your children until they turn 18. 
 subquestion: |
@@ -950,15 +976,15 @@ subquestion: |
 
   If the other parent dies before you, has had their parental rights terminated, or is unable to care for your children, the guardian you chose can accept guardianship by filing with the probate court.
   
-continue button field: guardians_status
+continue button field: guardians_explanation
 ---
-id: serve_as_guardian
+id: appoint_guardian
 question: |
   It’s a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
 subquestion: |
   If you want to name different guardians for different children, this tool and the statutory will won’t work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
-  - Do you want to name a guardian?: serve_as_guardian
+  - Do you want to name a guardian?: appoint_guardian
     datatype: yesnoradio
 ---
 id: guardians_name
@@ -1004,7 +1030,7 @@ subquestion: |
 
 continue button field: guardian_warning
 ---
-id: conservators_status
+id: appoint_conservator
 question: |
   You can also name a conservator to manage money for the child’s benefit. 
 subquestion: |
@@ -1012,7 +1038,7 @@ subquestion: |
 
   The conservator can also be a bank. A bank will charge the estate a fee for this service.
 fields:
-  - Do you want to name a conservator?: conservators_status
+  - Do you want to name a conservator?: appoint_conservator
     datatype: yesnoradio
 ---
 id: conservator_type
@@ -1104,8 +1130,8 @@ fields:
   - Would you like to require a bond?: require_bond
     datatype: yesnoradio
 ---
-id: finished_done
-field: finished_done
+id: answers_complete
+field: answers_complete
 question: |
   You are finished answering questions. 
 subquestion: |
@@ -1113,33 +1139,45 @@ subquestion: |
 
   **Warning!** If you do not save your answers and you later discover a mistake in your printed will, you will have to restart this tool from the beginning and enter all of your answers again. Remember, crossing out or adding words to your printed will may make it invalid.
 
-continue button field: finished_done
+continue button field: answers_complete
 
 ---
 objects:
   - michigan_statutory_will_attachment: ALDocument.using(title="Michigan Statutory Will", filename="michigan_statutory_will.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
+  - instructions: ALDocument.using(filename="Instructions - Do not file this", title="Instructions", enabled=True, has_addendum=False)
 ---
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[michigan_statutory_will_attachment], filename="michigan_statutory_will.docx", title="All forms to download for your records", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[instructions, michigan_statutory_will_attachment], filename="Michigan Statutory Will (All forms).pdf", title="All forms and instructions", enabled=True)
 ---
-id: download screen
-event: michigan_statutory_will_download
+id: DownloadScreen
+event: MLH_download
 question: |
-  All done!
+  Get your ${ MLH_form_type }
 subquestion: |
-  Thank you ${users}. Your form is ready to download and deliver.
+  You can **view**, **download**, or **e-mail** your ${ MLH_form_type } to yourself below. Tap the "✎ Review / Edit" button to fix any mistakes.
+    
+  <h2 class="h3">Download or e-mail your ${ MLH_form_type }</h2>
 
-  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
-
-  ${ action_button_html(url_action('review_form'), label='Edit answers', color='info') }
-
+  ${ action_button_html(url_action('review_full'), label='✎ Review / Edit', color='info') }
+  
   ${ al_user_bundle.download_list_html() }
 
   ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+  
+  <h2 class="h3">Take our quick survey!</h2>
+  Answer below or [open the survey in a new tab](${ survey_link_url_only }).
+  ${ survey_embed_script }
+progress: 100
 ---
-attachment:
+attachments:
   - name: Michigan Statutory Will
     filename: Michigan Statutory Will
     variable name: michigan_statutory_will_attachment[i]
     docx template file: michigan_statutory_will.docx
+    tagged pdf: True
+
+  - name: instructions
+    variable name: instructions[i]        
+    docx template file: michigan_statutory_will_instructions.docx
+    tagged pdf: True
 ---
