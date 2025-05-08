@@ -5,16 +5,6 @@ include:
   - docassemble.mlhframework:mlh_interview_framework.yml
   - docassemble.ALToolbox:collapse_template.yml
 ---
-objects:
-  - users: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - child: ALPeopleList.using(there_are_any=True)
-  - guardians: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - spouse: ALPeopleList
-  - personal_household: ALPeopleList.using(there_are_any=True)
-  - person_bank: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - person_charity: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - conservator: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
----
 metadata:
   title: Michigan Statutory Will
   short title: Michigan Statutory
@@ -27,6 +17,10 @@ metadata:
   authors:
     - Pratibha Bharti
     - Anshuman Tiwari
+    - Kelly McGuire
+---
+code:  |
+  github_repo_name = 'docassemble-MLHStatutoryWill' if get_config('debug') else 'docassemble-UserFeedback'
 ---
 features:
   labels above fields: True
@@ -44,11 +38,38 @@ sections:
   - conservators: "Conservators"
   - bond: "Bond"
   - done: "Done"
+  - review_full: "✎ <u>Review / Edit</u>"
 ---
-id: interview_order_response_to_motion_regarding_change_of_domicile
+code: |
+  survey_link_url_only = "https://www.surveymonkey.com/EXAMPLE_URL"
+---
+template: survey_embed_script
+content: |
+  <script>
+    UNIQUE SCRIPT GOES HERE
+  </script>
+---
+# set intro landing screen variables
+code: |
+  MLH_form_type = "forms"
+  MLH_time_min = 15
+  MLH_time_max = 30
+---
+objects:
+  - users: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - children: ALPeopleList.using(there_are_any=True)
+  - guardians: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - spouse: ALPeopleList
+  - tangible_property: DAList.using(object_type = Individual, complete_attribute="complete")
+  - representatives: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - giftee: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - conservators: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+---
+id: interview_order_michigan_statutory_will
 mandatory: True
 code: |
   nav.set_section("review_intro")
+  MLH_standard_intro_pages
   intro_screen
   intro_screen_2
   if intro_screen_3 == 'Exit':
@@ -56,38 +77,38 @@ code: |
   intro_screen_4
   
   nav.set_section("Do you qualify?")
-  mental_capacity
-  what_you_own
-  if what_you_own:
+  mental_capacity_explanation
+  know_what_you_own
+  if know_what_you_own:
     closest_relatives
     if closest_relatives:
-      planning_making_a_will
-      if planning_making_a_will:
-        signing_a_will
-        if signing_a_will:
-          by_force_threats
-          what_to_put
-          if not what_to_put:
-            coerced_pressured
-            if not coerced_pressured:
-              not_valid_until
-              statement_status
-              if statement_status:
-                low_income_over_sixty
-                if low_income_over_sixty == 'Exit':
+      understands_making_a_will
+      if understands_making_a_will:
+        understands_signing_a_will
+        if understands_signing_a_will:
+          force_or_threat
+          was_pressured
+          if not was_pressured:
+            was_coerced
+            if not was_coerced:
+              witness_explanation
+              has_complicated_situations
+              if has_complicated_situations:
+                complicated_warning
+                if complicated_warning == 'Exit':
                   command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              have_already_will
-              if have_already_will:
+              has_existing_will
+              if has_existing_will:
                 replace_existing_will
                 if replace_existing_will == 'change_one':
                   if undo_and_change == 'Exit':
                     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              have_a_trust
-              if not have_a_trust:
-                large_amount
-                if large_amount:
-                  if_have_large_amount
-                  if not if_have_large_amount:
+              has_trust
+              if not has_trust:
+                has_large_estate
+                if has_large_estate:
+                  continue_with_large_estate
+                  if not continue_with_large_estate:
                     command('leave', url='https://michiganlegalhelp.org/organizations-and-courts/find-lawyer', new_window=True)
                 nav.set_section("your_information")
                 users.gather()
@@ -97,58 +118,58 @@ code: |
                   if not emancipated_minor:
                     if user_minor_status == 'Exit':
                       command('leave', url='https://michiganlegalhelp.org', new_window=True)
-                user_city
-                if not user_city:
+                user_state
+                if not user_state:
                   think_and_change
                   if think_and_change == 'Exit':
                     command('leave', url='https://michiganlegalhelp.org/', new_window=True)
-                if user_city:
+                if user_state:
                   county_choice
                   nav.set_section("your_family")
-                  married_status
-                  if married_status:
-                    spouse_detail
-                  child_status
-                  if child_status:
-                    child.target_number
-                    child.gather(child.target_number)
-                    child_adult
+                  has_spouse
+                  if has_spouse:
+                    spouse_name
+                  has_children
+                  if has_children:
+                    children.target_number
+                    children.gather(children.target_number)
+                    has_minor_child
                   nav.set_section("cash_gifts")
-                  if leave_up_gifts:
-                    person_charity.gather()
+                  if leave_cash_gifts:
+                    giftee.gather()
                   nav.set_section("personal_and_household")
-                  person_household_item
-                  list_property
-                  if list_property:
-                    personal_household.gather()
+                  tangible_gifts
+                  if tangible_property.there_are_any:
+                    tangible_property.gather()
                   else:
                     blank_list_print
                   nav.set_section("residue")
-                  residue_status
-                  residue_status_heirs
-                  residue_status_stepchild
-                  residue_status_no_spouse_child
+                  residue_general_explanation
+                  residue_heirs_explanation
+                  residue_distribution_explanation
+                  residue_distribution
                   nav.set_section("personal_representatives")
                   personal_representatives
                   personal_enough_money_property
-                  person_bank.gather()
+                  representatives.gather()
                   nav.set_section("guardians")
-                  guardians_status
-                  if not serve_as_guardian:
+                  guardians_explanation
+                  if not appoint_guardian:
                     guardian_warning
-                  if serve_as_guardian:
+                  if appoint_guardian:
                     guardians.gather()
                   nav.set_section("conservators")
-                  if not conservator_status:
-                    conservator_warning
-                  if conservator_status:
-                    conservator.gather()
+                  if not appoint_conservator:
+                    conservators_warning
+                  if appoint_conservator:
+                    conservators.gather()
                   nav.set_section("bond")
-                  bond_status
+                  require_bond
                   nav.set_section("done")
-                  finished_done
-                michigan_statutory_will_download
-              if have_a_trust:
+                  answers_complete
+                MLH_outro_saving_answers
+                MLH_download
+              if has_trust:
                 if undo_and_change == 'Exit':
                   command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
           if go_back_and_change == 'Exit':
@@ -156,24 +177,34 @@ code: |
   if exit_or_undo == 'Exit':
     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
 ---
+comment: |
+  resource_page_url_only needs to be updated once Emily sends the correct link
+code: |
+  resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
+  resource_page_name = "Michigan Statutory Will"
+---
 generic object: ALIndividual
 code: |
   x.name.first
   x.complete = True
 ---
 code: |
-  person_charity[i].person_charity_one
-  person_charity[i].name.first
-  person_charity[i].us_address
-  person_charity[i].address.address
-  person_charity[i].how_much_gift
-  person_charity[i].complete = True
+  giftee[i].giftee_type
+  giftee[i].name.first
+  giftee[i].us_address
+  giftee[i].address.address
+  giftee[i].gift_amount
+  giftee[i].complete = True
 ---
 code: |
-  person_bank[i].representatives_person_bank
-  person_bank[i].name.first
-  person_bank[i].address.address
-  person_bank[i].complete = True
+  representatives[i].representative_type
+  representatives[i].name.first
+  representatives[i].address.address
+  representatives[i].complete = True
+---
+code: |
+  tangible_property[i].item
+  tangible_property[i].complete = True
 ---
 code: |
   guardians[i].name.first
@@ -181,31 +212,31 @@ code: |
   guardians[i].complete = True
 ---
 code: |
-  conservator[i].conservator_person_bank
-  conservator[i].name.first
-  conservator[i].address.address
-  conservator[i].complete = True
+  conservators[i].conservator_type
+  conservators[i].name.first
+  conservators[i].address.address
+  conservators[i].complete = True
 ---
 code: |
-  child.there_is_another = False
+  children.there_is_another = False
 ---
 code: |
-  person_charity.there_are_any = True
+  giftee.there_are_any = True
 ---
 code: |
-  person_charity.there_is_another = False
+  giftee.there_is_another = False
 ---
 code: |
-  person_bank.there_are_any = True
+  representatives.there_are_any = True
 ---
 code: |
-  person_bank.there_is_another = False
+  representatives.there_is_another = False
 ---
 code: |
-  conservator.there_are_any = True
+  conservators.there_are_any = True
 ---
 code: |
-  conservator.there_is_another = False
+  conservators.there_is_another = False
 ---
 code: |
   guardians.there_are_any = True
@@ -276,24 +307,24 @@ subquestion: |
 
 continue button field: intro_screen_4
 ---
-id: mental_capacity
+id: mental_capacity_explanation
 question: |
   To make a valid will, you must have the mental capacity to do so. This is also known as being of sound mind.
   
-continue button field: mental_capacity
+continue button field: mental_capacity_explanation
 ---
-id: what_you_own
+id: know_what_you_own
 question: |
-  Do you know what you own and about how much it’s worth?
+  What you own and its value.
 fields:
-  - no label: what_you_own
+  - Do you know what you own and about how much it is worth?: know_what_you_own
     datatype: yesnoradio
 ---
 id: closest_relatives
 question: |
-  Can you name your closest relatives, such as your spouse and children?
+  Your relatives.
 fields:
-  - no label: closest_relatives
+  - Can you name your closest relatives, such as your spouse and children?: closest_relatives
     datatype: yesnoradio
 ---
 id: exit_or_undo
@@ -301,24 +332,24 @@ field: exit_or_undo
 question: |
   Sorry, you may not be able to create a valid will. 
 subquestion: |
-  You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. If you think you made a mistake,click **Undo** and change the answer to this question.
+  You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. If you think you made a mistake, click **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
-id: planning_making_a_will
+id: understands_making_a_will
 question: |
-  Do you understand that making a will means planning to distribute your property after your death?
+  Planning your will.
 fields:
-  - no label: planning_making_a_will
+  - Do you understand that making a will means planning to distribute your property after your death?: understands_making_a_will
     datatype: yesnoradio 
 ---
-id: signing_a_will
+id: understands_signing_a_will
 question: |
-  Do you understand generally the effect of signing a will?
+  Signing a will.
 subquestion: |
   ${ collapse_template(help_signing_will) }
 fields:
-  - no label: signing_a_will
+  - Do you understand generally the effect of signing a will?: understands_signing_a_will
     datatype: yesnoradio
 ---
 template: help_signing_will
@@ -327,19 +358,19 @@ subject: |
 content: |
   The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives. Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own. If you aren’t married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares. Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 ---
-id: by_force_threats
+id: force_or_threat
 question: |
   A will is not valid if it was made under duress (by force or threats) or the improper influence of another person.
 subquestion: |
   The decision to make a will should be your free choice.
 
-continue button field: by_force_threats
+continue button field: force_or_threat
 ---
-id: what_to_put
+id: was_pressured
 question: |
-  Has anyone told you what to put in your will?
+  Outside pressure.
 fields:
-  - no label: what_to_put
+  - Has anyone told you what to put in your will?: was_pressured
     datatype: yesnoradio
 ---
 id: go_back_and_change
@@ -355,28 +386,28 @@ subquestion: |
 buttons:
   - Exit
 ---
-id: coerced_pressured
+id: was_coerced
 question: |
-  Has anyone threatened, coerced, or pressured you into preparing a will against your free choice?
+  Creating a will is your choice.
 fields:
-  - no label: coerced_pressured
+  - Has anyone threatened, coerced, or pressured you into preparing a will against your free choice?: was_coerced
     datatype: yesnoradio
 ---
-id: not_valid_until
+id: witness_explanation
 question: |
   **Warning!** 
 subquestion: |
   Your will is not valid until it is signed by witnesses. Before they sign, the witnesses must determine whether you made the will freely. If any interested parties suspect after your death that the will was made under conditions of duress, fraud, or improper influence, it can be challenged in court. Your witnesses will be asked to testify.
 
-continue button field: not_valid_until
+continue button field: witness_explanation
 ---
-id: statement_status
+id: has_complicated_situations
 question: |
   The statutory will is a simple but effective will. 
 subquestion: |
   Some situations might be too complicated for a statutory will.
 
-  **Are any of the below statements true for you?**
+  **Think about the following statements:**
 
   - I have a child from a relationship with someone other than my current spouse.
   - I want my property to go to non relatives after I die.
@@ -384,27 +415,27 @@ subquestion: |
   - I have a child with special needs.
   - I own a business.
 fields:
-  - no label: statement_status
+  - Are any of these statements true for you?: has_complicated_situations
     datatype: yesnoradio
 ---
-id: low_income_over_sixty
-field: low_income_over_sixty
+id: complicated_warning
+field: complicated_warning
 question: |
   **Warning!** 
 subquestion: |
   It sounds like your situation is a little complicated. You can still use the statutory will, but it may not meet all your needs. You may want to get specialized estate planning advice from a lawyer.
 
-  If have a low income and are over 60 years old, your local legal aid office may be able to help you. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  on Michigan Legal Help to find a lawyer or a legal services office near you.
+  If you have a low income and are over 60 years old, your local legal aid office may be able to help you. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you.
 
 buttons:
   - Continue
   - Exit
 ---
-id: have_already_will
+id: has_existing_will
 question: |
-  Do you already have a will?
+  Existing wills.
 fields:
-  - no label: have_already_will
+  - Do you already have a will?: has_existing_will
     datatype: yesnoradio
 ---
 id: replace_existing_will
@@ -412,11 +443,8 @@ question: |
   You can replace your existing will with a new Michigan statutory will. 
 subquestion: |
   To be sure your new will replaces your existing will, after your new will is signed and witnessed, destroy the old one or write "Void" on every page. If you filed your old will with your county probate court, file the new one there. If anyone is holding a copy of your old will, give them updated copies and ask them to destroy the old copies.
-  
-  
-  What do you want to do?
 fields:
-  - no label: replace_existing_will
+  - What do you want to do?: replace_existing_will
     datatype: radio
     choices:
       - Replace my existing will with a new Michigan statutory will: replace_one
@@ -429,43 +457,40 @@ question: |
 subquestion: |
   You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. 
   
-  If you think you made a mistake,click **Undo** and change the answer to this question.
+  If you think you made a mistake, click **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
-id: have_a_trust
+id: has_trust
 question: |
   Do you have a trust? 
 subquestion: |
   This could be a living trust, a revocable trust, an irrevocable trust, or any other kind of trust.
 fields:
-  - no label: have_a_trust
+  - Do you have a trust?: has_trust
     datatype: yesnoradio
 ---
-id: large_amount
+id: has_large_estate
 question: |
-  Do you have a large amount of property in your estate? 
+  Think about your estate. 
 subquestion: |
   Think about your real estate, personal property, retirement plan benefits, investments such as stocks and bonds, or life insurance.
 fields:
-  - no label: large_amount
+  - Do you have a large amount of property in your estate?: has_large_estate
     datatype: yesnoradio
 ---
-id: if_have_large_amount
+id: continue_with_large_estate
 question: |
   **Warning!** 
 subquestion: |
-  You may want to talk with a lawyer before making a will if you have a large amount of property. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  on Michigan Legal Help to find a lawyer or a legal services office near you
-
-  Do you want to continue?
+  You may want to talk with a lawyer before making a will if you have a large amount of property. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you
 fields: 
-  - no label: if_have_large_amount
+  - Do you want to continue making a Michigan Statutory Will?: continue_with_large_estate
     datatype: yesnoradio
 ---
-id: user_information
-field: user_information
+id: user_name
 question: |
-  Enter your full name.
+  What is your name?
 fields: 
   - First: users[0].name.first
   - Middle: users[0].name.middle
@@ -479,7 +504,7 @@ fields:
 id: user_dob
 field: user_dob
 question: |
-  Enter your date of birth.
+  What is your date of birth?
 fields: 
   - Date: user_dob
     datatype: date
@@ -494,32 +519,42 @@ code: |
 ---
 id: emancipated_minor
 question: |
-  Are you an emancipated minor?
+  It looks like you are under the age of 18.
 fields: 
-  - no label: emancipated_minor
+  - Are you an emancipated minor?: emancipated_minor
     datatype: yesnoradio
+under: ${ collapse_template(dob_explanation_template) }
+---
+id: dob_explanation_template
+template: dob_explanation_template
+subject: Why do you think I am under 18?
+content: |
+  You entered ${ user_dob } as your date of birth.
+
+  If this date is wrong, click **Undo** to change it.
 ---
 id: user_minor_status
 field: user_minor_status
 question: |
   Sorry, you cannot use this tool to create a will. 
 subquestion: |
-  You must be at least 18 years old or an emancipated minor to create a will in Michigan. If you think you made a mistake, you can change the answer to this question.
+  You must be at least 18 years old or an emancipated minor to create a will in Michigan. If you think you made a mistake, click **Undo** and change the answer to this question.
   
 buttons:
   - Exit
 ---
-id: user_city
+id: user_state
 question: |
-  Do you live in Michigan?
+  Your State.
 fields: 
-  - no label: user_city
+  - Do you live in Michigan?: user_state
     datatype: yesnoradio
 ---
+id: county_choice
 question: |
-  What county do you live in?
+  Your county.
 fields:
-  - no label: county_choice
+  - What county do you live in?: county_choice
     code: |
       court_list._load_courts()["address_county"].unique()
 ---
@@ -532,11 +567,11 @@ subquestion: |
 buttons:
   - Exit
 ---
-id: married_status
+id: has_spouse
 question: |
-  Are you married?
+  Marriage status.
 fields:
-  - no label: married_status
+  - Are you married?: has_spouse
     datatype: yesnoradio
 ---
 sets:
@@ -544,15 +579,15 @@ sets:
   - spouse[0].name.last
   - spouse[0].name.middle
   - spouse[0].name.suffix
-id: spouse_detail
-field: spouse_detail
+id: spouse_name
+field: spouse_name
 question: |
-  Enter your spouse's full name.
+  What is your spouse's full name?
 fields: 
   - code: |
       spouse[0].name_fields()
 ---
-id: child_status
+id: has_children
 question: |
   For the purposes of the statutory will, "your children" means those born to you both within and outside of marriage, and children you legally adopted. 
 subquestion: |
@@ -560,170 +595,183 @@ subquestion: |
 
   If you want to exclude one or more children from your will or want your children to inherit **unequal** shares, this tool cannot help you do that. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.
   
-  Do you have any living children?
 fields:
-  - no label: child_status
+  - Do you have any living children?: has_children
     datatype: yesnoradio
 ---
+id: number of children
 question: |
-  How many living children do you have?
+  Number of children.
 fields:
-  - no label: child.target_number
+  - How many living children do you have?: children.target_number
     datatype: integer
 ---
+id: child name
 sets:
-  - child[i].name.first
-  - child[i].name.last
-  - child[i].name.middle
-  - child[i].name.suffix
+  - children[i].name.first
+  - children[i].name.last
+  - children[i].name.middle
+  - children[i].name.suffix
 question: |
-  % if child.target_number < 2:
+  % if children.target_number < 2:
   Enter your child's full name.
   % else:
   Enter the full name of your ${ ordinal(i) } child .
   % endif
 fields: 
   - code: |
-      child[i].name_fields()
+      children[i].name_fields()
 ---
-id: child_adult
+id: has_minor_child
 question: |
-  Do you have a child who is under the age of 18?
+  Minor children.
 fields: 
-  - no label: child_adult
+  - Do you have a child who is under the age of 18?: has_minor_child
     datatype: yesnoradio
 ---
-id: leave_up_gifts
+id: leave_cash_gifts
 question: |
   You can leave up to two gifts of cash in your will.
 subquestion: |
   Think carefully about whether to leave cash gifts. These cash gifts will be paid "off the top" of your estate no matter how much money you have when you die. For example, you may decide today to leave $5,000 to a friend or charity, and the rest of your estate to your children. You may then end up spending all but $4,000 of your savings before you die. In that case, the friend or charity would receive the $4,000, and your children would receive nothing.
 
-  Each gift can be left to one person or charity. If you want to leave more than two cash gifts, or any cash gift jointly to more than one person, you can’t use this tool or the statutory will to do so. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.
-
-  Would you like to leave a cash gift?
+  Each gift can be left to one person or charity. If you want to leave more than two cash gifts, or any cash gift jointly to more than one person, you can’t use this tool or the statutory will to do so. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
-  - no label : leave_up_gifts
+  - Would you like to leave a cash gift?: leave_cash_gifts
     datatype: yesnoradio
 ---
-id: person_charity_one
-field: person_charity_one
+id: giftee_type
+field: giftee_type
 question: |
-  Is the ${ ordinal(i) } recipient a person or charity?
+  Is the ${ ordinal(i) } cash gift recipient a person or charity?
 fields: 
-  - no label: person_charity[i].person_charity_one
+  - no label: giftee[i].giftee_type
     datatype: radio
     choices:
       - Person
       - Charity
 ---
-id: cash_person
+id: giftee_name
 sets:
-  - person_charity[i].name.first
-  - person_charity[i].name.last
-  - person_charity[i].name.middle
-  - person_charity[i].name.suffix
+  - giftee[i].name.first
+  - giftee[i].name.last
+  - giftee[i].name.middle
+  - giftee[i].name.suffix
 question: |
-  % if person_charity[i].person_charity_one == 'Person':
+  % if giftee[i].giftee_type == 'Person':
   What is the full name of the person you want to receive the ${ ordinal(i) } cash gift?
   % else:
   What is the name of the charity you want to receive the ${ ordinal(i) } cash gift?
   % endif
 fields:
-  - Name: person_charity[i].name.first
+  - Name: giftee[i].name.first
     show if: 
       code : |
-        person_charity[i].person_charity_one == "Charity"
-  - First: person_charity[i].name.first
+        giftee[i].giftee_type == "Charity"
+  - First: giftee[i].name.first
     show if: 
       code : |
-        person_charity[i].person_charity_one == "Person"
-  - Middle: person_charity[i].name.middle
+        giftee[i].giftee_type == "Person"
+  - Middle: giftee[i].name.middle
     required: False
     show if: 
       code : |
-        person_charity[i].person_charity_one == "Person"
-  - Last: person_charity[i].name.last
+        giftee[i].giftee_type == "Person"
+  - Last: giftee[i].name.last
     show if: 
       code : |
-        person_charity[i].person_charity_one == "Person"
-  - Suffix: person_charity[i].name.suffix
+        giftee[i].giftee_type == "Person"
+  - Suffix: giftee[i].name.suffix
     required: False
     show if: 
       code : |
-        person_charity[i].person_charity_one == "Person"
+        giftee[i].giftee_type == "Person"
     code: |
       name_suffix()  
 ---
 id: us_address
 question: |
-  Does ${ person_charity[i].name.first } have a U.S. address?
+  You have named ${ giftee[i].name } as a cash gift recipient.
 fields: 
-  - no label: person_charity[i].us_address
+  - Does ${ giftee[i].name.first } have a U.S. address?: giftee[i].us_address
     datatype: yesnoradio
 ---
 sets:
-  - person_charity[i].address.address
-  - person_charity[i].address.city
-  - person_charity[i].address.zip
-  - person_charity[i].address.unit
-  - person_charity[i].address.state
+  - giftee[i].address.address
+  - giftee[i].address.city
+  - giftee[i].address.zip
+  - giftee[i].address.unit
+  - giftee[i].address.state
 id: gift_full_address
 question: |
-  Enter the address for ${ person_charity[i].name.first }.
+  Enter the address for ${ giftee[i].name.first }.
 fields:
-  - Street Address: person_charity[i].address.address
+  - Street Address: giftee[i].address.address
     show if: 
       code : |
-        person_charity[i].us_address == False
-  - City, State/Province, Postal Code, Country: person_charity[i].address.city
+        giftee[i].us_address == False
+  - City, State/Province, Postal Code, Country: giftee[i].address.city
     show if: 
       code : |
-        person_charity[i].us_address == False
-  - Street Address or P.O. Box : person_charity[i].address.address
+        giftee[i].us_address == False
+  - Street Address or P.O. Box : giftee[i].address.address
     show if: 
       code : |
-        person_charity[i].us_address == True
-  - Apartment, suite, etc: person_charity[i].address.unit
+        giftee[i].us_address == True
+  - Apartment, suite, etc: giftee[i].address.unit
     required: False
     show if: 
       code : |
-        person_charity[i].us_address == True
-  - City: person_charity[i].address.city
+        giftee[i].us_address == True
+  - City: giftee[i].address.city
     required: False
     show if: 
       code : |
-        person_charity[i].us_address == True
-  - State: person_charity[i].address.state
+        giftee[i].us_address == True
+  - State: giftee[i].address.state
     show if: 
       code : |
-        person_charity[i].us_address == True
+        giftee[i].us_address == True
     code: |
       states_list()
-  - Zip code: person_charity[i].address.zip
+  - Zip code: giftee[i].address.zip
     show if: 
       code : |
-        person_charity[i].us_address == True
+        giftee[i].us_address == True
 ---
-id: how_much_gift
-field: how_much_gift
+id: gift_amount
+field: gift_amount
 question: |
-  How much of your money do you want ${ person_charity[i].name.first } to receive after you die?
+  Cash gift amount.
+subquestion: |
+  Your cash gift must be a whole dollar amount with no cents included.
 fields:
-  - no label: person_charity[i].how_much_gift
+  - How much of your money do you want ${ giftee[i].name.first } to receive after you die?: giftee[i].gift_amount
     datatype: currency
+validation code: |
+  if giftee[i].gift_amount <= 0:
+    validation_error("The cash gift amount must be greater than zero.")
+  if int(giftee[i].gift_amount) != giftee[i].gift_amount:
+    validation_error("You must enter a whole dollar amount with no cents.")
 ---
+code: |
+  if leave_cash_gifts and len(giftee) > 0:
+    gift_amount_one_in_words = capitalize(nice_number(giftee[0].gift_amount, use_word=True))
+  if leave_cash_gifts and len(giftee) > 1:
+    gift_amount_two_in_words = capitalize(nice_number(giftee[1].gift_amount, use_word=True))
+---
+id: more giftees
 question: |
   Would you like to leave another gift of cash?
 fields:
-  - no label: person_charity.there_is_another
+  - no label: giftee.there_is_another
     datatype: yesnoradio
 ---
 code: |
-  if len(person_charity.complete_elements()) >= 2:
-     person_charity.there_is_another = False
+  if len(giftee.complete_elements()) >= 2:
+     giftee.there_is_another = False
 ---
-id: person_household_item
+id: tangible_gifts
 question: |
   You can choose to leave gifts of specific personal or household items to anyone you wish. 
 subquestion: |
@@ -732,43 +780,55 @@ subquestion: |
 
   You can execute your will without having this list prepared. You can prepare the list at any time. You can include as many or as few items on the list as you wish.
   
-continue button field: person_household_item
+continue button field: tangible_gifts
 ---
-id: list_property
+id: wants_to_list_property
 question: |
-  You can update the list as often as you want. 
+  Do you want to make a list of your personal property now?
 subquestion: |
+  You can update the list as often as you want. 
+
   Sign and date the bottom of each new list that you make. If you don’t sign and date the bottom of the list, your wishes may not be honored. If you make a list of personal property, it becomes part of your will. Keep it with your will.
 
-
-  Anything not on this list becomes the "residue" of your estate. Your spouse or other heirs will inherit the residue, which is all the property you do not specifically list in your will.
-  
-  Do you want to make a list of your personal property now?
+  Anything not on this list becomes the "residue" of your estate.
 fields: 
-  - no label: list_property
+  - Do you want to make a list of your personal property now?: tangible_property.there_are_any
     datatype: yesnoradio
 ---
 id: list_of_property_receiver
-field: list_of_property_receiver
 question: |
   Enter a specific item of your personal property or household goods, and the name of the person you want to receive that item.
 subquestion: |
-  Be as clear as possible in describing both the item and the person who should receive it. For example, say "my diamond solitaire and gold engagement ring" instead of "my rings." Give the full name of the person, not just "my next-door neighbor" or "my nephew."
-  ${ collapse_template(listed_item) }
-fields:
-  - Item: personal_household[i].item
-  - Full name of recipient: personal_household[i].name.first
----
-template: listed_item
-subject: |
-  What have I listed to far?
-content: |
+  Be as clear as possible in describing both the item and the person who should receive it.
+
+  % if len(tangible_property.complete_elements()) > 0:
   So far, you have listed:
----
-question: |
-  Do you want to specify another personal or household item?
+
+  Tangible Personal Property | Recipient  
+  ------------------------------ | -------------  
+  % for property in tangible_property.complete_elements():
+  ${ property.item } | ${ property.recipient_name }  
+  % endfor
+  % endif
+  
 fields:
-  - no label: personal_household.there_is_another
+  - Item: tangible_property[i].item
+  - Full name of recipient: tangible_property[i].recipient_name
+---
+id: ask_more_items
+question: |
+  You can specify more personal or household items.
+subquestion: |
+  So far, you have listed:
+
+  Tangible Personal Property | Recipient  
+  ------------------------------ | -------------  
+  % for property in tangible_property:
+  ${ property.item } | ${ property.recipient_name }  
+  % endfor
+  
+fields:
+  - Do you want to specify another personal or household item?: tangible_property.there_is_another
     datatype: yesnoradio
 ---
 id: blank_list_print
@@ -778,18 +838,17 @@ question: |
 subquestion: |
   If you decide to leave gifts of your personal property, fill in the list. Be sure to identify the item and the recipient as specifically as possible. Then sign and date the bottom of the list.
 ---
-id: residue_status
+id: residue_general_explanation
 question: |
   Everything you own that you have not already listed is called the residue of your estate. 
 subquestion: |
   The cash gifts you named and the property you put on the list are **not** included in the residue. Those will be taken from your estate before the residue is distributed.
 
-
   Under this will, the residue of your estate will go to your children in equal shares. If any of your children died before you, but had children who are still living (your grandchildren), those descendants get equal shares of what your deceased child would have inherited.
   
-continue button field: residue_status
+continue button field: residue_general_explanation
 ---
-id: residue_status_heirs
+id: residue_heirs_explanation
 question: |
   If no spouse, children, or descendants of your children survive you, the residue will be distributed to your other relatives. 
 subquestion: |
@@ -797,31 +856,31 @@ subquestion: |
 
   Your heirs are determined by law, the same way they would be if you died without a will. First, your parents or their descendants (your siblings, nieces, or nephews) would inherit. If none of those people survive you, then your grandparents or their descendants (your aunts, uncles, or cousins) would inherit. If the court can’t identify any surviving relatives in these categories, the residue of your estate will go to the state of Michigan.
   
-continue button field: residue_status_heirs
+continue button field: residue_heirs_explanation
 ---
-id: residue_status_stepchild
+id: residue_distribution_explanation
 question: |
   If no spouse, child, or descendent of your child is living when you die.
 subquestion: |
   You can choose to leave the residue of your estate entirely to your heirs (parents, siblings, nieces, uncles, etc.), or to divide it evenly between your heirs and your spouse’s heirs. If you have stepchildren, this is the only way they will inherit from you, using the statutory will.
 
-  You can only choose one of these options. If you want to distribute your property differently, you may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.
+  You can only choose one of these options. If you want to distribute your property differently, you may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
   
-continue button field: residue_status_stepchild
+continue button field: residue_distribution_explanation
 ---
-id: residue_status_no_spouse_child
+id: residue_distribution
 question: |
-  How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?
+  Residue distribution.
 fields:
-  - no label: residue_status_no_spouse_child
+  - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
     choices:
-      - I want half my property to be given to my heirs and half to be given to my spouse’s heirs.
-      - I want all my property to be given to my heirs.
+      - I want half my property to be given to my heirs and half to be given to my spouse’s heirs.: own_heirs_and_spouse_heirs
+      - I want all my property to be given to my heirs.: own_heirs
 ---
 id: personal_representatives
 question: |
-  The Michigan statutory will requires you to choose a **personal representative.**
+  The Michigan statute will requires you to choose a **personal representative.**
 subquestion: |
   Your personal representative is the person who will make sure your property is distributed according to your wishes. The personal representative also pays any final bills you have when you die, usually by using or selling property from your estate.
 
@@ -837,80 +896,78 @@ subquestion: |
   
 continue button field: personal_enough_money_property
 ---
-id: representatives_person_bank
+id: representative_type
 question: |
-  Is your personal representative a person or a bank?
+  Choose your ${ ordinal(i) } personal representative.
 fields:
-  - no label: person_bank[i].representatives_person_bank
+  - Is your personal representative a person or a bank?: representatives[i].representative_type
     datatype: radio
     choices:
       - Person
       - Bank
 ---
 sets:
-  - person_bank[i].name.first
-  - person_bank[i].name.last
-  - person_bank[i].name.middle
-  - person_bank[i].name.suffix
+  - representatives[i].name.first
+  - representatives[i].name.last
+  - representatives[i].name.middle
+  - representatives[i].name.suffix
 id: person_or_bank_detail
 question: |
-  % if person_bank[i].representatives_person_bank == 'Person':
+  % if representatives[i].representative_type == 'Person':
   Enter the full name of the person you want to be your ${ ordinal(i) } personal representative.
   % else:
   Enter the name of the bank you want to be your ${ ordinal(i) } personal representative.
   % endif
 fields:
-  - Name: person_bank[i].name.first
+  - Name: representatives[i].name.first
     show if: 
       code : |
-        person_bank[i].representatives_person_bank == "Bank"
-  - First: person_bank[i].name.first
+        representatives[i].representative_type == "Bank"
+  - First: representatives[i].name.first
     show if: 
       code : |
-        person_bank[i].representatives_person_bank == "Person"
-  - Middle: person_bank[i].name.middle
+        representatives[i].representative_type == "Person"
+  - Middle: representatives[i].name.middle
     required: False
     show if: 
       code : |
-        person_bank[i].representatives_person_bank == "Person"
-  - Last: person_bank[i].name.last
+        representatives[i].representative_type == "Person"
+  - Last: representatives[i].name.last
     show if: 
       code : |
-        person_bank[i].representatives_person_bank == "Person"
-  - Suffix: person_bank[i].name.suffix
+        representatives[i].representative_type == "Person"
+  - Suffix: representatives[i].name.suffix
     required: False
     show if: 
       code : |
-        person_bank[i].representatives_person_bank == "Person"
+        representatives[i].representative_type == "Person"
     code: |
       name_suffix()
 ---
 sets:
-  - person_bank[i].address.address
-  - person_bank[i].address.city
-  - person_bank[i].address.zip
-  - person_bank[i].address.unit
-  - person_bank[i].address.state
+  - representatives[i].address.address
+  - representatives[i].address.city
+  - representatives[i].address.zip
+  - representatives[i].address.unit
+  - representatives[i].address.state
 id: representatives_address
 question: |
-  Enter ${ person_bank[i].name.first }'s address.
+  Enter ${ representatives[i].name.first }'s address.
 fields:
   - code: |
-      person_bank[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
+      representatives[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 question: |
-  It’s a good idea to name a second choice for your personal representative, in case your first choice isn’t able to do it. 
-subquestion: |
-  Do you want to enter a second choice for personal representative?
+  It’s a good idea to name a second choice for your personal representative, in case your first choice isn’t able to do it.
 fields: 
-  - no label: person_bank.there_is_another
+  - Do you want to enter a second choice for personal representative?: representatives.there_is_another
     datatype: yesnoradio
 ---
 code: |
-  if len(person_bank.complete_elements()) >= 2:
-     person_bank.there_is_another = False
+  if len(representatives.complete_elements()) >= 2:
+     representatives.there_is_another = False
 ---
-id: guardians_status
+id: guardians_explanation
 question: |
   You can name a guardian to take care of your children until they turn 18. 
 subquestion: |
@@ -919,17 +976,15 @@ subquestion: |
 
   If the other parent dies before you, has had their parental rights terminated, or is unable to care for your children, the guardian you chose can accept guardianship by filing with the probate court.
   
-continue button field: guardians_status
+continue button field: guardians_explanation
 ---
-id: serve_as_guardian
+id: appoint_guardian
 question: |
   It’s a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
 subquestion: |
-  If you want to name different guardians for different children, this tool and the statutory will won’t work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.
-  
-  Do you want to name a guardian?
+  If you want to name different guardians for different children, this tool and the statutory will won’t work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
-  - no label: serve_as_guardian
+  - Do you want to name a guardian?: appoint_guardian
     datatype: yesnoradio
 ---
 id: guardians_name
@@ -958,11 +1013,9 @@ fields:
       guardians[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 question: |
-  It’s a good idea to name a second choice, in case your first choice isn’t able to be the guardian. 
-subquestion: |
-  Do you want to add a second guardian?
+  It’s a good idea to name a second choice, in case your first choice isn’t able to be the guardian.
 fields:
-  - no label: guardians.there_is_another
+  - Do you want to add a second guardian?: guardians.there_is_another
     datatype: yesnoradio
 ---
 code: |
@@ -977,116 +1030,108 @@ subquestion: |
 
 continue button field: guardian_warning
 ---
-id: conservator_status
+id: appoint_conservator
 question: |
   You can also name a conservator to manage money for the child’s benefit. 
 subquestion: |
   This can be the same person as the guardian, or it can be someone different. It’s a good idea to ask the person if they are willing and able to serve as conservator before you make a final choice.
 
-
   The conservator can also be a bank. A bank will charge the estate a fee for this service.
-  
-  Do you want to name a conservator?
 fields:
-  - no label: conservator_status
+  - Do you want to name a conservator?: appoint_conservator
     datatype: yesnoradio
 ---
-id: conservator_person_bank
-field: conservator_person_bank
+id: conservator_type
 question: |
-  Is your conservator a person or a bank?
+  Choose your ${ ordinal(i) } conservator.
 fields:
-  - no label: conservator[i].conservator_person_bank
+  - Is your conservator a person or a bank?: conservators[i].conservator_type
     datatype: radio
     choices:
       - Person
       - Bank
 ---
-id: conservator_detail
+id: conservators_detail
 sets:
-  - conservator[i].name.first
-  - conservator[i].name.last
-  - conservator[i].name.middle
-  - conservator[i].name.suffix
+  - conservators[i].name.first
+  - conservators[i].name.last
+  - conservators[i].name.middle
+  - conservators[i].name.suffix
 question: |
-  % if conservator_person_bank == 'Person':
+  % if conservators[i].conservator_type == 'Person':
   Enter the full name of the person you want to be your conservator.
   % else:
   Enter the name of the bank you want to be your conservator.
   % endif
 fields:
-  - Name: conservator[i].name.first
+  - Name: conservators[i].name.first
     show if: 
       code : |
-        conservator[i].conservator_person_bank == "Bank"
-  - First: conservator[i].name.first
+        conservators[i].conservator_type == "Bank"
+  - First: conservators[i].name.first
     show if: 
       code : |
-        conservator[i].conservator_person_bank == "Person"
-  - Middle: conservator[i].name.middle
+        conservators[i].conservator_type == "Person"
+  - Middle: conservators[i].name.middle
     required: False
     show if: 
       code : |
-        conservator[i].conservator_person_bank == "Person"
-  - Last: conservator[i].name.last
+        conservators[i].conservator_type == "Person"
+  - Last: conservators[i].name.last
     show if: 
       code : |
-        conservator[i].conservator_person_bank == "Person"
-  - Suffix: conservator[i].name.suffix
+        conservators[i].conservator_type == "Person"
+  - Suffix: conservators[i].name.suffix
     required: False
     show if: 
       code : |
-        conservator[i].conservator_person_bank == "Person"
+        conservators[i].conservator_type == "Person"
     code: |
       name_suffix()
 ---
-id: conservator_address
+id: conservators_address
 sets:
-  - conservator[i].address.address
-  - conservator[i].address.city
-  - conservator[i].address.zip
-  - conservator[i].address.unit
-  - conservator[i].address.state
+  - conservators[i].address.address
+  - conservators[i].address.city
+  - conservators[i].address.zip
+  - conservators[i].address.unit
+  - conservators[i].address.state
 question: |
-  Enter ${ conservator[i].name.first }'s address.
+  Enter ${ conservators[i].name.first }'s address.
 fields:
   - code: |
-      conservator[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
+      conservators[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
-id: conservator_person_bank_other
+id: conservators_other
 question: |
-  It’s a good idea to name a second choice, in case your first choice isn’t able to be the conservator. 
-subquestion: |
-  Do you want to include a second conservator?
+  It’s a good idea to name a second choice, in case your first choice isn’t able to be the conservator.
 fields:
-  - no label: conservator.there_is_another
+  - Do you want to include a second conservator?: conservators.there_is_another
     datatype: yesnoradio
 ---
 code: |
-  if len(conservator.complete_elements()) >= 2:
-     conservator.there_is_another = False
+  if len(conservators.complete_elements()) >= 2:
+     conservators.there_is_another = False
 ---
-id: conservator_warning
+id: conservators_warning
 question: |
   **Warning!** 
 subquestion: |
   If you later decide to name a conservator, you can include that person’s name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
   
-continue button field: conservator_warning
+continue button field: conservators_warning
 ---
-id: bond_status
+id: require_bond
 question: |
   You can require bond for your personal representative and any conservator. 
 subquestion: |
   Bond is insurance that protects your heirs in case your personal representative or conservator misuses or steals assets from the estate. It’s not required. If you request bond, it will be paid for from the assets in your estate.
-  
-  Would you like to require a bond?
 fields: 
-  - no label: bond_status
+  - Would you like to require a bond?: require_bond
     datatype: yesnoradio
 ---
-id: finished_done
-field: finished_done
+id: answers_complete
+field: answers_complete
 question: |
   You are finished answering questions. 
 subquestion: |
@@ -1094,99 +1139,45 @@ subquestion: |
 
   **Warning!** If you do not save your answers and you later discover a mistake in your printed will, you will have to restart this tool from the beginning and enter all of your answers again. Remember, crossing out or adding words to your printed will may make it invalid.
 
-continue button field: finished_done
+continue button field: answers_complete
 
 ---
 objects:
-  - msw_main: ALDocument.using(title="Michigan Statutory Will", filename="Michigan_Statutory_Will.pdf", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
+  - michigan_statutory_will_attachment: ALDocument.using(title="Michigan Statutory Will", filename="michigan_statutory_will.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
+  - instructions: ALDocument.using(filename="Instructions - Do not file this", title="Instructions", enabled=True, has_addendum=False)
 ---
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[msw_main], filename="Michigan_Statutory_Will.pdf", title="All forms to download for your records", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[instructions, michigan_statutory_will_attachment], filename="Michigan Statutory Will (All forms).pdf", title="All forms and instructions", enabled=True)
 ---
-id: download screen
-event: michigan_statutory_will_download
+id: DownloadScreen
+event: MLH_download
 question: |
-  All done!
+  Get your ${ MLH_form_type }
 subquestion: |
-  Thank you ${users}. Your form is ready to download and deliver.
+  You can **view**, **download**, or **e-mail** your ${ MLH_form_type } to yourself below. Tap the "✎ Review / Edit" button to fix any mistakes.
+    
+  <h2 class="h3">Download or e-mail your ${ MLH_form_type }</h2>
 
-  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
-
-  ${ action_button_html(url_action('review_form'), label='Edit answers', color='info') }
-
+  ${ action_button_html(url_action('review_full'), label='✎ Review / Edit', color='info') }
+  
   ${ al_user_bundle.download_list_html() }
 
   ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+  
+  <h2 class="h3">Take our quick survey!</h2>
+  Answer below or [open the survey in a new tab](${ survey_link_url_only }).
+  ${ survey_embed_script }
+progress: 100
 ---
-attachment:
+attachments:
   - name: Michigan Statutory Will
     filename: Michigan Statutory Will
-    variable name: msw_main[i]
-    pdf template file: Michigan_Statutory_Will.pdf
-    fields:
-      - "user_information": ${ users[0].name }
-      - "user_county": ${ county_choice }
-      - "spouse_detail": ${ spouse[0].name if married_status else "" }
-      - "child[0]": ${ child[0] if child_status else "" }
-      - "1": ${ "" }
-      - "child[1]": ${ child[1] if child_status and len(child) > 1 else "" }
-      - "2": ${ "" }
-      - "child[2]": ${ child[2] if child_status and len(child) > 2 else "" }
-      - "3": ${ "" }
-      - "charity_detail": ${ person_charity[0].name if leave_up_gifts and len(person_charity) >=1 else "" }
-      - "gift_full_address": ${ person_charity[0].address if leave_up_gifts and len(person_charity) >=1 else "" }
-      - "how_much_gift": ${ person_charity[0].how_much_gift if leave_up_gifts and len(person_charity) >=1 else "" }
-      - "AMOUNT OF GIFT (In figures": ${ nice_number(person_charity[0].how_much_gift, use_word=True) if leave_up_gifts and len(person_charity) >=1 else "" }
-      - "Your signature": |
-          ${ "" } 
-      - "charity_detail_one": ${ person_charity[1].name if leave_up_gifts and len(person_charity) >=2 else "" }
-      - "gift_full_address_one": ${ person_charity[1].address if leave_up_gifts and len(person_charity) >=2 else "" }
-      - "how_much_gift_one": ${ person_charity[1].how_much_gift if leave_up_gifts and len(person_charity) >=2 else "" }
-      - "Amount of Gift (In Figure)": ${ nice_number(person_charity[1].how_much_gift, use_word=True) if leave_up_gifts and len(person_charity) >=2 else "" }
-      - "AMOUNT OF GIFT In words": ${ "" }
-      - "be distributed to my spouses heirs as if my spouse had died just after me without Will": ${ "" }
-      - "b All to be distributed to my heirs as if I did not have a Will": ${ "" }
-      - "if_representatives_bank": ${ person_bank[0].name if personal_representatives and len(person_bank) >=1 else "" }
-      - "representatives_bank_address": ${ person_bank[0].address if personal_representatives and len(person_bank) >=1 else "" }
-      - "eligible financial institution) of": ${ "" }
-      - "representatives_bank_second": ${ person_bank[1].name if personal_representatives and len(person_bank) >=2 else "" }
-      - "representatives_bank_address_second": ${ person_bank[1].address if personal_representatives and len(person_bank) >=2 else "" }
-      - "Insert": ${ "" }
-      - "guardian_name": ${ guardians[0].name if serve_as_guardian and len(guardians) >=1 else "" }
-      - "guardian_address": ${ guardians[0].address if serve_as_guardian and len(guardians) >=1 else "" }
-      - "conservator_bank_detail": ${ conservator[0].name if conservator_status and len(conservator) >=1 else "" }
-      - "Insert name of individual or eligible": ${ "" }
-      - "conservator_bank_address": ${ conservator[0].address if conservator_status and len(conservator) >=1 else "" }
-      - "guardian_second": ${ guardians[1].name if serve_as_guardian and len(guardians) >=2 else "" }
-      - "guardian_2": ${ "" }
-      - "guardian_second_address": ${ guardians[1].address if serve_as_guardian and len(guardians) >=2 else "" }
-      - "conservator_bank_detail_another": ${ conservator[1].name if conservator_status and len(conservator) >=2 else "" }
-      - "individual 2": ${ "" }
-      - "conservator_bank_address_another": ${ conservator[1].address if conservator_status and len(conservator) >=2 else "" }
-      - "Your signature_2": |
-          ${ "" }
-      - "Your signature_3": |
-          ${ "" }
-      - "20": ${ "" }
-      - "undefined": ${ "" }
-      - "Your signature_4": |
-          ${ "" }
-      - "Print Name": ${ "" }
-      - "Signature of witness": |
-          ${ "" }
-      - "Address": ${ "" }
-      - "City   State": ${ "" }
-      - "Zip": ${ "" }
-      - "Print Name_2": ${ "" }
-      - "Signature of witness_2": |
-          ${ "" }
-      - "Address_2": ${ "" }
-      - "City   State_2": ${ "" }
-      - "Zip_2": ${ "" }
-      - "Print Name_3": ${ "" }
-      - "Signature of witness_3": |
-          ${ "" }
-      - "Address_3": ${ "" }
-      - "City   State_3": ${ "" }
-      - "Zip_3": ${ "" }
+    variable name: michigan_statutory_will_attachment[i]
+    docx template file: michigan_statutory_will.docx
+    tagged pdf: True
+
+  - name: instructions
+    variable name: instructions[i]        
+    docx template file: michigan_statutory_will_instructions.docx
+    tagged pdf: True
 ---
