@@ -75,7 +75,6 @@ code: |
   if intro_screen_3 == 'Exit':
     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
   intro_screen_4
-  
   nav.set_section("Do you qualify?")
   mental_capacity_explanation
   know_what_you_own
@@ -249,21 +248,21 @@ code: |
 ---
 id: intro_screen
 question: |
-  Welcome to Michigan Legal Help’s Do-It-Yourself Michigan Statutory Will tool. 
+  Welcome to Michigan Legal Help’s Do-It-Yourself Michigan Statutory Will tool.
 subquestion: |
-  This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one. 
+  This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one.
 
   You will be asked a series of questions about you, your family, and your property. If you are eligible to use this form, your personalized Michigan statutory will with instructions will be ready to print after you answer all the questions.
 
-  It will take 10 to 30 minutes to answer all the questions.  
+  It will take 10 to 30 minutes to answer all the questions.
 continue button field: intro_screen
 ---
 id: intro_screen_2
 question: |
-  There are many types of wills you can prepare.  
+  There are many types of wills you can prepare.
 subquestion: |
   The Michigan statutory will is a simple will. Use this tool to create a Michigan statutory will.
-  
+
   This tool is not right for you if you:
 
   - are under 18 years old
@@ -271,24 +270,21 @@ subquestion: |
   - want to leave any single piece of property to more than one person
   - want to name different guardians for each of your minor children
   - are a Native American whose estate may include trust lands
-  
-  
-  Click **Continue** to begin  
+
+  Click **Continue** to begin
 continue button field: intro_screen_2
 ---
 id: intro_screen_3
 question: |
   The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives.
- 
 subquestion: |
-  Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own. 
-  
-  If you aren’t married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares. 
-  
-  Your property will be distributed to extended family members if no spouse, children, or descendants survive you. 
-  
+  Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own.
+
+  If you aren’t married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares.
+
+  Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
+
   If you want more flexibility in distributing your property, you may want to talk to a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.  If you wish to continue, click **Continue**, otherwise click **Exit.**
-  
 field: intro_screen_3
 buttons:
   - Continue
@@ -296,21 +292,19 @@ buttons:
 ---
 id: intro_screen_4
 question: |
-  You will be asked to name a **personal representative** for your estate. 
+  You will be asked to name a **personal representative** for your estate.
 subquestion: |
-  Your personal representative is the person who will make sure your property is distributed according to your wishes. 
-  
-  This should be a responsible person that you trust, and ideally someone who lives close to you. 
-  It could also be a bank. Make your choice before you begin. It’s a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
-  
-  If you have children under 18, you will also be asked to name a **guardian** to care for them and a **conservator** to manage their money. Again, make your choices and get their contact information before you begin.
+  Your personal representative is the person who will make sure your property is distributed according to your wishes.
 
+  This should be a responsible person that you trust, and ideally someone who lives close to you.
+  It could also be a bank. Make your choice before you begin. It’s a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
+
+  If you have children under 18, you will also be asked to name a **guardian** to care for them and a **conservator** to manage their money. Again, make your choices and get their contact information before you begin.
 continue button field: intro_screen_4
 ---
 id: mental_capacity_explanation
 question: |
   To make a valid will, you must have the mental capacity to do so. This is also known as being of sound mind.
-  
 continue button field: mental_capacity_explanation
 ---
 id: know_what_you_own
@@ -330,7 +324,7 @@ fields:
 id: exit_or_undo
 field: exit_or_undo
 question: |
-  Sorry, you may not be able to create a valid will. 
+  Sorry, you may not be able to create a valid will.
 subquestion: |
   You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. If you think you made a mistake, click **Undo** and change the answer to this question.
 buttons:
@@ -341,7 +335,7 @@ question: |
   Planning your will.
 fields:
   - Do you understand that making a will means planning to distribute your property after your death?: understands_making_a_will
-    datatype: yesnoradio 
+    datatype: yesnoradio
 ---
 id: understands_signing_a_will
 question: |
@@ -363,7 +357,6 @@ question: |
   A will is not valid if it was made under duress (by force or threats) or the improper influence of another person.
 subquestion: |
   The decision to make a will should be your free choice.
-
 continue button field: force_or_threat
 ---
 id: was_pressured
@@ -376,7 +369,7 @@ fields:
 id: go_back_and_change
 field: go_back_and_change
 question: |
-  Sorry, it sounds like you may be under duress or improper influence from another person. 
+  Sorry, it sounds like you may be under duress or improper influence from another person.
 subquestion: |
   You may want to contact a lawyer for help. If you are a low-income older adult or otherwise vulnerable, your local legal aid office may be able to help you. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  on Michigan Legal Help to find a lawyer or a legal services office near you.
 
@@ -395,15 +388,14 @@ fields:
 ---
 id: witness_explanation
 question: |
-  **Warning!** 
+  **Warning!**
 subquestion: |
   Your will is not valid until it is signed by witnesses. Before they sign, the witnesses must determine whether you made the will freely. If any interested parties suspect after your death that the will was made under conditions of duress, fraud, or improper influence, it can be challenged in court. Your witnesses will be asked to testify.
-
 continue button field: witness_explanation
 ---
 id: has_complicated_situations
 question: |
-  The statutory will is a simple but effective will. 
+  The statutory will is a simple but effective will.
 subquestion: |
   Some situations might be too complicated for a statutory will.
 
@@ -421,12 +413,11 @@ fields:
 id: complicated_warning
 field: complicated_warning
 question: |
-  **Warning!** 
+  **Warning!**
 subquestion: |
   It sounds like your situation is a little complicated. You can still use the statutory will, but it may not meet all your needs. You may want to get specialized estate planning advice from a lawyer.
 
   If you have a low income and are over 60 years old, your local legal aid office may be able to help you. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you.
-
 buttons:
   - Continue
   - Exit
@@ -440,7 +431,7 @@ fields:
 ---
 id: replace_existing_will
 question: |
-  You can replace your existing will with a new Michigan statutory will. 
+  You can replace your existing will with a new Michigan statutory will.
 subquestion: |
   To be sure your new will replaces your existing will, after your new will is signed and witnessed, destroy the old one or write "Void" on every page. If you filed your old will with your county probate court, file the new one there. If anyone is holding a copy of your old will, give them updated copies and ask them to destroy the old copies.
 fields:
@@ -453,17 +444,17 @@ fields:
 id: undo_and_change
 field: undo_and_change
 question: |
-  Sorry, this tool cannot help you add to or change an existing will. 
+  Sorry, this tool cannot help you add to or change an existing will.
 subquestion: |
-  You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. 
-  
+  You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you.
+
   If you think you made a mistake, click **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
 id: has_trust
 question: |
-  Do you have a trust? 
+  Do you have a trust?
 subquestion: |
   This could be a living trust, a revocable trust, an irrevocable trust, or any other kind of trust.
 fields:
@@ -472,7 +463,7 @@ fields:
 ---
 id: has_large_estate
 question: |
-  Think about your estate. 
+  Think about your estate.
 subquestion: |
   Think about your real estate, personal property, retirement plan benefits, investments such as stocks and bonds, or life insurance.
 fields:
@@ -481,17 +472,17 @@ fields:
 ---
 id: continue_with_large_estate
 question: |
-  **Warning!** 
+  **Warning!**
 subquestion: |
   You may want to talk with a lawyer before making a will if you have a large amount of property. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you
-fields: 
+fields:
   - Do you want to continue making a Michigan Statutory Will?: continue_with_large_estate
     datatype: yesnoradio
 ---
 id: user_name
 question: |
   What is your name?
-fields: 
+fields:
   - First: users[0].name.first
   - Middle: users[0].name.middle
     required: False
@@ -505,7 +496,7 @@ id: user_dob
 field: user_dob
 question: |
   What is your date of birth?
-fields: 
+fields:
   - Date: user_dob
     datatype: date
 ---
@@ -520,7 +511,7 @@ code: |
 id: emancipated_minor
 question: |
   It looks like you are under the age of 18.
-fields: 
+fields:
   - Are you an emancipated minor?: emancipated_minor
     datatype: yesnoradio
 under: ${ collapse_template(dob_explanation_template) }
@@ -536,17 +527,16 @@ content: |
 id: user_minor_status
 field: user_minor_status
 question: |
-  Sorry, you cannot use this tool to create a will. 
+  Sorry, you cannot use this tool to create a will.
 subquestion: |
   You must be at least 18 years old or an emancipated minor to create a will in Michigan. If you think you made a mistake, click **Undo** and change the answer to this question.
-  
 buttons:
   - Exit
 ---
 id: user_state
 question: |
   Your State.
-fields: 
+fields:
   - Do you live in Michigan?: user_state
     datatype: yesnoradio
 ---
@@ -561,7 +551,7 @@ fields:
 id: think_and_change
 field: think_and_change
 question: |
-  Sorry, you cannot use this tool if you are not a current Michigan resident. 
+  Sorry, you cannot use this tool if you are not a current Michigan resident.
 subquestion: |
   If you think you made a mistake, click **Undo** and change the answer to this question.
 buttons:
@@ -583,18 +573,17 @@ id: spouse_name
 field: spouse_name
 question: |
   What is your spouse's full name?
-fields: 
+fields:
   - code: |
       spouse[0].name_fields()
 ---
 id: has_children
 question: |
-  For the purposes of the statutory will, "your children" means those born to you both within and outside of marriage, and children you legally adopted. 
+  For the purposes of the statutory will, "your children" means those born to you both within and outside of marriage, and children you legally adopted.
 subquestion: |
-  Under the statutory will, all your children will inherit **equal** shares. 
+  Under the statutory will, all your children will inherit **equal** shares.
 
   If you want to exclude one or more children from your will or want your children to inherit **unequal** shares, this tool cannot help you do that. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.
-  
 fields:
   - Do you have any living children?: has_children
     datatype: yesnoradio
@@ -618,14 +607,14 @@ question: |
   % else:
   Enter the full name of your ${ ordinal(i) } child .
   % endif
-fields: 
+fields:
   - code: |
       children[i].name_fields()
 ---
 id: has_minor_child
 question: |
   Minor children.
-fields: 
+fields:
   - Do you have a child who is under the age of 18?: has_minor_child
     datatype: yesnoradio
 ---
@@ -644,7 +633,7 @@ id: giftee_type
 field: giftee_type
 question: |
   Is the ${ ordinal(i) } cash gift recipient a person or charity?
-fields: 
+fields:
   - no label: giftee[i].giftee_type
     datatype: radio
     choices:
@@ -665,34 +654,34 @@ question: |
   % endif
 fields:
   - Name: giftee[i].name.first
-    show if: 
+    show if:
       code : |
         giftee[i].giftee_type == "Charity"
   - First: giftee[i].name.first
-    show if: 
+    show if:
       code : |
         giftee[i].giftee_type == "Person"
   - Middle: giftee[i].name.middle
     required: False
-    show if: 
+    show if:
       code : |
         giftee[i].giftee_type == "Person"
   - Last: giftee[i].name.last
-    show if: 
+    show if:
       code : |
         giftee[i].giftee_type == "Person"
   - Suffix: giftee[i].name.suffix
     required: False
-    show if: 
+    show if:
       code : |
         giftee[i].giftee_type == "Person"
     code: |
-      name_suffix()  
+      name_suffix()
 ---
 id: us_address
 question: |
   You have named ${ giftee[i].name } as a cash gift recipient.
-fields: 
+fields:
   - Does ${ giftee[i].name.first } have a U.S. address?: giftee[i].us_address
     datatype: yesnoradio
 ---
@@ -707,35 +696,35 @@ question: |
   Enter the address for ${ giftee[i].name.first }.
 fields:
   - Street Address: giftee[i].address.address
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == False
   - City, State/Province, Postal Code, Country: giftee[i].address.city
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == False
   - Street Address or P.O. Box : giftee[i].address.address
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == True
   - Apartment, suite, etc: giftee[i].address.unit
     required: False
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == True
   - City: giftee[i].address.city
     required: False
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == True
   - State: giftee[i].address.state
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == True
     code: |
       states_list()
   - Zip code: giftee[i].address.zip
-    show if: 
+    show if:
       code : |
         giftee[i].us_address == True
 ---
@@ -773,25 +762,23 @@ code: |
 ---
 id: tangible_gifts
 question: |
-  You can choose to leave gifts of specific personal or household items to anyone you wish. 
+  You can choose to leave gifts of specific personal or household items to anyone you wish.
 subquestion: |
   Such items may include jewelry, books, clothing, vehicles, appliances, and furniture. Personal and household items do not include land, homes, bank accounts, stocks, or bonds.
 
-
   You can execute your will without having this list prepared. You can prepare the list at any time. You can include as many or as few items on the list as you wish.
-  
 continue button field: tangible_gifts
 ---
 id: wants_to_list_property
 question: |
   Do you want to make a list of your personal property now?
 subquestion: |
-  You can update the list as often as you want. 
+  You can update the list as often as you want.
 
   Sign and date the bottom of each new list that you make. If you don’t sign and date the bottom of the list, your wishes may not be honored. If you make a list of personal property, it becomes part of your will. Keep it with your will.
 
   Anything not on this list becomes the "residue" of your estate.
-fields: 
+fields:
   - Do you want to make a list of your personal property now?: tangible_property.there_are_any
     datatype: yesnoradio
 ---
@@ -804,13 +791,12 @@ subquestion: |
   % if len(tangible_property.complete_elements()) > 0:
   So far, you have listed:
 
-  Tangible Personal Property | Recipient  
-  ------------------------------ | -------------  
+  Tangible Personal Property | Recipient
+  ------------------------------ | -------------
   % for property in tangible_property.complete_elements():
-  ${ property.item } | ${ property.recipient_name }  
+  ${ property.item } | ${ property.recipient_name }
   % endfor
   % endif
-  
 fields:
   - Item: tangible_property[i].item
   - Full name of recipient: tangible_property[i].recipient_name
@@ -821,12 +807,11 @@ question: |
 subquestion: |
   So far, you have listed:
 
-  Tangible Personal Property | Recipient  
-  ------------------------------ | -------------  
+  Tangible Personal Property | Recipient
+  ------------------------------ | -------------
   % for property in tangible_property:
-  ${ property.item } | ${ property.recipient_name }  
+  ${ property.item } | ${ property.recipient_name }
   % endfor
-  
 fields:
   - Do you want to specify another personal or household item?: tangible_property.there_is_another
     datatype: yesnoradio
@@ -834,28 +819,26 @@ fields:
 id: blank_list_print
 field: blank_list_print
 question: |
-  A blank list will print with your will. 
+  A blank list will print with your will.
 subquestion: |
   If you decide to leave gifts of your personal property, fill in the list. Be sure to identify the item and the recipient as specifically as possible. Then sign and date the bottom of the list.
 ---
 id: residue_general_explanation
 question: |
-  Everything you own that you have not already listed is called the residue of your estate. 
+  Everything you own that you have not already listed is called the residue of your estate.
 subquestion: |
   The cash gifts you named and the property you put on the list are **not** included in the residue. Those will be taken from your estate before the residue is distributed.
 
   Under this will, the residue of your estate will go to your children in equal shares. If any of your children died before you, but had children who are still living (your grandchildren), those descendants get equal shares of what your deceased child would have inherited.
-  
 continue button field: residue_general_explanation
 ---
 id: residue_heirs_explanation
 question: |
-  If no spouse, children, or descendants of your children survive you, the residue will be distributed to your other relatives. 
+  If no spouse, children, or descendants of your children survive you, the residue will be distributed to your other relatives.
 subquestion: |
   These other relatives are called your "heirs."
 
   Your heirs are determined by law, the same way they would be if you died without a will. First, your parents or their descendants (your siblings, nieces, or nephews) would inherit. If none of those people survive you, then your grandparents or their descendants (your aunts, uncles, or cousins) would inherit. If the court can’t identify any surviving relatives in these categories, the residue of your estate will go to the state of Michigan.
-  
 continue button field: residue_heirs_explanation
 ---
 id: residue_distribution_explanation
@@ -865,7 +848,6 @@ subquestion: |
   You can choose to leave the residue of your estate entirely to your heirs (parents, siblings, nieces, uncles, etc.), or to divide it evenly between your heirs and your spouse’s heirs. If you have stepchildren, this is the only way they will inherit from you, using the statutory will.
 
   You can only choose one of these options. If you want to distribute your property differently, you may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
-  
 continue button field: residue_distribution_explanation
 ---
 id: residue_distribution
@@ -885,15 +867,13 @@ subquestion: |
   Your personal representative is the person who will make sure your property is distributed according to your wishes. The personal representative also pays any final bills you have when you die, usually by using or selling property from your estate.
 
   Pick a responsible person you trust to be your personal representative. You may want to choose someone who lives close to you. It’s a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
-  
 continue button field: personal_representatives
 ---
 id: personal_enough_money_property
 question: |
-  If there is enough money or property in your estate, you may consider choosing a bank as your personal representative. 
+  If there is enough money or property in your estate, you may consider choosing a bank as your personal representative.
 subquestion: |
   A bank will charge your estate a fee for that service.
-  
 continue button field: personal_enough_money_property
 ---
 id: representative_type
@@ -920,25 +900,25 @@ question: |
   % endif
 fields:
   - Name: representatives[i].name.first
-    show if: 
+    show if:
       code : |
         representatives[i].representative_type == "Bank"
   - First: representatives[i].name.first
-    show if: 
+    show if:
       code : |
         representatives[i].representative_type == "Person"
   - Middle: representatives[i].name.middle
     required: False
-    show if: 
+    show if:
       code : |
         representatives[i].representative_type == "Person"
   - Last: representatives[i].name.last
-    show if: 
+    show if:
       code : |
         representatives[i].representative_type == "Person"
   - Suffix: representatives[i].name.suffix
     required: False
-    show if: 
+    show if:
       code : |
         representatives[i].representative_type == "Person"
     code: |
@@ -959,7 +939,7 @@ fields:
 ---
 question: |
   It’s a good idea to name a second choice for your personal representative, in case your first choice isn’t able to do it.
-fields: 
+fields:
   - Do you want to enter a second choice for personal representative?: representatives.there_is_another
     datatype: yesnoradio
 ---
@@ -969,13 +949,11 @@ code: |
 ---
 id: guardians_explanation
 question: |
-  You can name a guardian to take care of your children until they turn 18. 
+  You can name a guardian to take care of your children until they turn 18.
 subquestion: |
   If your children’s other parent outlives you and is able to care for them, that parent will likely get custody instead of your chosen guardian.
 
-
   If the other parent dies before you, has had their parental rights terminated, or is unable to care for your children, the guardian you chose can accept guardianship by filing with the probate court.
-  
 continue button field: guardians_explanation
 ---
 id: appoint_guardian
@@ -1024,15 +1002,14 @@ code: |
 ---
 id: guardian_warning
 question: |
-  **Warning!** 
+  **Warning!**
 subquestion: |
   If you later decide to name a guardian, you can include that person’s name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
-
 continue button field: guardian_warning
 ---
 id: appoint_conservator
 question: |
-  You can also name a conservator to manage money for the child’s benefit. 
+  You can also name a conservator to manage money for the child’s benefit.
 subquestion: |
   This can be the same person as the guardian, or it can be someone different. It’s a good idea to ask the person if they are willing and able to serve as conservator before you make a final choice.
 
@@ -1065,25 +1042,25 @@ question: |
   % endif
 fields:
   - Name: conservators[i].name.first
-    show if: 
+    show if:
       code : |
         conservators[i].conservator_type == "Bank"
   - First: conservators[i].name.first
-    show if: 
+    show if:
       code : |
         conservators[i].conservator_type == "Person"
   - Middle: conservators[i].name.middle
     required: False
-    show if: 
+    show if:
       code : |
         conservators[i].conservator_type == "Person"
   - Last: conservators[i].name.last
-    show if: 
+    show if:
       code : |
         conservators[i].conservator_type == "Person"
   - Suffix: conservators[i].name.suffix
     required: False
-    show if: 
+    show if:
       code : |
         conservators[i].conservator_type == "Person"
     code: |
@@ -1115,32 +1092,29 @@ code: |
 ---
 id: conservators_warning
 question: |
-  **Warning!** 
+  **Warning!**
 subquestion: |
   If you later decide to name a conservator, you can include that person’s name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
-  
 continue button field: conservators_warning
 ---
 id: require_bond
 question: |
-  You can require bond for your personal representative and any conservator. 
+  You can require bond for your personal representative and any conservator.
 subquestion: |
   Bond is insurance that protects your heirs in case your personal representative or conservator misuses or steals assets from the estate. It’s not required. If you request bond, it will be paid for from the assets in your estate.
-fields: 
+fields:
   - Would you like to require a bond?: require_bond
     datatype: yesnoradio
 ---
 id: answers_complete
 field: answers_complete
 question: |
-  You are finished answering questions. 
+  You are finished answering questions.
 subquestion: |
   If you didn't already, create a username and password on the LawHelp Interactive website to save your answers. This will allow you to make changes to your will without starting over, if needed. Make a note of your username and password.
 
   **Warning!** If you do not save your answers and you later discover a mistake in your printed will, you will have to restart this tool from the beginning and enter all of your answers again. Remember, crossing out or adding words to your printed will may make it invalid.
-
 continue button field: answers_complete
-
 ---
 objects:
   - michigan_statutory_will_attachment: ALDocument.using(title="Michigan Statutory Will", filename="michigan_statutory_will.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
@@ -1155,15 +1129,15 @@ question: |
   Get your ${ MLH_form_type }
 subquestion: |
   You can **view**, **download**, or **e-mail** your ${ MLH_form_type } to yourself below. Tap the "✎ Review / Edit" button to fix any mistakes.
-    
+
   <h2 class="h3">Download or e-mail your ${ MLH_form_type }</h2>
 
   ${ action_button_html(url_action('review_full'), label='✎ Review / Edit', color='info') }
-  
+
   ${ al_user_bundle.download_list_html() }
 
   ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
-  
+
   <h2 class="h3">Take our quick survey!</h2>
   Answer below or [open the survey in a new tab](${ survey_link_url_only }).
   ${ survey_embed_script }
@@ -1175,9 +1149,8 @@ attachments:
     variable name: michigan_statutory_will_attachment[i]
     docx template file: michigan_statutory_will.docx
     tagged pdf: True
-
   - name: instructions
-    variable name: instructions[i]        
+    variable name: instructions[i]
     docx template file: michigan_statutory_will_instructions.docx
     tagged pdf: True
 ---
