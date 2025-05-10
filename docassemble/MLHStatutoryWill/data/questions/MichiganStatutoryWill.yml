@@ -248,7 +248,7 @@ code: |
 ---
 id: intro_screen
 question: |
-  Welcome to Michigan Legal Help’s Do-It-Yourself Michigan Statutory Will tool.
+  Welcome to Michigan Legal Help's Do-It-Yourself Michigan Statutory Will tool.
 subquestion: |
   This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one.
 
@@ -280,7 +280,7 @@ question: |
 subquestion: |
   Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own.
 
-  If you aren’t married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares.
+  If you aren't married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares.
 
   Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 
@@ -297,7 +297,7 @@ subquestion: |
   Your personal representative is the person who will make sure your property is distributed according to your wishes.
 
   This should be a responsible person that you trust, and ideally someone who lives close to you.
-  It could also be a bank. Make your choice before you begin. It’s a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
+  It could also be a bank. Make your choice before you begin. It's a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
 
   If you have children under 18, you will also be asked to name a **guardian** to care for them and a **conservator** to manage their money. Again, make your choices and get their contact information before you begin.
 continue button field: intro_screen_4
@@ -350,7 +350,7 @@ template: help_signing_will
 subject: |
   What does this mean?
 content: |
-  The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives. Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own. If you aren’t married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares. Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
+  The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives. Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own. If you aren't married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares. Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 ---
 id: force_or_threat
 question: |
@@ -403,7 +403,7 @@ subquestion: |
 
   - I have a child from a relationship with someone other than my current spouse.
   - I want my property to go to non relatives after I die.
-  - I don’t want my children to inherit equally.
+  - I don't want my children to inherit equally.
   - I have a child with special needs.
   - I own a business.
 fields:
@@ -624,7 +624,7 @@ question: |
 subquestion: |
   Think carefully about whether to leave cash gifts. These cash gifts will be paid "off the top" of your estate no matter how much money you have when you die. For example, you may decide today to leave $5,000 to a friend or charity, and the rest of your estate to your children. You may then end up spending all but $4,000 of your savings before you die. In that case, the friend or charity would receive the $4,000, and your children would receive nothing.
 
-  Each gift can be left to one person or charity. If you want to leave more than two cash gifts, or any cash gift jointly to more than one person, you can’t use this tool or the statutory will to do so. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
+  Each gift can be left to one person or charity. If you want to leave more than two cash gifts, or any cash gift jointly to more than one person, you can't use this tool or the statutory will to do so. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
   - Would you like to leave a cash gift?: leave_cash_gifts
     datatype: yesnoradio
@@ -775,7 +775,7 @@ question: |
 subquestion: |
   You can update the list as often as you want.
 
-  Sign and date the bottom of each new list that you make. If you don’t sign and date the bottom of the list, your wishes may not be honored. If you make a list of personal property, it becomes part of your will. Keep it with your will.
+  Sign and date the bottom of each new list that you make. If you don't sign and date the bottom of the list, your wishes may not be honored. If you make a list of personal property, it becomes part of your will. Keep it with your will.
 
   Anything not on this list becomes the "residue" of your estate.
 fields:
@@ -838,14 +838,14 @@ question: |
 subquestion: |
   These other relatives are called your "heirs."
 
-  Your heirs are determined by law, the same way they would be if you died without a will. First, your parents or their descendants (your siblings, nieces, or nephews) would inherit. If none of those people survive you, then your grandparents or their descendants (your aunts, uncles, or cousins) would inherit. If the court can’t identify any surviving relatives in these categories, the residue of your estate will go to the state of Michigan.
+  Your heirs are determined by law, the same way they would be if you died without a will. First, your parents or their descendants (your siblings, nieces, or nephews) would inherit. If none of those people survive you, then your grandparents or their descendants (your aunts, uncles, or cousins) would inherit. If the court can't identify any surviving relatives in these categories, the residue of your estate will go to the state of Michigan.
 continue button field: residue_heirs_explanation
 ---
 id: residue_distribution_explanation
 question: |
   If no spouse, child, or descendent of your child is living when you die.
 subquestion: |
-  You can choose to leave the residue of your estate entirely to your heirs (parents, siblings, nieces, uncles, etc.), or to divide it evenly between your heirs and your spouse’s heirs. If you have stepchildren, this is the only way they will inherit from you, using the statutory will.
+  You can choose to leave the residue of your estate entirely to your heirs (parents, siblings, nieces, uncles, etc.), or to divide it evenly between your heirs and your spouse's heirs. If you have stepchildren, this is the only way they will inherit from you, using the statutory will.
 
   You can only choose one of these options. If you want to distribute your property differently, you may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 continue button field: residue_distribution_explanation
@@ -857,7 +857,7 @@ fields:
   - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
     choices:
-      - I want half my property to be given to my heirs and half to be given to my spouse’s heirs.: own_heirs_and_spouse_heirs
+      - I want half my property to be given to my heirs and half to be given to my spouse's heirs.: own_heirs_and_spouse_heirs
       - I want all my property to be given to my heirs.: own_heirs
 ---
 id: personal_representatives
@@ -866,7 +866,7 @@ question: |
 subquestion: |
   Your personal representative is the person who will make sure your property is distributed according to your wishes. The personal representative also pays any final bills you have when you die, usually by using or selling property from your estate.
 
-  Pick a responsible person you trust to be your personal representative. You may want to choose someone who lives close to you. It’s a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
+  Pick a responsible person you trust to be your personal representative. You may want to choose someone who lives close to you. It's a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
 continue button field: personal_representatives
 ---
 id: personal_enough_money_property
@@ -938,7 +938,7 @@ fields:
       representatives[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 question: |
-  It’s a good idea to name a second choice for your personal representative, in case your first choice isn’t able to do it.
+  It's a good idea to name a second choice for your personal representative, in case your first choice isn't able to do it.
 fields:
   - Do you want to enter a second choice for personal representative?: representatives.there_is_another
     datatype: yesnoradio
@@ -951,16 +951,16 @@ id: guardians_explanation
 question: |
   You can name a guardian to take care of your children until they turn 18.
 subquestion: |
-  If your children’s other parent outlives you and is able to care for them, that parent will likely get custody instead of your chosen guardian.
+  If your children's other parent outlives you and is able to care for them, that parent will likely get custody instead of your chosen guardian.
 
   If the other parent dies before you, has had their parental rights terminated, or is unable to care for your children, the guardian you chose can accept guardianship by filing with the probate court.
 continue button field: guardians_explanation
 ---
 id: appoint_guardian
 question: |
-  It’s a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
+  It's a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
 subquestion: |
-  If you want to name different guardians for different children, this tool and the statutory will won’t work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
+  If you want to name different guardians for different children, this tool and the statutory will won't work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
   - Do you want to name a guardian?: appoint_guardian
     datatype: yesnoradio
@@ -991,7 +991,7 @@ fields:
       guardians[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 question: |
-  It’s a good idea to name a second choice, in case your first choice isn’t able to be the guardian.
+  It's a good idea to name a second choice, in case your first choice isn't able to be the guardian.
 fields:
   - Do you want to add a second guardian?: guardians.there_is_another
     datatype: yesnoradio
@@ -1004,14 +1004,14 @@ id: guardian_warning
 question: |
   **Warning!**
 subquestion: |
-  If you later decide to name a guardian, you can include that person’s name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
+  If you later decide to name a guardian, you can include that person's name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
 continue button field: guardian_warning
 ---
 id: appoint_conservator
 question: |
-  You can also name a conservator to manage money for the child’s benefit.
+  You can also name a conservator to manage money for the child's benefit.
 subquestion: |
-  This can be the same person as the guardian, or it can be someone different. It’s a good idea to ask the person if they are willing and able to serve as conservator before you make a final choice.
+  This can be the same person as the guardian, or it can be someone different. It's a good idea to ask the person if they are willing and able to serve as conservator before you make a final choice.
 
   The conservator can also be a bank. A bank will charge the estate a fee for this service.
 fields:
@@ -1081,7 +1081,7 @@ fields:
 ---
 id: conservators_other
 question: |
-  It’s a good idea to name a second choice, in case your first choice isn’t able to be the conservator.
+  It's a good idea to name a second choice, in case your first choice isn't able to be the conservator.
 fields:
   - Do you want to include a second conservator?: conservators.there_is_another
     datatype: yesnoradio
@@ -1094,14 +1094,14 @@ id: conservators_warning
 question: |
   **Warning!**
 subquestion: |
-  If you later decide to name a conservator, you can include that person’s name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
+  If you later decide to name a conservator, you can include that person's name only by making a new will. Adding or crossing out any words on the statutory will form may make it invalid.
 continue button field: conservators_warning
 ---
 id: require_bond
 question: |
   You can require bond for your personal representative and any conservator.
 subquestion: |
-  Bond is insurance that protects your heirs in case your personal representative or conservator misuses or steals assets from the estate. It’s not required. If you request bond, it will be paid for from the assets in your estate.
+  Bond is insurance that protects your heirs in case your personal representative or conservator misuses or steals assets from the estate. It's not required. If you request bond, it will be paid for from the assets in your estate.
 fields:
   - Would you like to require a bond?: require_bond
     datatype: yesnoradio
