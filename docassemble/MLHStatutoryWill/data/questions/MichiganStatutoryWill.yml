@@ -387,8 +387,10 @@ continue button field: witness_explanation
 ---
 id: has_complicated_situations
 question: |
-  The statutory will is a simple but effective will.
+  A statutory will is not right for every situation
 subquestion: |
+  The statutory will is a simple but effective will.
+
   Some situations might be too complicated for a statutory will.
 
   **Think about the following statements:**
