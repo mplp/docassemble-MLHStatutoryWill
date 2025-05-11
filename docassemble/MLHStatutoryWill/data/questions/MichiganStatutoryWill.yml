@@ -26,18 +26,18 @@ features:
   labels above fields: True
 ---
 sections:
-  - review_intro: "Introduction"
-  - do_you_qualify: "Do you qualify?"
-  - your_information: "Your Information"
-  - your_family: "Your Family"
-  - cash_gifts: "Cash Gifts"
-  - personal_and_household: "Personal and Household Items"
-  - residue: "Residue"
-  - personal_representatives: "Personal Representatives"
-  - guardians: "Guardians"
-  - conservators: "Conservators"
-  - bond: "Bond"
-  - done: "Done"
+  - signpost_intro: "Introduction"
+  - signpost_qualify: "Do you qualify?"
+  - signpost_user: "Your Information"
+  - signpost_family: "Your Family"
+  - signpost_cash_gifts: "Cash Gifts"
+  - signpost_goods: "Personal and Household Items"
+  - signpost_residue: "Residue"
+  - signpost_representatives: "Personal Representatives"
+  - signpost_guardians: "Guardians"
+  - signpost_conservators: "Conservators"
+  - signpost_bond: "Bond"
+  - signpost_done: "Done"
   - review_full: "✎ <u>Review / Edit</u>"
 ---
 code: |
@@ -95,14 +95,16 @@ objects:
 id: interview_order_michigan_statutory_will
 mandatory: True
 code: |
-  nav.set_section("review_intro")
+  nav.set_section("review_full")
+  nav.set_section("signpost_intro")
   MLH_standard_intro_pages
   intro_screen
   intro_screen_2
   if intro_screen_3 == 'Exit':
     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
   intro_screen_4
-  nav.set_section("Do you qualify?")
+
+  nav.set_section("signpost_qualify")
   mental_capacity_explanation
   if know_what_you_own:
     if closest_relatives:
@@ -124,7 +126,8 @@ code: |
                   continue_with_large_estate
                   if not continue_with_large_estate:
                     command('leave', url='https://michiganlegalhelp.org/organizations-and-courts/find-lawyer', new_window=True)
-                nav.set_section("your_information")
+
+                nav.set_section("signpost_user")
                 users.number()
                 users[0].dob
                 if difference < 18:
@@ -138,36 +141,46 @@ code: |
                     command('leave', url='https://michiganlegalhelp.org/', new_window=True)
                 if user_state:
                   county_choice
-                  nav.set_section("your_family")
+
+                  nav.set_section("signpost_family")
                   spouse.number()
                   if children.gather() and children.number():
                     children.has_minor_child
-                  nav.set_section("cash_gifts")
+                    
+                  nav.set_section("signpost_cash_gifts")
                   giftee.number()
-                  nav.set_section("personal_and_household")
+                  
+                  nav.set_section("signpost_goods")
                   tangible_gifts
                   if not tangible_property.number():
                     blank_list_print
-                  nav.set_section("residue")
+                    
+                  nav.set_section("signpost_residue")
                   residue_general_explanation
                   residue_heirs_explanation
                   residue_distribution_explanation
                   residue_distribution
-                  nav.set_section("personal_representatives")
+                  
+                  nav.set_section("signpost_representatives")
                   personal_representatives
                   personal_enough_money_property
                   representatives.number()
-                  nav.set_section("guardians")
+
+                  nav.set_section("signpost_guardians")
                   guardians_explanation
                   if not guardians.number():
                     guardian_warning
-                  nav.set_section("conservators")
+
+                  nav.set_section("signpost_conservators")
                   if not conservators.number():
                     conservators_warning
-                  nav.set_section("bond")
+
+                  nav.set_section("signpost_bond")
                   require_bond
-                  nav.set_section("done")
+
+                  nav.set_section("signpost_done")
                   answers_complete
+
                 MLH_outro_saving_answers
                 MLH_download
               if has_trust:
