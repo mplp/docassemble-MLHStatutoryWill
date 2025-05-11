@@ -255,7 +255,7 @@ subquestion: |
   - want to name different guardians for each of your minor children
   - are a Native American whose estate may include trust lands
 
-  Click **Continue** to begin
+  Tap **Continue** to begin
 continue button field: intro_tool_fit
 ---
 id: intro_tool_about
@@ -270,7 +270,7 @@ subquestion: |
 
   Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 
-  If you want more flexibility in distributing your property, you may want to talk to a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.  If you wish to continue, click **Continue**, otherwise click **Exit.**
+  If you want more flexibility in distributing your property, you may want to talk to a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.  If you wish to continue, tap **Continue**, otherwise tap **Exit.**
 field: intro_tool_about
 buttons:
   - Continue
@@ -314,7 +314,7 @@ field: exit_or_undo
 question: |
   Sorry, you may not be able to create a valid will.
 subquestion: |
-  You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. If you think you made a mistake, click **Undo** and change the answer to this question.
+  You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. If you think you made a mistake, tap **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
@@ -363,7 +363,7 @@ subquestion: |
 
   If you are being abused, neglected, or exploited, you can contact your local Adult Protective Services office at 855-444-3911. If you think you are the victim of a crime by the person who is person who is pressuring you, you can call the police.
 
-  If you think you made a mistake, click **Undo** and change the answer to this question.
+  If you think you made a mistake, tap **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
@@ -436,7 +436,7 @@ question: |
 subquestion: |
   You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you.
 
-  If you think you made a mistake, click **Undo** and change the answer to this question.
+  If you think you made a mistake, tap **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
@@ -506,14 +506,14 @@ subject: Why do you think I am under 18?
 content: |
   You entered ${ users[0].dob } as your date of birth.
 
-  If this date is wrong, click **Undo** to change it.
+  If this date is wrong, tap **Undo** to change it.
 ---
 id: user_minor_status
 field: user_minor_status
 question: |
   Sorry, you cannot use this tool to create a will.
 subquestion: |
-  You must be at least 18 years old or an emancipated minor to create a will in Michigan. If you think you made a mistake, click **Undo** and change the answer to this question.
+  You must be at least 18 years old or an emancipated minor to create a will in Michigan. If you think you made a mistake, tap **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
@@ -537,7 +537,7 @@ field: think_and_change
 question: |
   Sorry, you cannot use this tool if you are not a current Michigan resident.
 subquestion: |
-  If you think you made a mistake, click **Undo** and change the answer to this question.
+  If you think you made a mistake, tap **Undo** and change the answer to this question.
 buttons:
   - Exit
 ---
