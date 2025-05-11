@@ -68,7 +68,7 @@ objects:
       complete_attribute="complete",
       )
   - children: ALPeopleList.using(
-      ask_number=True,
+      complete_attribute="complete",
       )
   - giftee: ALPeopleList.using(
       target_number=1,
@@ -144,23 +144,23 @@ code: |
 
                   nav.set_section("signpost_family")
                   spouse.number()
-                  if children.gather() and children.number():
+                  if children.there_are_any and children.gather(children.target_number):
                     children.has_minor_child
-                    
+
                   nav.set_section("signpost_cash_gifts")
                   giftee.number()
-                  
+
                   nav.set_section("signpost_goods")
                   tangible_gifts
                   if not tangible_property.number():
                     blank_list_print
-                    
+
                   nav.set_section("signpost_residue")
                   residue_general_explanation
                   residue_heirs_explanation
                   residue_distribution_explanation
                   residue_distribution
-                  
+
                   nav.set_section("signpost_representatives")
                   personal_representatives
                   representatives.number()
@@ -919,7 +919,7 @@ question: |
   Guardians
 subquestion: |
   It's a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
-  
+
   If you want to name different guardians for different children, this tool and the statutory will won't work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
   - Do you want to name a guardian?: guardians.there_are_any
@@ -974,7 +974,7 @@ question: |
   Conservators
 subquestion: |
   You can also name a conservator to manage money for the child's benefit.
-  
+
   This can be the same person as the guardian, or it can be someone different. It's a good idea to ask the person if they are willing and able to serve as conservator before you make a final choice.
 
   The conservator can also be a bank. A bank will charge the estate a fee for this service.
