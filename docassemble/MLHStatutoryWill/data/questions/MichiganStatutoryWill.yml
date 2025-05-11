@@ -525,7 +525,7 @@ buttons:
 ---
 id: user_state
 question: |
-  Your State.
+  Your State
 fields:
   - Do you live in Michigan?: user_state
     datatype: yesnoradio
