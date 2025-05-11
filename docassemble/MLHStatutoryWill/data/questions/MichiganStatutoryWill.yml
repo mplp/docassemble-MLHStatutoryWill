@@ -306,7 +306,7 @@ fields:
 ---
 id: closest_relatives
 question: |
-  Your relatives.
+  Your relatives
 fields:
   - Can you name your closest relatives, such as your spouse and children?: closest_relatives
     datatype: yesnoradio
