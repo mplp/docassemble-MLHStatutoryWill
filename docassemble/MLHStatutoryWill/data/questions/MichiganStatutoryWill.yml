@@ -299,7 +299,7 @@ continue button field: mental_capacity_explanation
 ---
 id: know_what_you_own
 question: |
-  What you own and its value.
+  What you own and its value
 fields:
   - Do you know what you own and about how much it is worth?: know_what_you_own
     datatype: yesnoradio
