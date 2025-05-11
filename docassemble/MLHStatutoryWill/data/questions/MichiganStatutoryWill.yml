@@ -100,7 +100,7 @@ code: |
   MLH_intro_agree_no_pii = True
   MLH_standard_intro_pages
   intro_tool_fit
-  if intro_inheritance_structure == 'Exit':
+  if intro_tool_about == 'Exit':
     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
   intro_personal_representative
 
@@ -258,9 +258,9 @@ subquestion: |
   Click **Continue** to begin
 continue button field: intro_tool_fit
 ---
-id: intro_inheritance_structure
+id: intro_tool_about
 question: |
-  Inheritance structure
+  About the ${ MLH_interview_short_title }
 subquestion: |
   The ${ MLH_interview_short_title } has a set inheritance structure that assumes you want to leave most of your property to your closest relatives.
 
@@ -271,7 +271,7 @@ subquestion: |
   Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 
   If you want more flexibility in distributing your property, you may want to talk to a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.  If you wish to continue, click **Continue**, otherwise click **Exit.**
-field: intro_inheritance_structure
+field: intro_tool_about
 buttons:
   - Continue
   - label: Exit
