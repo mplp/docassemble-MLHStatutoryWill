@@ -292,6 +292,8 @@ continue button field: intro_personal_representative
 ---
 id: mental_capacity_explanation
 question: |
+  Ability to make a will
+subquestion: |
   To make a valid will, you must have the mental capacity to do so. This is also known as being of sound mind.
 continue button field: mental_capacity_explanation
 ---
