@@ -344,8 +344,10 @@ content: |
 ---
 id: force_or_threat
 question: |
-  A will is not valid if it was made under duress (by force or threats) or the improper influence of another person.
+  Your free choice
 subquestion: |
+  A will is not valid if it was made under duress (by force or threats) or the improper influence of another person.
+
   The decision to make a will should be your free choice.
 continue button field: force_or_threat
 ---
