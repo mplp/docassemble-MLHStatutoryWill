@@ -617,9 +617,9 @@ fields:
 ---
 id: giftee_type
 question: |
-  Is the ${ ordinal(i) } cash gift recipient a person or charity?
+  Cash gift recipient
 fields:
-  - no label: giftee[i].giftee_type
+  - Is the ${ ordinal(i) } cash gift recipient a person or charity?: giftee[i].giftee_type
     datatype: radio
     choices:
       - Person
@@ -732,9 +732,9 @@ validation code: |
 ---
 id: more giftees
 question: |
-  Would you like to leave another gift of cash?
+  Cash gift
 fields:
-  - no label: giftee.there_is_another
+  - Would you like to leave another gift of cash?: giftee.there_is_another
     datatype: yesnoradio
 ---
 code: |
