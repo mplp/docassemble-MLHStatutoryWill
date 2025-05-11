@@ -163,7 +163,6 @@ code: |
                   
                   nav.set_section("signpost_representatives")
                   personal_representatives
-                  personal_enough_money_property
                   representatives.number()
 
                   nav.set_section("signpost_guardians")
@@ -262,8 +261,10 @@ continue button field: intro_screen_2
 ---
 id: intro_screen_3
 question: |
-  The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives.
+  Inheritance structure
 subquestion: |
+  The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives.
+
   Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own.
 
   If you aren't married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares.
@@ -751,7 +752,7 @@ continue button field: tangible_gifts
 ---
 id: wants_to_list_property
 question: |
-  Do you want to make a list of your personal property now?
+  Personal property list
 subquestion: |
   You can update the list as often as you want.
 
@@ -847,20 +848,17 @@ subquestion: |
   Your personal representative is the person who will make sure your property is distributed according to your wishes. The personal representative also pays any final bills you have when you die, usually by using or selling property from your estate.
 
   Pick a responsible person you trust to be your personal representative. You may want to choose someone who lives close to you. It's a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
-continue button field: personal_representatives
----
-id: personal_enough_money_property
-question: |
+  <hr>
   If there is enough money or property in your estate, you may consider choosing a bank as your personal representative.
-subquestion: |
+
   A bank will charge your estate a fee for that service.
-continue button field: personal_enough_money_property
+continue button field: personal_representatives
 ---
 id: representative_type
 question: |
-  Choose your ${ ordinal(i) } personal representative.
+  Personal representatives
 fields:
-  - Is your personal representative a person or a bank?: representatives[i].representative_type
+  - Is your ${ordinal(i)} personal representative a person or a bank?: representatives[i].representative_type
     datatype: radio
     choices:
       - Person
@@ -918,6 +916,8 @@ fields:
       representatives[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 question: |
+  Alternate personal representative
+subquestion: |
   It's a good idea to name a second choice for your personal representative, in case your first choice isn't able to do it.
 fields:
   - Do you want to enter a second choice for personal representative?: representatives.there_is_another
@@ -938,8 +938,10 @@ continue button field: guardians_explanation
 ---
 id: appoint_guardian
 question: |
-  It's a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
+  Guardians
 subquestion: |
+  It's a good idea to ask the person you choose if they are willing and able to serve as guardian before you make a final choice.
+  
   If you want to name different guardians for different children, this tool and the statutory will won't work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
   - Do you want to name a guardian?: guardians.there_are_any
@@ -971,6 +973,8 @@ fields:
       guardians[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 question: |
+  Alternate guardian
+subquestion: |
   It's a good idea to name a second choice, in case your first choice isn't able to be the guardian.
 fields:
   - Do you want to add a second guardian?: guardians.there_is_another
@@ -989,8 +993,10 @@ continue button field: guardian_warning
 ---
 id: appoint_conservator
 question: |
-  You can also name a conservator to manage money for the child's benefit.
+  Conservators
 subquestion: |
+  You can also name a conservator to manage money for the child's benefit.
+  
   This can be the same person as the guardian, or it can be someone different. It's a good idea to ask the person if they are willing and able to serve as conservator before you make a final choice.
 
   The conservator can also be a bank. A bank will charge the estate a fee for this service.
@@ -1061,6 +1067,8 @@ fields:
 ---
 id: conservators_other
 question: |
+  Alternate conservator
+subquestion: |
   It's a good idea to name a second choice, in case your first choice isn't able to be the conservator.
 fields:
   - Do you want to include a second conservator?: conservators.there_is_another
