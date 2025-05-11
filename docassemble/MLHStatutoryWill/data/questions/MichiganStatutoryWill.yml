@@ -7,10 +7,10 @@ include:
 ---
 metadata:
   title: Michigan Statutory Will
-  short title: Michigan Statutory
-  subtitle: Helps you figure out if the Michigan statutory will is right for you.
+  short title: Michigan Statutory Will
+  subtitle: Helps you figure out if the Michigan Statutory Will is right for you.
   description: |
-    This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one.
+    This tool will help you figure out if the Michigan Statutory Will is right for you and, if so, help you prepare one.
   tags:
     - "Family"
     - "Domicile"
@@ -198,7 +198,7 @@ comment: |
   resource_page_url_only needs to be updated once Emily sends the correct link
 code: |
   resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
-  resource_page_name = "Michigan Statutory Will"
+  resource_page_name = MLH_interview_short_title
 ---
 generic object: ALIndividual
 code: |
@@ -237,15 +237,15 @@ code: |
 ---
 template: MLH_welcome_message
 content: |
-  Welcome to the ${ MLH_interview_title } tool.
+  Welcome to the ${ MLH_interview_short_title } tool.
 
-  This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one. You will be asked questions about you, your family, and your property.
+  This tool will help you figure out if the ${ MLH_interview_short_title } is right for you and, if so, help you prepare one. You will be asked questions about you, your family, and your property.
 ---
 id: intro_tool_fit
 question: |
   There are many types of wills you can prepare.
 subquestion: |
-  The Michigan statutory will is a simple will. Use this tool to create a Michigan statutory will.
+  The ${ MLH_interview_short_title } is a simple will. Use this tool to create a ${ MLH_interview_short_title }.
 
   This tool is not right for you if you:
 
@@ -262,7 +262,7 @@ id: intro_inheritance_structure
 question: |
   Inheritance structure
 subquestion: |
-  The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives.
+  The ${ MLH_interview_short_title } has a set inheritance structure that assumes you want to leave most of your property to your closest relatives.
 
   Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own.
 
@@ -338,7 +338,7 @@ template: help_signing_will
 subject: |
   What does this mean?
 content: |
-  The Michigan statutory will has a set inheritance structure that assumes you want to leave most of your property to your closest relatives. Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own. If you aren't married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares. Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
+  The ${ MLH_interview_short_title } has a set inheritance structure that assumes you want to leave most of your property to your closest relatives. Under the terms of this will, if you are married when you die, your spouse will inherit almost everything you own. If you aren't married when you sign the will, or if your spouse dies before you do, your children will inherit most of your property in equal shares. Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 ---
 id: force_or_threat
 question: |
@@ -419,14 +419,14 @@ fields:
 ---
 id: replace_existing_will
 question: |
-  You can replace your existing will with a new Michigan statutory will.
+  You can replace your existing will with a new ${ MLH_interview_short_title }.
 subquestion: |
   To be sure your new will replaces your existing will, after your new will is signed and witnessed, destroy the old one or write "Void" on every page. If you filed your old will with your county probate court, file the new one there. If anyone is holding a copy of your old will, give them updated copies and ask them to destroy the old copies.
 fields:
   - What do you want to do?: replace_existing_will
     datatype: radio
     choices:
-      - Replace my existing will with a new Michigan statutory will: replace_one
+      - Replace my existing will with a new ${ MLH_interview_short_title }: replace_one
       - Change my existing will: change_one
 ---
 id: undo_and_change
@@ -464,7 +464,7 @@ question: |
 subquestion: |
   You may want to talk with a lawyer before making a will if you have a large amount of property. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you
 fields:
-  - Do you want to continue making a Michigan Statutory Will?: continue_with_large_estate
+  - Do you want to continue making a ${ MLH_interview_short_title }?: continue_with_large_estate
     datatype: yesnoradio
 ---
 sets:
