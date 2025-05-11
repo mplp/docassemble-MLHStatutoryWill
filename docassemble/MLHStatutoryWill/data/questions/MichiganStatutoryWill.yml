@@ -532,7 +532,7 @@ fields:
 ---
 id: county_choice
 question: |
-  Your county.
+  Your county
 fields:
   - What county do you live in?: county_choice
     code: |
