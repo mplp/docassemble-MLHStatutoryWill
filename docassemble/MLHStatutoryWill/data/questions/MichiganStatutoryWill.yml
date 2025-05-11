@@ -622,8 +622,8 @@ fields:
   - Is the ${ ordinal(i) } cash gift recipient a person or charity?: giftee[i].giftee_type
     datatype: radio
     choices:
-      - Person
-      - Charity
+      - Person: person
+      - Charity: business
 ---
 id: giftee_name
 sets:
@@ -632,36 +632,14 @@ sets:
   - giftee[i].name.middle
   - giftee[i].name.suffix
 question: |
-  % if giftee[i].giftee_type == 'Person':
+  % if giftee[i].giftee_type == 'person':
   What is the full name of the person you want to receive the ${ ordinal(i) } cash gift?
   % else:
   What is the name of the charity you want to receive the ${ ordinal(i) } cash gift?
   % endif
 fields:
-  - Name: giftee[i].name.first
-    show if:
-      code : |
-        giftee[i].giftee_type == "Charity"
-  - First: giftee[i].name.first
-    show if:
-      code : |
-        giftee[i].giftee_type == "Person"
-  - Middle: giftee[i].name.middle
-    required: False
-    show if:
-      code : |
-        giftee[i].giftee_type == "Person"
-  - Last: giftee[i].name.last
-    show if:
-      code : |
-        giftee[i].giftee_type == "Person"
-  - Suffix: giftee[i].name.suffix
-    required: False
-    show if:
-      code : |
-        giftee[i].giftee_type == "Person"
-    code: |
-      name_suffix()
+  - code: |
+      giftee[i].name_fields(person_or_business=giftee[i].giftee_type)
 ---
 id: us_address
 question: |
