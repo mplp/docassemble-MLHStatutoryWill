@@ -645,48 +645,30 @@ fields:
   - Does ${ giftee[i].name.first } have a U.S. address?: giftee[i].us_address
     datatype: yesnoradio
 ---
+if: not giftee[i].us_address
+sets:
+  - giftee[i].address.address
+  - giftee[i].address.city
+id: gift_address_intl
+question: |
+  Enter the address for ${ giftee[i].name.first }.
+fields:
+  - Street Address: giftee[i].address.address
+  - City, State/Province, Postal Code, Country: giftee[i].address.city
+---
+if: giftee[i].us_address
 sets:
   - giftee[i].address.address
   - giftee[i].address.city
   - giftee[i].address.zip
   - giftee[i].address.unit
   - giftee[i].address.state
-id: gift_full_address
+id: gift_address_us
 question: |
   Enter the address for ${ giftee[i].name.first }.
 fields:
-  - Street Address: giftee[i].address.address
-    show if:
-      code : |
-        giftee[i].us_address == False
-  - City, State/Province, Postal Code, Country: giftee[i].address.city
-    show if:
-      code : |
-        giftee[i].us_address == False
-  - Street Address or P.O. Box : giftee[i].address.address
-    show if:
-      code : |
-        giftee[i].us_address == True
-  - Apartment, suite, etc: giftee[i].address.unit
-    required: False
-    show if:
-      code : |
-        giftee[i].us_address == True
-  - City: giftee[i].address.city
-    required: False
-    show if:
-      code : |
-        giftee[i].us_address == True
-  - State: giftee[i].address.state
-    show if:
-      code : |
-        giftee[i].us_address == True
-    code: |
-      states_list()
-  - Zip code: giftee[i].address.zip
-    show if:
-      code : |
-        giftee[i].us_address == True
+  - code: |
+      giftee[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
 sets: giftee[i].gift_amount_in_words
 id: gift_amount
