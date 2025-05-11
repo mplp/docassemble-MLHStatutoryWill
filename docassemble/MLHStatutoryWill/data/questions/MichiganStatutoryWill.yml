@@ -322,7 +322,7 @@ buttons:
 ---
 id: understands_making_a_will
 question: |
-  Planning your will.
+  The purpose of a will
 fields:
   - Do you understand that making a will means planning to distribute your property after your death?: understands_making_a_will
     datatype: yesnoradio
