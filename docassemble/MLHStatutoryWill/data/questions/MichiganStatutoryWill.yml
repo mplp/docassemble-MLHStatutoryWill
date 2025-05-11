@@ -56,14 +56,41 @@ code: |
   MLH_time_max = 30
 ---
 objects:
-  - users: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - children: ALPeopleList.using(there_are_any=True)
-  - guardians: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - spouse: ALPeopleList
-  - tangible_property: DAList.using(object_type = Individual, complete_attribute="complete")
-  - representatives: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - giftee: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
-  - conservators: ALPeopleList.using(auto_gather=True, complete_attribute="complete", target_number=1)
+  - users: ALPeopleList.using(
+      there_are_any=True,
+      there_is_another=False,
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - spouse: ALPeopleList.using(
+      there_is_another=False,
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - children: ALPeopleList.using(
+      ask_number=True,
+      )
+  - giftee: ALPeopleList.using(
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - tangible_property: DAList.using(
+      object_type=DAObject,
+      complete_attribute="complete",
+      )
+  - representatives: ALPeopleList.using(
+      there_are_any=True,
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - guardians: ALPeopleList.using(
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - conservators: ALPeopleList.using(
+      target_number=1,
+      complete_attribute="complete",
+      )
 ---
 id: interview_order_michigan_statutory_will
 mandatory: True
@@ -77,47 +104,34 @@ code: |
   intro_screen_4
   nav.set_section("Do you qualify?")
   mental_capacity_explanation
-  know_what_you_own
   if know_what_you_own:
-    closest_relatives
     if closest_relatives:
-      understands_making_a_will
       if understands_making_a_will:
-        understands_signing_a_will
         if understands_signing_a_will:
           force_or_threat
-          was_pressured
           if not was_pressured:
-            was_coerced
             if not was_coerced:
               witness_explanation
-              has_complicated_situations
               if has_complicated_situations:
-                complicated_warning
                 if complicated_warning == 'Exit':
                   command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              has_existing_will
               if has_existing_will:
-                replace_existing_will
                 if replace_existing_will == 'change_one':
                   if undo_and_change == 'Exit':
                     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              has_trust
               if not has_trust:
-                has_large_estate
                 if has_large_estate:
                   continue_with_large_estate
                   if not continue_with_large_estate:
                     command('leave', url='https://michiganlegalhelp.org/organizations-and-courts/find-lawyer', new_window=True)
                 nav.set_section("your_information")
-                users.gather()
-                user_dob
+                users.number()
+                users[0].dob
                 if difference < 18:
                   emancipated_minor
                   if not emancipated_minor:
                     if user_minor_status == 'Exit':
                       command('leave', url='https://michiganlegalhelp.org', new_window=True)
-                user_state
                 if not user_state:
                   think_and_change
                   if think_and_change == 'Exit':
@@ -125,22 +139,14 @@ code: |
                 if user_state:
                   county_choice
                   nav.set_section("your_family")
-                  has_spouse
-                  if has_spouse:
-                    spouse_name
-                  has_children
-                  if has_children:
-                    children.target_number
-                    children.gather(children.target_number)
-                    has_minor_child
+                  spouse.number()
+                  if children.gather() and children.number():
+                    children.has_minor_child
                   nav.set_section("cash_gifts")
-                  if leave_cash_gifts:
-                    giftee.gather()
+                  giftee.number()
                   nav.set_section("personal_and_household")
                   tangible_gifts
-                  if tangible_property.there_are_any:
-                    tangible_property.gather()
-                  else:
+                  if not tangible_property.number():
                     blank_list_print
                   nav.set_section("residue")
                   residue_general_explanation
@@ -150,18 +156,14 @@ code: |
                   nav.set_section("personal_representatives")
                   personal_representatives
                   personal_enough_money_property
-                  representatives.gather()
+                  representatives.number()
                   nav.set_section("guardians")
                   guardians_explanation
-                  if not appoint_guardian:
+                  if not guardians.number():
                     guardian_warning
-                  if appoint_guardian:
-                    guardians.gather()
                   nav.set_section("conservators")
-                  if not appoint_conservator:
+                  if not conservators.number():
                     conservators_warning
-                  if appoint_conservator:
-                    conservators.gather()
                   nav.set_section("bond")
                   require_bond
                   nav.set_section("done")
@@ -203,6 +205,7 @@ code: |
 ---
 code: |
   tangible_property[i].item
+  tangible_property[i].recipient_name
   tangible_property[i].complete = True
 ---
 code: |
@@ -215,36 +218,6 @@ code: |
   conservators[i].name.first
   conservators[i].address.address
   conservators[i].complete = True
----
-code: |
-  children.there_is_another = False
----
-code: |
-  giftee.there_are_any = True
----
-code: |
-  giftee.there_is_another = False
----
-code: |
-  representatives.there_are_any = True
----
-code: |
-  representatives.there_is_another = False
----
-code: |
-  conservators.there_are_any = True
----
-code: |
-  conservators.there_is_another = False
----
-code: |
-  guardians.there_are_any = True
----
-code: |
-  guardians.there_is_another = False
----
-code: |
-  users.there_is_another = False
 ---
 id: intro_screen
 question: |
@@ -479,33 +452,32 @@ fields:
   - Do you want to continue making a Michigan Statutory Will?: continue_with_large_estate
     datatype: yesnoradio
 ---
+sets:
+  - users[0].name.first
+  - users[0].name.last
+  - users[0].name.middle
+  - users[0].name.suffix
 id: user_name
 question: |
   What is your name?
 fields:
-  - First: users[0].name.first
-  - Middle: users[0].name.middle
-    required: False
-  - Last: users[0].name.last
-  - Suffix: users[0].name.suffix
-    required: False
-    code: |
-      name_suffix()
+  - code: |
+      users[0].name_fields()
 ---
-id: user_dob
-field: user_dob
+id: users[0].dob
+field: users[0].dob
 question: |
   What is your date of birth?
 fields:
-  - Date: user_dob
+  - Date: users[0].dob
     datatype: date
 ---
 code: |
   from datetime import date
   from dateutil.relativedelta import relativedelta
-  date1 = user_dob
+  date1 = users[0].dob
   date2 = today()
-  date3 = user_dob + relativedelta(years=18)
+  date3 = users[0].dob + relativedelta(years=18)
   difference = date2.year - date1.year - ((date2.month, date2.day) < (date1.month, date1.day))
 ---
 id: emancipated_minor
@@ -520,7 +492,7 @@ id: dob_explanation_template
 template: dob_explanation_template
 subject: Why do you think I am under 18?
 content: |
-  You entered ${ user_dob } as your date of birth.
+  You entered ${ users[0].dob } as your date of birth.
 
   If this date is wrong, click **Undo** to change it.
 ---
@@ -561,7 +533,7 @@ id: has_spouse
 question: |
   Marriage status.
 fields:
-  - Are you married?: has_spouse
+  - Are you married?: spouse.there_are_any
     datatype: yesnoradio
 ---
 sets:
@@ -570,7 +542,6 @@ sets:
   - spouse[0].name.middle
   - spouse[0].name.suffix
 id: spouse_name
-field: spouse_name
 question: |
   What is your spouse's full name?
 fields:
@@ -585,7 +556,7 @@ subquestion: |
 
   If you want to exclude one or more children from your will or want your children to inherit **unequal** shares, this tool cannot help you do that. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.
 fields:
-  - Do you have any living children?: has_children
+  - Do you have any living children?: children.there_are_any
     datatype: yesnoradio
 ---
 id: number of children
@@ -594,6 +565,7 @@ question: |
 fields:
   - How many living children do you have?: children.target_number
     datatype: integer
+    min: 1
 ---
 id: child name
 sets:
@@ -615,7 +587,7 @@ id: has_minor_child
 question: |
   Minor children.
 fields:
-  - Do you have a child who is under the age of 18?: has_minor_child
+  - Do you have a child who is under the age of 18?: children.has_minor_child
     datatype: yesnoradio
 ---
 id: leave_cash_gifts
@@ -626,11 +598,10 @@ subquestion: |
 
   Each gift can be left to one person or charity. If you want to leave more than two cash gifts, or any cash gift jointly to more than one person, you can't use this tool or the statutory will to do so. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
-  - Would you like to leave a cash gift?: leave_cash_gifts
+  - Would you like to leave a cash gift?: giftee.there_are_any
     datatype: yesnoradio
 ---
 id: giftee_type
-field: giftee_type
 question: |
   Is the ${ ordinal(i) } cash gift recipient a person or charity?
 fields:
@@ -728,6 +699,7 @@ fields:
       code : |
         giftee[i].us_address == True
 ---
+sets: giftee[i].gift_amount_in_words
 id: gift_amount
 field: gift_amount
 question: |
@@ -742,12 +714,7 @@ validation code: |
     validation_error("The cash gift amount must be greater than zero.")
   if int(giftee[i].gift_amount) != giftee[i].gift_amount:
     validation_error("You must enter a whole dollar amount with no cents.")
----
-code: |
-  if leave_cash_gifts and len(giftee) > 0:
-    gift_amount_one_in_words = capitalize(nice_number(giftee[0].gift_amount, use_word=True))
-  if leave_cash_gifts and len(giftee) > 1:
-    gift_amount_two_in_words = capitalize(nice_number(giftee[1].gift_amount, use_word=True))
+  giftee[i].gift_amount_in_words = capitalize(nice_number(giftee[i].gift_amount, use_word=True))
 ---
 id: more giftees
 question: |
@@ -757,7 +724,7 @@ fields:
     datatype: yesnoradio
 ---
 code: |
-  if len(giftee.complete_elements()) >= 2:
+  if giftee.number_gathered() >= 2:
      giftee.there_is_another = False
 ---
 id: tangible_gifts
@@ -788,7 +755,7 @@ question: |
 subquestion: |
   Be as clear as possible in describing both the item and the person who should receive it.
 
-  % if len(tangible_property.complete_elements()) > 0:
+  % if tangible_property.number_gathered() > 1:
   So far, you have listed:
 
   Tangible Personal Property | Recipient
@@ -944,7 +911,7 @@ fields:
     datatype: yesnoradio
 ---
 code: |
-  if len(representatives.complete_elements()) >= 2:
+  if representatives.number_gathered() >= 2:
      representatives.there_is_another = False
 ---
 id: guardians_explanation
@@ -962,7 +929,7 @@ question: |
 subquestion: |
   If you want to name different guardians for different children, this tool and the statutory will won't work for you. You may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 fields:
-  - Do you want to name a guardian?: appoint_guardian
+  - Do you want to name a guardian?: guardians.there_are_any
     datatype: yesnoradio
 ---
 id: guardians_name
@@ -997,7 +964,7 @@ fields:
     datatype: yesnoradio
 ---
 code: |
-  if len(guardians.complete_elements()) >= 2:
+  if guardians.number_gathered() >= 2:
      guardians.there_is_another = False
 ---
 id: guardian_warning
@@ -1015,7 +982,7 @@ subquestion: |
 
   The conservator can also be a bank. A bank will charge the estate a fee for this service.
 fields:
-  - Do you want to name a conservator?: appoint_conservator
+  - Do you want to name a conservator?: conservators.there_are_any
     datatype: yesnoradio
 ---
 id: conservator_type
@@ -1087,7 +1054,7 @@ fields:
     datatype: yesnoradio
 ---
 code: |
-  if len(conservators.complete_elements()) >= 2:
+  if conservators.number_gathered() >= 2:
      conservators.there_is_another = False
 ---
 id: conservators_warning
