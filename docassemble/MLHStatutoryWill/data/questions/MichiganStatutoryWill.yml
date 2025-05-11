@@ -707,7 +707,7 @@ validation code: |
 ---
 id: more giftees
 question: |
-  Cash gift
+  Additional cash gifts
 fields:
   - Would you like to leave another gift of cash?: giftee.there_is_another
     datatype: yesnoradio
