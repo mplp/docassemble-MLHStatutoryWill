@@ -51,7 +51,7 @@ content: |
 ---
 # set intro landing screen variables
 code: |
-  MLH_form_type = "forms"
+  MLH_form_type = "will"
   MLH_time_min = 15
   MLH_time_max = 30
 ---
@@ -99,11 +99,10 @@ code: |
   nav.set_section("signpost_intro")
   MLH_intro_agree_no_pii = True
   MLH_standard_intro_pages
-  intro_screen
-  intro_screen_2
-  if intro_screen_3 == 'Exit':
+  intro_tool_fit
+  if intro_inheritance_structure == 'Exit':
     command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-  intro_screen_4
+  intro_personal_representative
 
   nav.set_section("signpost_qualify")
   mental_capacity_explanation
@@ -236,18 +235,13 @@ code: |
   conservators[i].address.address
   conservators[i].complete = True
 ---
-id: intro_screen
-question: |
-  Welcome to Michigan Legal Help's Do-It-Yourself Michigan Statutory Will tool.
-subquestion: |
-  This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one.
+template: MLH_welcome_message
+content: |
+  Welcome to the ${ MLH_interview_title } tool.
 
-  You will be asked a series of questions about you, your family, and your property. If you are eligible to use this form, your personalized Michigan statutory will with instructions will be ready to print after you answer all the questions.
-
-  It will take 10 to 30 minutes to answer all the questions.
-continue button field: intro_screen
+  This tool will help you figure out if the Michigan statutory will is right for you and, if so, help you prepare one. You will be asked questions about you, your family, and your property.
 ---
-id: intro_screen_2
+id: intro_tool_fit
 question: |
   There are many types of wills you can prepare.
 subquestion: |
@@ -262,9 +256,9 @@ subquestion: |
   - are a Native American whose estate may include trust lands
 
   Click **Continue** to begin
-continue button field: intro_screen_2
+continue button field: intro_tool_fit
 ---
-id: intro_screen_3
+id: intro_inheritance_structure
 question: |
   Inheritance structure
 subquestion: |
@@ -277,12 +271,14 @@ subquestion: |
   Your property will be distributed to extended family members if no spouse, children, or descendants survive you.
 
   If you want more flexibility in distributing your property, you may want to talk to a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  to find lawyers or legal services in your area.  If you wish to continue, click **Continue**, otherwise click **Exit.**
-field: intro_screen_3
+field: intro_inheritance_structure
 buttons:
   - Continue
-  - Exit
+  - label: Exit
+    value: Exit
+    color: danger
 ---
-id: intro_screen_4
+id: intro_personal_representative
 question: |
   You will be asked to name a **personal representative** for your estate.
 subquestion: |
@@ -292,7 +288,7 @@ subquestion: |
   It could also be a bank. Make your choice before you begin. It's a good idea to ask the person if they are willing and able to serve as personal representative before you make a final choice.
 
   If you have children under 18, you will also be asked to name a **guardian** to care for them and a **conservator** to manage their money. Again, make your choices and get their contact information before you begin.
-continue button field: intro_screen_4
+continue button field: intro_personal_representative
 ---
 id: mental_capacity_explanation
 question: |
@@ -829,7 +825,7 @@ id: representative_type
 question: |
   Personal representatives
 fields:
-  - Is your ${ordinal(i)} personal representative a person or a bank?: representatives[i].representative_type
+  - Is your ${ ordinal(i) } personal representative a person or a bank?: representatives[i].representative_type
     datatype: radio
     choices:
       - Person: person
