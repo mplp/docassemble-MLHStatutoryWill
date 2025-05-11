@@ -106,89 +106,93 @@ code: |
 
   nav.set_section("signpost_qualify")
   mental_capacity_explanation
-  if know_what_you_own:
-    if closest_relatives:
-      if understands_making_a_will:
-        if understands_signing_a_will:
-          force_or_threat
-          if not was_pressured:
-            if not was_coerced:
-              witness_explanation
-              if has_complicated_situations:
-                if complicated_warning == 'Exit':
-                  command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              if has_existing_will:
-                if replace_existing_will == 'change_one':
-                  if undo_and_change == 'Exit':
-                    command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-              if not has_trust:
-                if has_large_estate:
-                  continue_with_large_estate
-                  if not continue_with_large_estate:
-                    command('leave', url='https://michiganlegalhelp.org/organizations-and-courts/find-lawyer', new_window=True)
 
-                nav.set_section("signpost_user")
-                users.number()
-                users[0].dob
-                if difference < 18:
-                  emancipated_minor
-                  if not emancipated_minor:
-                    if user_minor_status == 'Exit':
-                      command('leave', url='https://michiganlegalhelp.org', new_window=True)
-                if not user_state:
-                  think_and_change
-                  if think_and_change == 'Exit':
-                    command('leave', url='https://michiganlegalhelp.org/', new_window=True)
-                if user_state:
-                  county_choice
+  if not (
+    know_what_you_own
+    and closest_relatives
+    and understands_making_a_will
+    and understands_signing_a_will
+    and force_or_threat
+  ):
+    if exit_or_undo == 'Exit':
+      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
 
-                  nav.set_section("signpost_family")
-                  spouse.number()
-                  if children.there_are_any and children.gather(children.target_number):
-                    children.has_minor_child
+  if (
+    was_pressured
+    or was_coerced
+  ):
+    if go_back_and_change == 'Exit':
+      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
 
-                  nav.set_section("signpost_cash_gifts")
-                  giftee.number()
+  witness_explanation
+  if has_complicated_situations:
+    if complicated_warning == 'Exit':
+      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+  if has_existing_will:
+    if replace_existing_will == 'change_one':
+      if undo_and_change == 'Exit':
+        command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+  if has_trust:
+    if undo_and_change == 'Exit':
+      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+  if has_large_estate:
+    continue_with_large_estate
+    if not continue_with_large_estate:
+      command('leave', url='https://michiganlegalhelp.org/organizations-and-courts/find-lawyer', new_window=True)
 
-                  nav.set_section("signpost_goods")
-                  tangible_gifts
-                  if not tangible_property.number():
-                    blank_list_print
+  nav.set_section("signpost_user")
+  users.number()
+  users[0].dob
+  if difference < 18:
+    emancipated_minor
+    if not emancipated_minor:
+      if user_minor_status == 'Exit':
+        command('leave', url='https://michiganlegalhelp.org', new_window=True)
+  if not user_state:
+    think_and_change
+    if think_and_change == 'Exit':
+      command('leave', url='https://michiganlegalhelp.org/', new_window=True)
+  county_choice
 
-                  nav.set_section("signpost_residue")
-                  residue_general_explanation
-                  residue_heirs_explanation
-                  residue_distribution_explanation
-                  residue_distribution
+  nav.set_section("signpost_family")
+  spouse.number()
+  if children.there_are_any and children.gather(children.target_number):
+    children.has_minor_child
 
-                  nav.set_section("signpost_representatives")
-                  personal_representatives
-                  representatives.number()
+  nav.set_section("signpost_cash_gifts")
+  giftee.number()
 
-                  nav.set_section("signpost_guardians")
-                  guardians_explanation
-                  if not guardians.number():
-                    guardian_warning
+  nav.set_section("signpost_goods")
+  tangible_gifts
+  if not tangible_property.number():
+    blank_list_print
 
-                  nav.set_section("signpost_conservators")
-                  if not conservators.number():
-                    conservators_warning
+  nav.set_section("signpost_residue")
+  residue_general_explanation
+  residue_heirs_explanation
+  residue_distribution_explanation
+  residue_distribution
 
-                  nav.set_section("signpost_bond")
-                  require_bond
+  nav.set_section("signpost_representatives")
+  personal_representatives
+  representatives.number()
 
-                  nav.set_section("signpost_done")
-                  answers_complete
+  nav.set_section("signpost_guardians")
+  guardians_explanation
+  if not guardians.number():
+    guardian_warning
 
-                MLH_outro_saving_answers
-                MLH_download
-              if has_trust:
-                if undo_and_change == 'Exit':
-                  command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-          if go_back_and_change == 'Exit':
-            command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
-  if exit_or_undo == 'Exit':
-    command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+  nav.set_section("signpost_conservators")
+  if not conservators.number():
+    conservators_warning
+
+  nav.set_section("signpost_bond")
+  require_bond
+
+  nav.set_section("signpost_done")
+  answers_complete
+  MLH_outro_saving_answers
+  MLH_download
 ---
 comment: |
   resource_page_url_only needs to be updated once Emily sends the correct link
