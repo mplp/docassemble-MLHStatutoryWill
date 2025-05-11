@@ -329,7 +329,7 @@ fields:
 ---
 id: understands_signing_a_will
 question: |
-  Signing a will.
+  Signing a will
 subquestion: |
   ${ collapse_template(help_signing_will) }
 fields:
