@@ -353,7 +353,7 @@ continue button field: force_or_threat
 ---
 id: was_pressured
 question: |
-  Outside pressure.
+  Outside pressure
 fields:
   - Has anyone told you what to put in your will?: was_pressured
     datatype: yesnoradio
