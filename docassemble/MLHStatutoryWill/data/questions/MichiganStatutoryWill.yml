@@ -472,9 +472,6 @@ fields:
 ---
 sets:
   - users[0].name.first
-  - users[0].name.last
-  - users[0].name.middle
-  - users[0].name.suffix
 id: user_name
 question: |
   What is your name?
@@ -556,9 +553,6 @@ fields:
 ---
 sets:
   - spouse[0].name.first
-  - spouse[0].name.last
-  - spouse[0].name.middle
-  - spouse[0].name.suffix
 id: spouse_name
 question: |
   What is your spouse's full name?
@@ -588,9 +582,6 @@ fields:
 id: child name
 sets:
   - children[i].name.first
-  - children[i].name.last
-  - children[i].name.middle
-  - children[i].name.suffix
 question: |
   % if children.target_number < 2:
   Enter your child's full name.
@@ -632,9 +623,6 @@ fields:
 id: giftee_name
 sets:
   - giftee[i].name.first
-  - giftee[i].name.last
-  - giftee[i].name.middle
-  - giftee[i].name.suffix
 question: |
   % if giftee[i].giftee_type == 'person':
   What is the full name of the person you want to receive the ${ ordinal(i) } cash gift?
@@ -843,46 +831,21 @@ fields:
   - Is your ${ordinal(i)} personal representative a person or a bank?: representatives[i].representative_type
     datatype: radio
     choices:
-      - Person
-      - Bank
+      - Person: person
+      - Bank: business
 ---
 sets:
   - representatives[i].name.first
-  - representatives[i].name.last
-  - representatives[i].name.middle
-  - representatives[i].name.suffix
 id: person_or_bank_detail
 question: |
-  % if representatives[i].representative_type == 'Person':
+  % if representatives[i].representative_type == 'person':
   Enter the full name of the person you want to be your ${ ordinal(i) } personal representative.
   % else:
   Enter the name of the bank you want to be your ${ ordinal(i) } personal representative.
   % endif
 fields:
-  - Name: representatives[i].name.first
-    show if:
-      code : |
-        representatives[i].representative_type == "Bank"
-  - First: representatives[i].name.first
-    show if:
-      code : |
-        representatives[i].representative_type == "Person"
-  - Middle: representatives[i].name.middle
-    required: False
-    show if:
-      code : |
-        representatives[i].representative_type == "Person"
-  - Last: representatives[i].name.last
-    show if:
-      code : |
-        representatives[i].representative_type == "Person"
-  - Suffix: representatives[i].name.suffix
-    required: False
-    show if:
-      code : |
-        representatives[i].representative_type == "Person"
-    code: |
-      name_suffix()
+  - code: |
+      representatives[i].name_fields(person_or_business=representatives[i].representative_type)
 ---
 sets:
   - representatives[i].address.address
@@ -932,9 +895,6 @@ fields:
 id: guardians_name
 sets:
   - guardians[i].name.first
-  - guardians[i].name.last
-  - guardians[i].name.middle
-  - guardians[i].name.suffix
 question: |
   Enter the full name of the person you would like to be the ${ ordinal(i) } guardian for your child.
 fields:
@@ -993,15 +953,12 @@ fields:
   - Is your conservator a person or a bank?: conservators[i].conservator_type
     datatype: radio
     choices:
-      - Person
-      - Bank
+      - Person: person
+      - Bank: business
 ---
 id: conservators_detail
 sets:
   - conservators[i].name.first
-  - conservators[i].name.last
-  - conservators[i].name.middle
-  - conservators[i].name.suffix
 question: |
   % if conservators[i].conservator_type == 'Person':
   Enter the full name of the person you want to be your conservator.
@@ -1009,30 +966,8 @@ question: |
   Enter the name of the bank you want to be your conservator.
   % endif
 fields:
-  - Name: conservators[i].name.first
-    show if:
-      code : |
-        conservators[i].conservator_type == "Bank"
-  - First: conservators[i].name.first
-    show if:
-      code : |
-        conservators[i].conservator_type == "Person"
-  - Middle: conservators[i].name.middle
-    required: False
-    show if:
-      code : |
-        conservators[i].conservator_type == "Person"
-  - Last: conservators[i].name.last
-    show if:
-      code : |
-        conservators[i].conservator_type == "Person"
-  - Suffix: conservators[i].name.suffix
-    required: False
-    show if:
-      code : |
-        conservators[i].conservator_type == "Person"
-    code: |
-      name_suffix()
+  - code: |
+      conservators[i].name_fields(person_or_business=conservators[i].conservator_type)
 ---
 id: conservators_address
 sets:
