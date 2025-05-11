@@ -589,7 +589,7 @@ question: |
   % if children.target_number < 2:
   Enter your child's full name.
   % else:
-  Enter the full name of your ${ ordinal(i) } child .
+  Enter the full name of your ${ ordinal(i) } child.
   % endif
 fields:
   - code: |
