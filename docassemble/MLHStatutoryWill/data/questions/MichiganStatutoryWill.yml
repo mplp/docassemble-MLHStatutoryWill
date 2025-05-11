@@ -387,7 +387,7 @@ continue button field: witness_explanation
 ---
 id: has_complicated_situations
 question: |
-  A statutory will is not right for every situation
+  A statutory will is not right for every situation.
 subquestion: |
   The statutory will is a simple but effective will.
 
@@ -549,7 +549,7 @@ buttons:
 ---
 id: has_spouse
 question: |
-  Marriage status.
+  Marriage status
 fields:
   - Are you married?: spouse.there_are_any
     datatype: yesnoradio
@@ -576,7 +576,7 @@ fields:
 ---
 id: number of children
 question: |
-  Number of children.
+  Number of children
 fields:
   - How many living children do you have?: children.target_number
     datatype: integer
@@ -597,7 +597,7 @@ fields:
 ---
 id: has_minor_child
 question: |
-  Minor children.
+  Minor children
 fields:
   - Do you have a child who is under the age of 18?: children.has_minor_child
     datatype: yesnoradio
@@ -690,7 +690,7 @@ sets: giftee[i].gift_amount_in_words
 id: gift_amount
 field: gift_amount
 question: |
-  Cash gift amount.
+  Cash gift amount
 subquestion: |
   Your cash gift must be a whole dollar amount with no cents included.
 fields:
@@ -806,7 +806,7 @@ continue button field: residue_distribution_explanation
 ---
 id: residue_distribution
 question: |
-  Residue distribution.
+  Residue distribution
 fields:
   - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
