@@ -200,7 +200,6 @@ code: |
   require_bond
 
   nav.set_section("signpost_done")
-  answers_complete
   MLH_outro_saving_answers
   MLH_download
 ---
@@ -1011,15 +1010,18 @@ fields:
   - Would you like to require a bond?: require_bond
     datatype: yesnoradio
 ---
-id: answers_complete
-field: answers_complete
+if: not user_logged_in()
+id: will saving answers logged out
 question: |
-  You are finished answering questions.
+  Saving your answers
 subquestion: |
-  If you didn't already, create a username and password on the LawHelp Interactive website to save your answers. This will allow you to make changes to your will without starting over, if needed. Make a note of your username and password.
+  You can save your answers so that you can come back to this tool later. This will allow you to make changes to your ${ MLH_form_type } without starting over.
 
-  **Warning!** If you do not save your answers and you later discover a mistake in your printed will, you will have to restart this tool from the beginning and enter all of your answers again. Remember, crossing out or adding words to your printed will may make it invalid.
-continue button field: answers_complete
+  Below the Continue button, tap "Sign in" if you have an account or "Sign up" to make one. You can also go to the ${ ':bars:' if device().is_mobile else '' } Menu at the top of the screen and tap "Sign in or sign up to save answers".
+
+  Warning! If you do not save your answers and you later discover a mistake in your printed will, you will have to restart this tool from the beginning and enter all of your answers again. Remember, crossing out or adding words to your printed will may make it invalid.
+continue button field: MLH_outro_saving_answers
+progress: 99
 ---
 objects:
   - michigan_statutory_will_attachment: ALDocument.using(title="Michigan Statutory Will", filename="michigan_statutory_will.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
