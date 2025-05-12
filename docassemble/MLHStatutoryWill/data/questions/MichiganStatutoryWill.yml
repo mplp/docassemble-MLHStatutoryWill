@@ -747,6 +747,17 @@ subquestion: |
 fields:
   - Item: tangible_property[i].item
   - Full name of recipient: tangible_property[i].recipient_name
+    show if:
+      code: |
+        tangible_property.number_gathered() <= 1
+  - Full name of recipient: tangible_property[i].recipient_name
+    input type: combobox
+    hint: Fill in or select previous
+    show if:
+      code: |
+        tangible_property.number_gathered() > 1
+    code: |
+      set(item.recipient_name for item in tangible_property.complete_elements())
 ---
 id: ask_more_items
 question: |
