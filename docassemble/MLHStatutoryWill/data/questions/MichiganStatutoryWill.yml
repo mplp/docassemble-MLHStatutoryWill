@@ -585,14 +585,10 @@ subquestion: |
 fields:
   - Do you have any living children?: children.there_are_any
     datatype: yesnoradio
----
-id: number of children
-question: |
-  Number of children
-fields:
   - How many living children do you have?: children.target_number
     datatype: integer
     min: 1
+    show if: children.there_are_any
 ---
 id: child name
 sets:
