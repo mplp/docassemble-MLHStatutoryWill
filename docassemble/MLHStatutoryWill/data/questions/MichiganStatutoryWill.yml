@@ -157,9 +157,9 @@ code: |
   nav.set_section("signpost_family")
   spouse.number()
   if children.there_are_any and children.gather(children.target_number):
-    children.has_minor_child
+    has_minor_child
   else:
-    children.has_minor_child = False
+    has_minor_child = False
 
   nav.set_section("signpost_cash_gifts")
   giftee.number()
@@ -180,7 +180,7 @@ code: |
   representatives.number()
 
   nav.set_section("signpost_guardians")
-  if children:
+  if children and has_minor_child:
     guardians_explanation
     if not guardians.number():
       guardian_warning
@@ -189,7 +189,7 @@ code: |
     guardians.gather()
 
   nav.set_section("signpost_conservators")
-  if children:
+  if children and has_minor_child:
     if not conservators.number():
       conservators_warning
   else:
@@ -610,7 +610,7 @@ id: has_minor_child
 question: |
   Minor children
 fields:
-  - Do you have a child who is under the age of 18?: children.has_minor_child
+  - Do you have a child who is under the age of 18?: has_minor_child
     datatype: yesnoradio
 ---
 id: leave_cash_gifts
