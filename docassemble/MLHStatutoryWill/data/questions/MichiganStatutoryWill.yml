@@ -959,7 +959,7 @@ id: conservators_detail
 sets:
   - conservators[i].name.first
 question: |
-  % if conservators[i].conservator_type == 'Person':
+  % if conservators[i].conservator_type == 'person':
   Enter the full name of the person you want to be your conservator.
   % else:
   Enter the name of the bank you want to be your conservator.
