@@ -223,23 +223,24 @@ code: |
   giftee[i].complete = True
 ---
 code: |
-  representatives[i].representative_type
-  representatives[i].name.first
-  representatives[i].address.address
-  representatives[i].complete = True
----
-code: |
   tangible_property[i].item
   tangible_property[i].recipient_name
   tangible_property[i].complete = True
 ---
 code: |
+  representatives[i].entity_type
+  representatives[i].name.first
+  representatives[i].address.address
+  representatives[i].complete = True
+---
+code: |
+  guardians[i].entity_type = 'person'
   guardians[i].name.first
   guardians[i].address.address
   guardians[i].complete = True
 ---
 code: |
-  conservators[i].conservator_type
+  conservators[i].entity_type
   conservators[i].name.first
   conservators[i].address.address
   conservators[i].complete = True
@@ -834,11 +835,11 @@ subquestion: |
   A bank will charge your estate a fee for that service.
 continue button field: personal_representatives
 ---
-id: representative_type
+id: representative_entity_type
 question: |
   Personal representatives
 fields:
-  - Is your ${ ordinal(i) } personal representative a person or a bank?: representatives[i].representative_type
+  - Is your ${ ordinal(i) } personal representative a person or a bank?: representatives[i].entity_type
     datatype: radio
     choices:
       - Person: person
@@ -848,14 +849,19 @@ sets:
   - representatives[i].name.first
 id: person_or_bank_detail
 question: |
-  % if representatives[i].representative_type == 'person':
+  % if representatives[i].entity_type == 'person':
   Enter the full name of the person you want to be your ${ ordinal(i) } personal representative.
   % else:
   Enter the name of the bank you want to be your ${ ordinal(i) } personal representative.
   % endif
 fields:
+  - Someone previously entered?: representatives[i]
+    datatype: object
+    disable others: True
+    choices: |
+      (person for person in (*guardians.complete_elements(), *conservators.complete_elements()) if person.entity_type == representatives[i].entity_type and person not in representatives.complete_elements())
   - code: |
-      representatives[i].name_fields(person_or_business=representatives[i].representative_type)
+      representatives[i].name_fields(person_or_business=representatives[i].entity_type)
 ---
 sets:
   - representatives[i].address.address
@@ -908,6 +914,11 @@ sets:
 question: |
   Enter the full name of the person you would like to be the ${ ordinal(i) } guardian for your child.
 fields:
+  - Someone previously entered?: guardians[i]
+    datatype: object
+    disable others: True
+    choices: |
+      (person for person in (*representatives.complete_elements(), *conservators.complete_elements()) if person.entity_type == 'person' and person not in guardians.complete_elements())
   - code: |
       guardians[i].name_fields()
 ---
@@ -956,11 +967,11 @@ fields:
   - Do you want to name a conservator?: conservators.there_are_any
     datatype: yesnoradio
 ---
-id: conservator_type
+id: conservator_entity_type
 question: |
   Choose your ${ ordinal(i) } conservator.
 fields:
-  - Is your conservator a person or a bank?: conservators[i].conservator_type
+  - Is your conservator a person or a bank?: conservators[i].entity_type
     datatype: radio
     choices:
       - Person: person
@@ -970,14 +981,19 @@ id: conservators_detail
 sets:
   - conservators[i].name.first
 question: |
-  % if conservators[i].conservator_type == 'person':
+  % if conservators[i].entity_type == 'person':
   Enter the full name of the person you want to be your conservator.
   % else:
   Enter the name of the bank you want to be your conservator.
   % endif
 fields:
+  - Someone previously entered?: conservators[i]
+    datatype: object
+    disable others: True
+    choices: |
+      (person for person in (*representatives.complete_elements(), *guardians.complete_elements()) if person.entity_type == conservators[i].entity_type and person not in conservators.complete_elements())
   - code: |
-      conservators[i].name_fields(person_or_business=conservators[i].conservator_type)
+      conservators[i].name_fields(person_or_business=conservators[i].entity_type)
 ---
 id: conservators_address
 sets:
