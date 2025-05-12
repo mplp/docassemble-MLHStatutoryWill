@@ -215,7 +215,16 @@ code: |
   x.complete = True
 ---
 code: |
-  giftee[i].giftee_type
+  children[i].entity_type = 'person'
+  children[i].name.first
+  if children[i] in giftee.elements:
+    children[i].us_address
+    children[i].address.address
+    children[i].gift_amount
+  children[i].complete = True
+---
+code: |
+  giftee[i].entity_type
   giftee[i].name.first
   giftee[i].us_address
   giftee[i].address.address
@@ -621,11 +630,11 @@ fields:
   - Would you like to leave a cash gift?: giftee.there_are_any
     datatype: yesnoradio
 ---
-id: giftee_type
+id: giftee_entity_type
 question: |
   Cash gift recipient
 fields:
-  - Is the ${ ordinal(i) } cash gift recipient a person or charity?: giftee[i].giftee_type
+  - Is the ${ ordinal(i) } cash gift recipient a person or charity?: giftee[i].entity_type
     datatype: radio
     choices:
       - Person: person
@@ -635,63 +644,75 @@ id: giftee_name
 sets:
   - giftee[i].name.first
 question: |
-  % if giftee[i].giftee_type == 'person':
+  % if giftee[i].entity_type == 'person':
   What is the full name of the person you want to receive the ${ ordinal(i) } cash gift?
   % else:
   What is the name of the charity you want to receive the ${ ordinal(i) } cash gift?
   % endif
 fields:
+  - Someone previously entered?: giftee[i]
+    datatype: object
+    disable others: True
+    choices: |
+      (person for person in children.complete_elements() if person.entity_type == giftee[i].entity_type and person not in giftee.complete_elements())
   - code: |
-      giftee[i].name_fields(person_or_business=giftee[i].giftee_type)
+      giftee[i].name_fields(person_or_business=giftee[i].entity_type)
+validation code: |
+  giftee[i].delattr("complete")
 ---
 id: us_address
+generic object: ALPeopleList
+if: x is children or x is giftee
 question: |
-  You have named ${ giftee[i].name } as a cash gift recipient.
+  You have named ${ x[i].name } as a cash gift recipient.
 fields:
-  - Does ${ giftee[i].name.first } have a U.S. address?: giftee[i].us_address
+  - Does ${ x[i].name.first } have a U.S. address?: x[i].us_address
     datatype: yesnoradio
 ---
-if: not giftee[i].us_address
+generic object: ALPeopleList
+if: (x is children or x is giftee) and not x[i].us_address
 sets:
-  - giftee[i].address.address
-  - giftee[i].address.city
+  - x[i].address.address
+  - x[i].address.city
 id: gift_address_intl
 question: |
-  Enter the address for ${ giftee[i].name.first }.
+  Enter the address for ${ x[i].name.first }.
 fields:
-  - Street Address: giftee[i].address.address
-  - City, State/Province, Postal Code, Country: giftee[i].address.city
+  - Street Address: x[i].address.address
+  - City, State/Province, Postal Code, Country: x[i].address.city
 ---
-if: giftee[i].us_address
+generic object: ALPeopleList
+if: (x is children or x is giftee) and x[i].us_address
 sets:
-  - giftee[i].address.address
-  - giftee[i].address.city
-  - giftee[i].address.zip
-  - giftee[i].address.unit
-  - giftee[i].address.state
+  - x[i].address.address
+  - x[i].address.city
+  - x[i].address.zip
+  - x[i].address.unit
+  - x[i].address.state
 id: gift_address_us
 question: |
-  Enter the address for ${ giftee[i].name.first }.
+  Enter the address for ${ x[i].name.first }.
 fields:
   - code: |
-      giftee[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
+      x[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
 ---
-sets: giftee[i].gift_amount_in_words
+sets: x[i].gift_amount_in_words
 id: gift_amount
-field: gift_amount
+generic object: ALPeopleList
+if: x is children or x is giftee
 question: |
   Cash gift amount
 subquestion: |
   Your cash gift must be a whole dollar amount with no cents included.
 fields:
-  - How much of your money do you want ${ giftee[i].name.first } to receive after you die?: giftee[i].gift_amount
+  - How much of your money do you want ${ x[i].name.first } to receive after you die?: x[i].gift_amount
     datatype: currency
 validation code: |
-  if giftee[i].gift_amount <= 0:
+  if x[i].gift_amount <= 0:
     validation_error("The cash gift amount must be greater than zero.")
-  if int(giftee[i].gift_amount) != giftee[i].gift_amount:
+  if int(x[i].gift_amount) != x[i].gift_amount:
     validation_error("You must enter a whole dollar amount with no cents.")
-  giftee[i].gift_amount_in_words = capitalize(nice_number(giftee[i].gift_amount, use_word=True))
+  x[i].gift_amount_in_words = capitalize(nice_number(x[i].gift_amount, use_word=True))
 ---
 id: more giftees
 question: |
