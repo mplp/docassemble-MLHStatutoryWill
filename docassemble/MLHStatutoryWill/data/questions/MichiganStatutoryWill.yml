@@ -791,9 +791,12 @@ continue button field: residue_heirs_explanation
 ---
 id: residue_distribution_explanation
 question: |
-  If no spouse, child, or descendent of your child is living when you die.
+  If there are no living descendants or spouse
 subquestion: |
-  You can choose to leave the residue of your estate entirely to your heirs (parents, siblings, nieces, uncles, etc.), or to divide it evenly between your heirs and your spouse's heirs. If you have stepchildren, this is the only way they will inherit from you, using the statutory will.
+  If no spouse, child, or descendent of your child is living when you die, you can choose to:
+
+  - Leave the residue of your estate entirely to your heirs (parents, siblings, nieces, uncles, etc.); or
+  - Divide it evenly between your heirs and your spouse's heirs. If you have stepchildren, this is the only way they will inherit from you, using the statutory will.
 
   You can only choose one of these options. If you want to distribute your property differently, you may want to contact a lawyer to help you with your will. Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 continue button field: residue_distribution_explanation
@@ -805,8 +808,8 @@ fields:
   - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
     choices:
-      - I want half my property to be given to my heirs and half to be given to my spouse's heirs.: own_heirs_and_spouse_heirs
-      - I want all my property to be given to my heirs.: own_heirs
+      - Leave the residue of my estate entirely to my heirs: own_heirs
+      - Divide it evenly between my heirs and my spouse's heirs: own_heirs_and_spouse_heirs
 ---
 id: personal_representatives
 question: |
