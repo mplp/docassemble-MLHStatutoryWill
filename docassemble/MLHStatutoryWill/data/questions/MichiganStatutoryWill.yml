@@ -1024,11 +1024,19 @@ continue button field: MLH_outro_saving_answers
 progress: 99
 ---
 objects:
-  - michigan_statutory_will_attachment: ALDocument.using(title="Michigan Statutory Will", filename="michigan_statutory_will.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
-  - instructions: ALDocument.using(filename="Instructions - Do not file this", title="Instructions", enabled=True, has_addendum=False)
+  - michigan_statutory_will_document: ALDocument.using(title=f"Statutory Will", filename=f"Michigan_Statutory_Will_for_{space_to_underscore(str(users).replace(".", ""))}.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
+  - michigan_statutory_will_instructions: ALDocument.using(title="Instructions", filename="Michigan_Statutory_Will_Instructions.docx", enabled=True, has_addendum=False)
+  - al_user_bundle: ALDocumentBundle.using(elements=[michigan_statutory_will_instructions, michigan_statutory_will_document], filename="Michigan_Statutory_Will_and_Instructions", title="Will and instructions", enabled=True)
 ---
-objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[instructions, michigan_statutory_will_attachment], filename="Michigan Statutory Will (All forms).pdf", title="All forms and instructions", enabled=True)
+attachments:
+  - name: Michigan Statutory Will for ${users}
+    variable name: michigan_statutory_will_document[i]
+    docx template file: michigan_statutory_will.docx
+    tagged pdf: True
+  - name: Statutory Will Instructions
+    variable name: michigan_statutory_will_instructions[i]
+    docx template file: michigan_statutory_will_instructions.docx
+    tagged pdf: True
 ---
 id: DownloadScreen
 event: MLH_download
@@ -1049,15 +1057,4 @@ subquestion: |
   Answer below or [open the survey in a new tab](${ survey_link_url_only }).
   ${ survey_embed_script }
 progress: 100
----
-attachments:
-  - name: Michigan Statutory Will
-    filename: Michigan Statutory Will
-    variable name: michigan_statutory_will_attachment[i]
-    docx template file: michigan_statutory_will.docx
-    tagged pdf: True
-  - name: instructions
-    variable name: instructions[i]
-    docx template file: michigan_statutory_will_instructions.docx
-    tagged pdf: True
 ---
