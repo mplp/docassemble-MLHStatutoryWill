@@ -55,42 +55,11 @@ code: |
   MLH_time_min = 15
   MLH_time_max = 30
 ---
-objects:
-  - users: ALPeopleList.using(
-      there_are_any=True,
-      there_is_another=False,
-      target_number=1,
-      complete_attribute="complete",
-      )
-  - spouse: ALPeopleList.using(
-      there_is_another=False,
-      target_number=1,
-      complete_attribute="complete",
-      )
-  - children: ALPeopleList.using(
-      complete_attribute="complete",
-      )
-  - giftee: ALPeopleList.using(
-      target_number=1,
-      complete_attribute="complete",
-      )
-  - tangible_property: DAList.using(
-      object_type=DAObject,
-      complete_attribute="complete",
-      )
-  - representatives: ALPeopleList.using(
-      there_are_any=True,
-      target_number=1,
-      complete_attribute="complete",
-      )
-  - guardians: ALPeopleList.using(
-      target_number=1,
-      complete_attribute="complete",
-      )
-  - conservators: ALPeopleList.using(
-      target_number=1,
-      complete_attribute="complete",
-      )
+comment: |
+  resource_page_url_only needs to be updated once Emily sends the correct link
+code: |
+  resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
+  resource_page_name = MLH_interview_short_title
 ---
 id: interview_order_michigan_statutory_will
 mandatory: True
@@ -203,11 +172,42 @@ code: |
   MLH_outro_saving_answers
   MLH_download
 ---
-comment: |
-  resource_page_url_only needs to be updated once Emily sends the correct link
-code: |
-  resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
-  resource_page_name = MLH_interview_short_title
+objects:
+  - users: ALPeopleList.using(
+      there_are_any=True,
+      there_is_another=False,
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - spouse: ALPeopleList.using(
+      there_is_another=False,
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - children: ALPeopleList.using(
+      complete_attribute="complete",
+      )
+  - giftee: ALPeopleList.using(
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - tangible_property: DAList.using(
+      object_type=DAObject,
+      complete_attribute="complete",
+      )
+  - representatives: ALPeopleList.using(
+      there_are_any=True,
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - guardians: ALPeopleList.using(
+      target_number=1,
+      complete_attribute="complete",
+      )
+  - conservators: ALPeopleList.using(
+      target_number=1,
+      complete_attribute="complete",
+      )
 ---
 generic object: ALIndividual
 code: |
