@@ -61,6 +61,10 @@ code: |
   resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
   resource_page_name = MLH_interview_short_title
 ---
+# -----------------------------------------------------------------------------
+## interview block
+# -----------------------------------------------------------------------------
+---
 id: interview_order_michigan_statutory_will
 mandatory: True
 code: |
@@ -172,6 +176,10 @@ code: |
   MLH_outro_saving_answers
   MLH_download
 ---
+# -----------------------------------------------------------------------------
+## objects
+# -----------------------------------------------------------------------------
+---
 objects:
   - users: ALPeopleList.using(
       there_are_any=True,
@@ -253,6 +261,10 @@ code: |
   conservators[i].name.first
   conservators[i].address.address
   conservators[i].complete = True
+---
+# -----------------------------------------------------------------------------
+## questions
+# -----------------------------------------------------------------------------
 ---
 template: MLH_welcome_message
 content: |
@@ -1101,4 +1113,229 @@ subquestion: |
   Answer below or [open the survey in a new tab](${ survey_link_url_only }).
   ${ survey_embed_script }
 progress: 100
+---
+# -----------------------------------------------------------------------------
+## review
+# -----------------------------------------------------------------------------
+---
+id: review_full
+event: review_full
+question: |
+  Review your answers
+review:
+  - Edit: |
+      users[0].name.first
+    button: |
+      **What is your name?**
+
+      First: ${ showifdef('users[0].name.first') }
+
+      Middle: ${ showifdef('users[0].name.middle') }
+
+      Last: ${ showifdef('users[0].name.last') }
+  - Edit: |
+      users[0].dob
+    button: |
+      **What is your date of birth?**
+
+      Date: ${ showifdef('users[0].dob') }
+  - Edit: |
+      county_choice
+    button: |
+      **County**
+
+      What county do you live in?: ${ county_choice }
+  - Edit: |
+      spouse.there_are_any
+    button: |
+      **Marriage status**
+
+      Are you married?: ${ word(yesno(spouse.there_are_any)) }
+  - Edit: |
+      spouse[0].name.first
+    button: |
+      **What is your spouse's full name?**
+
+      First: ${ showifdef('spouse[0].name.first') }
+
+      Middle: ${ showifdef('spouse[0].name.middle') }
+
+      Last: ${ showifdef('spouse[0].name.last') }
+  - Edit: |
+      children.revisit
+    button: |
+      **Children**
+
+      % for item in children:
+      - ${ item }
+      % else:
+      ${ word("None") }
+      % endfor
+  - Edit: |
+      has_minor_child
+    button: |
+      **Minor children**
+
+      Do you have a child who is under the age of 18?: ${ word(yesno(has_minor_child)) }
+  - Edit: |
+      giftee.revisit
+    button: |
+      **Cash gift recipients**
+
+      % for item in giftee:
+      - ${ item }
+          - ${ item.address.on_one_line() }
+      % else:
+      ${ word("None") }
+      % endfor
+  - Edit: |
+      tangible_property.revisit
+    button: |-
+      **Tangible Property**
+
+      % for item in tangible_property:
+      - ${ item.item } - ${ item.recipient_name }
+      % else:
+      ${ word("None") }
+      % endfor
+  - Edit: |
+      residue_distribution
+    button: |
+      **Residue distribution**
+
+      How do you want the residue of your estate to be distributed?:
+      
+      % if residue_distribution == 'own_heirs':
+      Leave the residue of my estate entirely to my heirs
+      % else:
+      Divide it evenly between my heirs and my spouse's heirs
+      % endif
+  - Edit: |
+      representatives.revisit
+    button: |
+      **Personal representatives**
+
+      % for item in representatives:
+      - ${ item }
+          - ${ item.address.on_one_line() }
+      % else:
+      ${ word("None") }
+      % endfor
+  - Edit: |
+      guardians.revisit
+    button: |
+      **Guardians**
+
+      % for item in guardians:
+      - ${ item }
+          - ${ item.address.on_one_line() }
+      % else:
+      ${ word("None") }
+      % endfor
+  - Edit: |
+      conservators.revisit
+    button: |
+      **Conservators**
+
+      % for item in conservators:
+      - ${ item }
+          - ${ item.address.on_one_line() }
+      % else:
+      ${ word("None") }
+      % endfor
+  - Edit: |
+      require_bond
+    button: |
+      **Require bond**
+
+      Would you like to require a bond?: ${ word(yesno(require_bond)) }
+---
+id: revisit list tangible_property
+continue button field: tangible_property.revisit
+question: |
+  Edit your answers about your personal property
+subquestion: |
+  ${ tangible_property.table }
+
+  ${ tangible_property.add_action() }
+---
+table: tangible_property.table
+rows: tangible_property
+columns:
+  - Item: row_item.item
+  - Full name of recipient: row_item.recipient_name
+edit:
+  - item
+  - recipient_name
+show incomplete: True
+---
+generic object: ALPeopleList
+id: revisit list
+continue button field: x.revisit
+question: |
+  Edit your answers about your ${ x.instanceName }
+subquestion: |
+  ${ x.table }
+
+  % if x is children or x.number() < 2:
+  ${ x.add_action() }
+  % endif
+---
+table: children.table
+rows: children
+columns:
+  - Name: row_item.name
+  - Address: row_item.address.on_one_line()
+edit:
+  - name.first
+  - us_address
+  - address.address
+  - gift_amount
+show incomplete: True
+---
+table: giftee.table
+rows: giftee
+columns:
+  - Name: row_item.name
+  - Address: row_item.address.on_one_line()
+  - Gift Amount: currency(row_item.gift_amount)
+edit:
+  - entity_type
+  - name.first
+  - us_address
+  - address.address
+  - gift_amount
+show incomplete: True
+---
+table: representatives.table
+rows: representatives
+columns:
+  - Name: row_item.name
+  - Address: row_item.address.on_one_line()
+edit:
+  - entity_type
+  - name.first
+  - address.address
+show incomplete: True
+---
+table: guardians.table
+rows: guardians
+columns:
+  - Name: row_item.name
+  - Address: row_item.address.on_one_line()
+edit:
+  - name.first
+  - address.address
+show incomplete: True
+---
+table: conservators.table
+rows: conservators
+columns:
+  - Name: row_item.name
+  - Address: row_item.address.on_one_line()
+edit:
+  - entity_type
+  - name.first
+  - address.address
+show incomplete: True
 ---
