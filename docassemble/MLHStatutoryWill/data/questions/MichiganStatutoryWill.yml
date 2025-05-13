@@ -670,6 +670,9 @@ fields:
   - code: |
       giftee[i].name_fields(person_or_business=giftee[i].entity_type)
 validation code: |
+  giftee[i].address.invalidate_attr("address")
+  giftee[i].invalidate_attr("us_address")
+  giftee[i].invalidate_attr("gift_amount")
   giftee[i].delattr("complete")
 ---
 id: us_address
@@ -1296,7 +1299,7 @@ show incomplete: True
 table: giftee.table
 rows: giftee
 columns:
-  - Name: row_item.name
+  - Name: f'{row_item.name} {("(Child)" if row_item in children else "")}'
   - Address: row_item.address.on_one_line()
   - Gift Amount: currency(row_item.gift_amount)
 edit:
