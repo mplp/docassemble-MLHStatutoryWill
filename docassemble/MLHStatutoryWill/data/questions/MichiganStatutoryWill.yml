@@ -677,7 +677,7 @@ validation code: |
 ---
 id: us_address
 generic object: ALPeopleList
-if: (x is children and children[i] in giftee.elements) or x is giftee
+if: x is children or x is giftee
 question: |
   You have named ${ x[i].name } as a cash gift recipient.
 fields:
@@ -685,7 +685,7 @@ fields:
     datatype: yesnoradio
 ---
 generic object: ALPeopleList
-if: ((x is children and children[i] in giftee.elements) or x is giftee) and not x[i].us_address
+if: x is children or x is giftee
 sets:
   - x[i].address.address
   - x[i].address.city
@@ -697,7 +697,7 @@ fields:
   - City, State/Province, Postal Code, Country: x[i].address.city
 ---
 generic object: ALPeopleList
-if: ((x is children and children[i] in giftee.elements) or x is giftee) and x[i].us_address
+if: (x is children or x is giftee) and x[i].us_address
 sets:
   - x[i].address.address
   - x[i].address.city
@@ -714,7 +714,7 @@ fields:
 sets: x[i].gift_amount_in_words
 id: gift_amount
 generic object: ALPeopleList
-if: (x is children and children[i] in giftee.elements) or x is giftee
+if: x is children or x is giftee
 question: |
   Cash gift amount
 subquestion: |
