@@ -1288,12 +1288,8 @@ table: children.table
 rows: children
 columns:
   - Name: row_item.name
-  - Address: row_item.address.on_one_line()
 edit:
   - name.first
-  - us_address
-  - address.address
-  - gift_amount
 show incomplete: True
 ---
 table: giftee.table
