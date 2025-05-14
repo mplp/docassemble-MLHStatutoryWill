@@ -1135,45 +1135,37 @@ review:
     button: |
       **What is your name?**
 
-      First: ${ showifdef('users[0].name.first') }
-
-      Middle: ${ showifdef('users[0].name.middle') }
-
-      Last: ${ showifdef('users[0].name.last') }
+      - ${ users[0] }
   - Edit: |
       users[0].dob
     button: |
       **What is your date of birth?**
 
-      Date: ${ showifdef('users[0].dob') }
+      - ${ users[0].dob }
   - Edit: |
       county_choice
     button: |
       **County**
 
-      What county do you live in?: ${ county_choice }
+      What county do you live in? ${ county_choice }
   - Edit: |
       spouse.there_are_any
     button: |
       **Marriage status**
 
-      Are you married?: ${ word(yesno(spouse.there_are_any)) }
+      Are you married? ${ word(yesno(spouse.there_are_any)) }
   - Edit: |
       spouse[0].name.first
     button: |
-      **What is your spouse's full name?**
+      **What is your spouse's name?**
 
-      First: ${ showifdef('spouse[0].name.first') }
-
-      Middle: ${ showifdef('spouse[0].name.middle') }
-
-      Last: ${ showifdef('spouse[0].name.last') }
+      - ${ spouse[0] }
   - Edit: |
       children.there_are_any
     button: |
-      **Children**
+      **Do you have any living children?**
 
-      Do you have any living children?: ${ word(yesno(children.there_are_any)) }
+      - ${ word(yesno(children.there_are_any)) }
   - Edit: |
       children.revisit
     button: |
@@ -1189,7 +1181,7 @@ review:
     button: |
       **Minor children**
 
-      Do you have a child who is under the age of 18?: ${ word(yesno(has_minor_child)) }
+      Do you have a child who is under the age of 18? ${ word(yesno(has_minor_child)) }
   - Edit: |
       giftee.revisit
     button: |
@@ -1216,7 +1208,7 @@ review:
     button: |
       **Residue distribution**
 
-      How do you want the residue of your estate to be distributed?:
+      How do you want the residue of your estate to be distributed?
 
       % if residue_distribution == 'own_heirs':
       Leave the residue of my estate entirely to my heirs
@@ -1261,7 +1253,7 @@ review:
     button: |
       **Require bond**
 
-      Would you like to require a bond?: ${ word(yesno(require_bond)) }
+      Would you like to require a bond? ${ word(yesno(require_bond)) }
 ---
 id: revisit list tangible_property
 continue button field: tangible_property.revisit
