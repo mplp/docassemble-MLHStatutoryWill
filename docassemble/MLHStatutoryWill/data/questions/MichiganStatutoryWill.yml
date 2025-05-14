@@ -130,7 +130,8 @@ code: |
 
   nav.set_section("signpost_family")
   spouse.number()
-  if children.there_are_any and children.gather(children.target_number):
+  if children.there_are_any:
+    children.gather()
     has_minor_child
 
   nav.set_section("signpost_cash_gifts")
@@ -188,6 +189,7 @@ objects:
       complete_attribute="complete",
       )
   - children: ALPeopleList.using(
+      ask_number=True,
       complete_attribute="complete",
       )
   - giftee: ALPeopleList.using(
@@ -605,6 +607,13 @@ fields:
     datatype: integer
     min: 1
     show if: children.there_are_any
+---
+on change:
+  children.there_are_any: |
+    if not children.there_are_any:
+      invalidate('has_minor_child', 'guardians', 'conservators')
+      children.target_number = 0
+      children.clear()
 ---
 id: child name
 sets:
@@ -1160,6 +1169,12 @@ review:
 
       Last: ${ showifdef('spouse[0].name.last') }
   - Edit: |
+      children.there_are_any
+    button: |
+      **Children**
+
+      Do you have any living children?: ${ word(yesno(children.there_are_any)) }
+  - Edit: |
       children.revisit
     button: |
       **Children**
@@ -1202,7 +1217,7 @@ review:
       **Residue distribution**
 
       How do you want the residue of your estate to be distributed?:
-      
+
       % if residue_distribution == 'own_heirs':
       Leave the residue of my estate entirely to my heirs
       % else:
