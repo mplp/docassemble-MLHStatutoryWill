@@ -132,8 +132,6 @@ code: |
   spouse.number()
   if children.there_are_any and children.gather(children.target_number):
     has_minor_child
-  else:
-    has_minor_child = False
 
   nav.set_section("signpost_cash_gifts")
   giftee.number()
@@ -158,17 +156,11 @@ code: |
     guardians_explanation
     if not guardians.number():
       guardian_warning
-  else:
-    guardians.there_are_any = False
-    guardians.gather()
 
   nav.set_section("signpost_conservators")
   if children and has_minor_child:
     if not conservators.number():
       conservators_warning
-  else:
-    conservators.there_are_any = False
-    conservators.gather()
 
   nav.set_section("signpost_bond")
   require_bond
