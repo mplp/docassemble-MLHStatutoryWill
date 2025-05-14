@@ -751,9 +751,9 @@ fields:
     datatype: currency
 validation code: |
   if x[i].gift_amount <= 0:
-    validation_error("The cash gift amount must be greater than zero.")
+    validation_error("The cash gift amount must be greater than zero.", field='x[i].gift_amount')
   if int(x[i].gift_amount) != x[i].gift_amount:
-    validation_error("You must enter a whole dollar amount with no cents.")
+    validation_error("You must enter a whole dollar amount with no cents.", field='x[i].gift_amount')
   x[i].gift_amount_in_words = capitalize(nice_number(x[i].gift_amount, use_word=True))
 ---
 id: more giftees
