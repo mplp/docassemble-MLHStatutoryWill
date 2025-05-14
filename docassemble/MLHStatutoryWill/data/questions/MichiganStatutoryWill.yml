@@ -74,8 +74,7 @@ code: |
   MLH_intro_agree_no_pii = True
   MLH_standard_intro_pages
   intro_tool_fit
-  if intro_tool_about == 'Exit':
-    command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+  intro_tool_about
   intro_personal_representative
 
   nav.set_section("signpost_qualify")
@@ -88,31 +87,24 @@ code: |
     and understands_signing_a_will
     and force_or_threat
   ):
-    if exit_or_undo == 'Exit':
-      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+    exit_no_valid_will
 
   if (
     was_pressured
     or was_coerced
   ):
-    if go_back_and_change == 'Exit':
-      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+    exit_duress_influence
 
   witness_explanation
   if has_complicated_situations:
-    if complicated_warning == 'Exit':
-      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+    has_complicated_situations_warning
   if has_existing_will:
     if replace_existing_will == 'change_one':
-      if undo_and_change == 'Exit':
-        command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+      exit_modify_will
   if has_trust:
-    if undo_and_change == 'Exit':
-      command('leave', url='https://michiganlegalhelp.org/guide-to-legal-help', new_window=True)
+    exit_no_valid_will
   if has_large_estate:
-    continue_with_large_estate
-    if not continue_with_large_estate:
-      command('leave', url='https://michiganlegalhelp.org/organizations-and-courts/find-lawyer', new_window=True)
+    has_large_estate_warning
 
   nav.set_section("signpost_user")
   users.number()
@@ -120,12 +112,9 @@ code: |
   if difference < 18:
     emancipated_minor
     if not emancipated_minor:
-      if user_minor_status == 'Exit':
-        command('leave', url='https://michiganlegalhelp.org', new_window=True)
-  if not user_state:
-    think_and_change
-    if think_and_change == 'Exit':
-      command('leave', url='https://michiganlegalhelp.org/', new_window=True)
+      exit_minor_status
+  if not michigan_resident:
+    exit_not_michigan_resident
   county_choice
 
   nav.set_section("signpost_family")
@@ -302,9 +291,12 @@ subquestion: |
 field: intro_tool_about
 buttons:
   - Continue
+action buttons:
   - label: Exit
-    value: Exit
+    action: https://michiganlegalhelp.org/guide-to-legal-help
+    new window: True
     color: danger
+    icon: right-from-bracket
 ---
 id: intro_personal_representative
 question: |
@@ -339,14 +331,18 @@ fields:
   - Can you name your closest relatives, such as your spouse and children?: closest_relatives
     datatype: yesnoradio
 ---
-id: exit_or_undo
-field: exit_or_undo
+id: exit_no_valid_will
+event: exit_no_valid_will
 question: |
   Sorry, you may not be able to create a valid will.
 subquestion: |
   You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you. If you think you made a mistake, tap **Undo** and change the answer to this question.
-buttons:
-  - Exit
+action buttons:
+  - label: Exit
+    action: https://michiganlegalhelp.org/guide-to-legal-help
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
 id: understands_making_a_will
 question: |
@@ -386,8 +382,8 @@ fields:
   - Has anyone told you what to put in your will?: was_pressured
     datatype: yesnoradio
 ---
-id: go_back_and_change
-field: go_back_and_change
+id: exit_duress_influence
+event: exit_duress_influence
 question: |
   Sorry, it sounds like you may be under duress or improper influence from another person.
 subquestion: |
@@ -396,8 +392,12 @@ subquestion: |
   If you are being abused, neglected, or exploited, you can contact your local Adult Protective Services office at 855-444-3911. If you think you are the victim of a crime by the person who is person who is pressuring you, you can call the police.
 
   If you think you made a mistake, tap **Undo** and change the answer to this question.
-buttons:
-  - Exit
+action buttons:
+  - label: Exit
+    action: https://michiganlegalhelp.org/guide-to-legal-help
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
 id: was_coerced
 question: |
@@ -432,8 +432,8 @@ fields:
   - Are any of these statements true for you?: has_complicated_situations
     datatype: yesnoradio
 ---
-id: complicated_warning
-field: complicated_warning
+id: has_complicated_situations_warning
+field: has_complicated_situations_warning
 question: |
   **Warning!**
 subquestion: |
@@ -442,7 +442,12 @@ subquestion: |
   If you have a low income and are over 60 years old, your local legal aid office may be able to help you. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you.
 buttons:
   - Continue
-  - Exit
+action buttons:
+  - label: Exit
+    action: https://michiganlegalhelp.org/guide-to-legal-help
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
 id: has_existing_will
 question: |
@@ -463,16 +468,20 @@ fields:
       - Replace my existing will with a new ${ MLH_interview_short_title }: replace_one
       - Change my existing will: change_one
 ---
-id: undo_and_change
-field: undo_and_change
+id: exit_modify_will
+event: exit_modify_will
 question: |
   Sorry, this tool cannot help you add to or change an existing will.
 subquestion: |
   You may want to contact a lawyer for help. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you.
 
   If you think you made a mistake, tap **Undo** and change the answer to this question.
-buttons:
-  - Exit
+action buttons:
+  - label: Exit
+    action: https://michiganlegalhelp.org/guide-to-legal-help
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
 id: has_trust
 question: |
@@ -492,14 +501,20 @@ fields:
   - Do you have a large amount of property in your estate?: has_large_estate
     datatype: yesnoradio
 ---
-id: continue_with_large_estate
+id: has_large_estate_warning
+field: has_large_estate_warning
 question: |
   **Warning!**
 subquestion: |
   You may want to talk with a lawyer before making a will if you have a large amount of property. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) on Michigan Legal Help to find a lawyer or a legal services office near you
-fields:
-  - Do you want to continue making a ${ MLH_interview_short_title }?: continue_with_large_estate
-    datatype: yesnoradio
+buttons:
+  - Continue
+action buttons:
+  - label: Exit
+    action: https://michiganlegalhelp.org/organizations-and-courts/find-lawyer
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
 sets:
   - users[0].name.first
@@ -542,21 +557,38 @@ content: |
 
   If this date is wrong, tap **Undo** to change it.
 ---
-id: user_minor_status
-field: user_minor_status
+id: exit_minor_status
+event: exit_minor_status
 question: |
   Sorry, you cannot use this tool to create a will.
 subquestion: |
   You must be at least 18 years old or an emancipated minor to create a will in Michigan. If you think you made a mistake, tap **Undo** and change the answer to this question.
-buttons:
-  - Exit
+action buttons:
+  - label: Exit
+    action: https://michiganlegalhelp.org/guide-to-legal-help
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
-id: user_state
+id: michigan_resident
 question: |
   Your State
 fields:
-  - Do you live in Michigan?: user_state
+  - Do you live in Michigan?: michigan_resident
     datatype: yesnoradio
+---
+id: exit_not_michigan_resident
+event: exit_not_michigan_resident
+question: |
+  Sorry, you cannot use this tool if you are not a current Michigan resident.
+subquestion: |
+  If you think you made a mistake, tap **Undo** and change the answer to this question.
+action buttons:
+  - label: Exit
+    action: https://www.lsc.gov/about-lsc/what-legal-aid/i-need-legal-help
+    new window: True
+    color: danger
+    icon: right-from-bracket
 ---
 id: county_choice
 question: |
@@ -565,15 +597,6 @@ fields:
   - What county do you live in?: county_choice
     code: |
       court_list._load_courts()["address_county"].unique()
----
-id: think_and_change
-field: think_and_change
-question: |
-  Sorry, you cannot use this tool if you are not a current Michigan resident.
-subquestion: |
-  If you think you made a mistake, tap **Undo** and change the answer to this question.
-buttons:
-  - Exit
 ---
 id: has_spouse
 question: |
