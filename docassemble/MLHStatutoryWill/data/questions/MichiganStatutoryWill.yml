@@ -1110,9 +1110,9 @@ continue button field: MLH_outro_saving_answers
 progress: 99
 ---
 objects:
-  - michigan_statutory_will_document: ALDocument.using(title="Statutory Will", filename=f"Michigan_Statutory_Will_for_{space_to_underscore(str(users).replace('.', ''))}.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
-  - michigan_statutory_will_instructions: ALDocument.using(title="Instructions", filename="Michigan_Statutory_Will_Instructions.docx", enabled=True, has_addendum=False)
-  - al_user_bundle: ALDocumentBundle.using(elements=[michigan_statutory_will_instructions, michigan_statutory_will_document], filename="Michigan_Statutory_Will_and_Instructions", title="Will and instructions", enabled=True)
+  - michigan_statutory_will_document: ALDocument.using(title="Statutory Will", filename=f"Michigan Statutory Will for {str(users).replace('.', '')}.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
+  - michigan_statutory_will_instructions: ALDocument.using(title="Instructions", filename="Michigan Statutory Will Instructions.docx", enabled=True, has_addendum=False)
+  - al_user_bundle: ALDocumentBundle.using(elements=[michigan_statutory_will_instructions, michigan_statutory_will_document], filename="Michigan Statutory Will and Instructions", title="Will and instructions", enabled=True)
 ---
 attachments:
   - name: Michigan Statutory Will for ${users}
