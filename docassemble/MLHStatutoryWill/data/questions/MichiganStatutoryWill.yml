@@ -152,12 +152,14 @@ code: |
   representatives.number()
 
   nav.set_section("signpost_guardians")
+  guardians
   if children and has_minor_child:
     guardians_explanation
     if not guardians.number():
       guardian_warning
 
   nav.set_section("signpost_conservators")
+  conservators
   if children and has_minor_child:
     if not conservators.number():
       conservators_warning
