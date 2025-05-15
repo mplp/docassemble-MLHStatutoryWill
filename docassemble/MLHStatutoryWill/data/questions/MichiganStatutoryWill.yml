@@ -793,7 +793,7 @@ id: list_of_property_receiver
 question: |
   Enter a specific item of your personal property or household goods, and the name of the person you want to receive that item.
 subquestion: |
-  Be as clear as possible in describing both the item and the person who should receive it.
+  Be as clear as possible in describing both the item and the person who should receive it. For example, say "my diamond solitaire and gold engagement ring" instead of "my rings." Give the full name of the person, not just "my next-door neighbor" or "my nephew."
 
   % if tangible_property.number_gathered() > 1:
   So far, you have listed:
