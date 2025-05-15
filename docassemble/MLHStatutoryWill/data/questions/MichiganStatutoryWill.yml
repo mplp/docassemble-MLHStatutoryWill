@@ -451,7 +451,7 @@ action buttons:
 ---
 id: has_existing_will
 question: |
-  Existing wills.
+  Existing wills
 fields:
   - Do you already have a will?: has_existing_will
     datatype: yesnoradio
