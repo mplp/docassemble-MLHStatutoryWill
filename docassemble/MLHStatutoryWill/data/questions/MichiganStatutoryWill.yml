@@ -812,7 +812,7 @@ fields:
         tangible_property.number_gathered() <= 1
   - Full name of recipient: tangible_property[i].recipient_name
     input type: combobox
-    hint: Fill in or select previous
+    hint: ""
     show if:
       code: |
         tangible_property.number_gathered() > 1
