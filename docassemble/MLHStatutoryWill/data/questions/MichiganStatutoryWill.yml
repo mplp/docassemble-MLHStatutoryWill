@@ -494,7 +494,7 @@ fields:
 ---
 id: has_large_estate
 question: |
-  Think about your estate.
+  Think about your estate
 subquestion: |
   Think about your real estate, personal property, retirement plan benefits, investments such as stocks and bonds, or life insurance.
 fields:
