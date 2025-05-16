@@ -54,7 +54,7 @@ setup(name='docassemble.MLHStatutoryWill',
       url='https://docassemble.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=[],
+      install_requires=['docassemble.ALAnyState @ git+https://github.com/SuffolkLITLab/docassemble-ALAnyState.git@main', 'docassemble.ALToolbox @ git+https://github.com/SuffolkLITLab/docassemble-ALToolbox.git@main', 'docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main', 'docassemble.mlhframework @ git+https://github.com/mplp/docassemble-mlhframework.git@main'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/MLHStatutoryWill/', package='docassemble.MLHStatutoryWill'),
      )
