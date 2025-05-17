@@ -293,7 +293,7 @@ buttons:
   - Continue
 action buttons:
   - label: Exit
-    action: https://michiganlegalhelp.org/guide-to-legal-help
+    action: https://michiganlegalhelp.org/resources/wills-and-life-planning/making-will
     new window: True
     color: danger
     icon: right-from-bracket
