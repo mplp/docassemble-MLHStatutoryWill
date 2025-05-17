@@ -134,8 +134,9 @@ code: |
   nav.set_section("signpost_residue")
   residue_general_explanation
   residue_heirs_explanation
-  residue_distribution_explanation
-  residue_distribution
+  if spouse:
+    residue_distribution_explanation
+    residue_distribution
 
   nav.set_section("signpost_representatives")
   personal_representatives
