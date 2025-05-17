@@ -1207,22 +1207,26 @@ review:
     button: |
       **Cash gift recipients**
 
+      % if giftee:
       % for item in giftee:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       tangible_property.revisit
     button: |-
       **Tangible Property**
 
+      % if tangible_property:
       % for item in tangible_property:
-      - ${ item.item } - ${ item.recipient_name }
+      - ${ item.item } &#x2192; ${ item.recipient_name }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       residue_distribution
     button: |
@@ -1240,34 +1244,40 @@ review:
     button: |
       **Personal representatives**
 
+      % if representatives:
       % for item in representatives:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       guardians.revisit
     button: |
       **Guardians**
 
+      % if guardians:
       % for item in guardians:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       conservators.revisit
     button: |
       **Conservators**
 
+      % if conservators:
       % for item in conservators:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       require_bond
     button: |
@@ -1293,6 +1303,7 @@ edit:
   - item
   - recipient_name
 show incomplete: True
+confirm: True
 ---
 generic object: ALPeopleList
 id: revisit list
@@ -1313,6 +1324,7 @@ columns:
 edit:
   - name.first
 show incomplete: True
+confirm: True
 ---
 table: giftee.table
 rows: giftee
@@ -1327,6 +1339,7 @@ edit:
   - address.address
   - gift_amount
 show incomplete: True
+confirm: True
 ---
 table: representatives.table
 rows: representatives
@@ -1338,6 +1351,7 @@ edit:
   - name.first
   - address.address
 show incomplete: True
+confirm: True
 ---
 table: guardians.table
 rows: guardians
@@ -1348,6 +1362,7 @@ edit:
   - name.first
   - address.address
 show incomplete: True
+confirm: True
 ---
 table: conservators.table
 rows: conservators
@@ -1359,4 +1374,5 @@ edit:
   - name.first
   - address.address
 show incomplete: True
+confirm: True
 ---
