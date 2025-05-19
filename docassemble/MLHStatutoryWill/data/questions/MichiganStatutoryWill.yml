@@ -876,8 +876,8 @@ fields:
   - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
     choices:
-      - Leave the residue of my estate entirely to my heirs: own_heirs
-      - Divide it evenly between my heirs and my spouse's heirs: own_heirs_and_spouse_heirs
+      - I want all my property to be given to my heirs.: own_heirs
+      - I want half my property to be given to my heirs and half to be given to my spouse's heirs.: own_heirs_and_spouse_heirs
 ---
 id: personal_representatives
 question: |
