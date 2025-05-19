@@ -134,8 +134,9 @@ code: |
   nav.set_section("signpost_residue")
   residue_general_explanation
   residue_heirs_explanation
-  residue_distribution_explanation
-  residue_distribution
+  if spouse:
+    residue_distribution_explanation
+    residue_distribution
 
   nav.set_section("signpost_representatives")
   personal_representatives
@@ -293,7 +294,7 @@ buttons:
   - Continue
 action buttons:
   - label: Exit
-    action: https://michiganlegalhelp.org/guide-to-legal-help
+    action: https://michiganlegalhelp.org/resources/wills-and-life-planning/making-will
     new window: True
     color: danger
     icon: right-from-bracket
@@ -806,18 +807,15 @@ subquestion: |
   % endif
 fields:
   - Item: tangible_property[i].item
-  - Full name of recipient: tangible_property[i].recipient_name
-    show if:
-      code: |
-        tangible_property.number_gathered() <= 1
-  - Full name of recipient: tangible_property[i].recipient_name
-    input type: combobox
-    hint: ""
+  - Select previous recipient: tangible_property[i].recipient_name
+    disable others:
+      - tangible_property[i].recipient_name
     show if:
       code: |
         tangible_property.number_gathered() > 1
     code: |
       set(item.recipient_name for item in tangible_property.complete_elements())
+  - Full name of recipient: tangible_property[i].recipient_name
 ---
 id: ask_more_items
 question: |
@@ -878,8 +876,8 @@ fields:
   - How do you want the residue of your estate to be distributed if no spouse, children, or descendant of your children survives you?: residue_distribution
     datatype: radio
     choices:
-      - Leave the residue of my estate entirely to my heirs: own_heirs
-      - Divide it evenly between my heirs and my spouse's heirs: own_heirs_and_spouse_heirs
+      - I want all my property to be given to my heirs.: own_heirs
+      - I want half my property to be given to my heirs and half to be given to my spouse's heirs.: own_heirs_and_spouse_heirs
 ---
 id: personal_representatives
 question: |
@@ -1210,22 +1208,26 @@ review:
     button: |
       **Cash gift recipients**
 
+      % if giftee:
       % for item in giftee:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       tangible_property.revisit
     button: |-
       **Tangible Property**
 
+      % if tangible_property:
       % for item in tangible_property:
-      - ${ item.item } - ${ item.recipient_name }
+      - ${ item.item } &#x2192; ${ item.recipient_name }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       residue_distribution
     button: |
@@ -1243,34 +1245,40 @@ review:
     button: |
       **Personal representatives**
 
+      % if representatives:
       % for item in representatives:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       guardians.revisit
     button: |
       **Guardians**
 
+      % if guardians:
       % for item in guardians:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       conservators.revisit
     button: |
       **Conservators**
 
+      % if conservators:
       % for item in conservators:
       - ${ item }
           - ${ item.address.on_one_line() }
+      % endfor
       % else:
       ${ word("None") }
-      % endfor
+      % endif
   - Edit: |
       require_bond
     button: |
@@ -1296,6 +1304,7 @@ edit:
   - item
   - recipient_name
 show incomplete: True
+confirm: True
 ---
 generic object: ALPeopleList
 id: revisit list
@@ -1316,6 +1325,7 @@ columns:
 edit:
   - name.first
 show incomplete: True
+confirm: True
 ---
 table: giftee.table
 rows: giftee
@@ -1330,6 +1340,7 @@ edit:
   - address.address
   - gift_amount
 show incomplete: True
+confirm: True
 ---
 table: representatives.table
 rows: representatives
@@ -1341,6 +1352,7 @@ edit:
   - name.first
   - address.address
 show incomplete: True
+confirm: True
 ---
 table: guardians.table
 rows: guardians
@@ -1351,6 +1363,7 @@ edit:
   - name.first
   - address.address
 show incomplete: True
+confirm: True
 ---
 table: conservators.table
 rows: conservators
@@ -1362,4 +1375,5 @@ edit:
   - name.first
   - address.address
 show incomplete: True
+confirm: True
 ---
