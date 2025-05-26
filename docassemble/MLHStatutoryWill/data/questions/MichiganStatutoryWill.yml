@@ -19,9 +19,6 @@ metadata:
     - Anshuman Tiwari
     - Kelly McGuire
 ---
-code:  |
-  github_repo_name = 'docassemble-MLHStatutoryWill' if get_config('debug') else 'docassemble-UserFeedback'
----
 features:
   labels above fields: True
 ---
@@ -40,6 +37,9 @@ sections:
   - signpost_done: "Done"
   - review_full: "✎ <u>Review / Edit</u>"
 ---
+code:  |
+  github_repo_name = 'docassemble-MLHStatutoryWill' if get_config('debug') else 'docassemble-UserFeedback'
+---
 code: |
   survey_link_url_only = "https://www.surveymonkey.com/r/XZZG2KW"
 ---
@@ -55,8 +55,6 @@ code: |
   MLH_time_min = 15
   MLH_time_max = 30
 ---
-comment: |
-  resource_page_url_only needs to be updated once Emily sends the correct link
 code: |
   resource_page_url_only = "https://michiganlegalhelp.org/node/7879"
   resource_page_name = "Making a Will"
