@@ -19,9 +19,6 @@ metadata:
     - Anshuman Tiwari
     - Kelly McGuire
 ---
-code:  |
-  github_repo_name = 'docassemble-MLHStatutoryWill' if get_config('debug') else 'docassemble-UserFeedback'
----
 features:
   labels above fields: True
 ---
@@ -40,13 +37,16 @@ sections:
   - signpost_done: "Done"
   - review_full: "✎ <u>Review / Edit</u>"
 ---
+code:  |
+  github_repo_name = 'docassemble-MLHStatutoryWill' if get_config('debug') else 'docassemble-UserFeedback'
+---
 code: |
-  survey_link_url_only = "https://www.surveymonkey.com/EXAMPLE_URL"
+  survey_link_url_only = "https://www.surveymonkey.com/r/XZZG2KW"
 ---
 template: survey_embed_script
 content: |
   <script>
-    UNIQUE SCRIPT GOES HERE
+    (function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd08QHVw1Udpw8NOSW9kW336RFTqaG57NKDJYWjwgENNv.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");
   </script>
 ---
 # set intro landing screen variables
@@ -55,11 +55,9 @@ code: |
   MLH_time_min = 15
   MLH_time_max = 30
 ---
-comment: |
-  resource_page_url_only needs to be updated once Emily sends the correct link
 code: |
-  resource_page_url_only = "https://michiganlegalhelp.org/node/1083"
-  resource_page_name = MLH_interview_short_title
+  resource_page_url_only = "https://michiganlegalhelp.org/node/7879"
+  resource_page_name = "Making a Will"
 ---
 # -----------------------------------------------------------------------------
 ## interview block
