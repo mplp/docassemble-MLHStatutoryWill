@@ -704,7 +704,7 @@ fields:
 validation code: |
   if x[i].us_address_yn:
     x[i].address.country = "US"
-  else:
+  elif not x[i].us_address_yn and x[i].address.attr("country") == "US":
     x[i].address.country = ""
 ---
 id: children_or_giftee_address
@@ -720,7 +720,7 @@ question: |
   Enter the address for ${ x[i].name.first }.
 fields:
   - code: |
-      x[i].address_fields(country_code=x[i].address.country, show_country=not x[i].address.country)
+      x[i].address_fields(country_code=x[i].address.attr("country"), show_country=x[i].address.attr("country") != "US")
 ---
 id: gift_amount
 sets: x[i].gift_amount_in_words
@@ -1319,7 +1319,7 @@ columns:
 edit:
   - entity_type
   - name.first
-  - us_address
+  - us_address_yn
   - address.address
   - gift_amount
 show incomplete: True
