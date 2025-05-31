@@ -527,10 +527,10 @@ fields:
 id: users[0].birthdate
 field: users[0].birthdate
 question: |
-  What is your date of birth?
+  When were you born?
 fields:
-  - Date: users[0].birthdate
-    datatype: date
+  - Birthdate: users[0].birthdate
+    datatype: BirthDate
 ---
 id: emancipated_minor
 question: |
