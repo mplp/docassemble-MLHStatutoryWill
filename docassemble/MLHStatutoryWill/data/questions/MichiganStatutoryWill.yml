@@ -535,11 +535,11 @@ fields:
 id: emancipated_minor
 question: |
   It looks like you are under the age of 18.
-subquestion: |
-  ${ collapse_template(dob_explanation_template) }
 fields:
   - Are you an emancipated minor?: emancipated_minor
     datatype: yesnoradio
+  - note: |
+      ${ collapse_template(dob_explanation_template) }
 ---
 id: dob_explanation_template
 template: dob_explanation_template
