@@ -720,7 +720,7 @@ question: |
   Enter the address for ${ x[i].name.first }.
 fields:
   - code: |
-      x[i].address_fields(country_code=x[i].address.attr("country"), show_country=x[i].address.attr("country") != "US")
+      x[i].address_fields(country_code=getattr(x[i].address, "country", "Select"), show_country=x[i].address.attr("country") != "US")
 ---
 id: gift_amount
 sets: x[i].gift_amount_in_words
