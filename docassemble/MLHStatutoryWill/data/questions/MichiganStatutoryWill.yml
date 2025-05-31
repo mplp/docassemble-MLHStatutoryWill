@@ -106,8 +106,8 @@ code: |
 
   nav.set_section("signpost_user")
   users.number()
-  users[0].dob
-  if difference < 18:
+  users[0].birthdate
+  if users[0].age_in_years() < 18:
     emancipated_minor
     if not emancipated_minor:
       exit_minor_status
@@ -524,21 +524,13 @@ fields:
   - code: |
       users[0].name_fields()
 ---
-id: users[0].dob
-field: users[0].dob
+id: users[0].birthdate
+field: users[0].birthdate
 question: |
   What is your date of birth?
 fields:
-  - Date: users[0].dob
+  - Date: users[0].birthdate
     datatype: date
----
-code: |
-  from datetime import date
-  from dateutil.relativedelta import relativedelta
-  date1 = users[0].dob
-  date2 = today()
-  date3 = users[0].dob + relativedelta(years=18)
-  difference = date2.year - date1.year - ((date2.month, date2.day) < (date1.month, date1.day))
 ---
 id: emancipated_minor
 question: |
@@ -552,7 +544,7 @@ id: dob_explanation_template
 template: dob_explanation_template
 subject: Why do you think I am under 18?
 content: |
-  You entered ${ users[0].dob } as your date of birth.
+  You entered ${ users[0].birthdate } as your date of birth.
 
   If this date is wrong, tap **Undo** to change it.
 ---
@@ -1156,11 +1148,11 @@ review:
 
       - ${ users[0] }
   - Edit: |
-      users[0].dob
+      users[0].birthdate
     button: |
       **What is your date of birth?**
 
-      - ${ users[0].dob }
+      - ${ users[0].birthdate }
   - Edit: |
       county_choice
     button: |
