@@ -525,7 +525,6 @@ fields:
       users[0].name_fields()
 ---
 id: users[0].birthdate
-field: users[0].birthdate
 question: |
   When were you born?
 fields:
