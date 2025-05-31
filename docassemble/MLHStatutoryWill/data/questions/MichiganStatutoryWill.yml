@@ -211,7 +211,7 @@ code: |
   children[i].entity_type = 'person'
   children[i].name.first
   if children[i] in giftee.elements:
-    children[i].us_address
+    children[i].us_address_yn
     children[i].address.address
     children[i].gift_amount
   children[i].complete = True
@@ -219,7 +219,7 @@ code: |
 code: |
   giftee[i].entity_type
   giftee[i].name.first
-  giftee[i].us_address
+  giftee[i].us_address_yn
   giftee[i].address.address
   giftee[i].gift_amount
   giftee[i].complete = True
@@ -689,48 +689,41 @@ fields:
       giftee[i].name_fields(person_or_business=giftee[i].entity_type)
 validation code: |
   giftee[i].address.invalidate_attr("address")
-  giftee[i].invalidate_attr("us_address")
+  giftee[i].invalidate_attr("us_address_yn")
   giftee[i].invalidate_attr("gift_amount")
   giftee[i].delattr("complete")
 ---
-id: us_address
+id: children_or_giftee_us_address_yn
 generic object: ALPeopleList
 if: x is children or x is giftee
 question: |
   You have named ${ x[i].name } as a cash gift recipient.
 fields:
-  - Does ${ x[i].name.first } have a U.S. address?: x[i].us_address
+  - Does ${ x[i].name.first } have a U.S. address?: x[i].us_address_yn
     datatype: yesnoradio
+validation code: |
+  if x[i].us_address_yn:
+    x[i].address.country = "US"
+  else:
+    x[i].address.country = ""
 ---
+id: children_or_giftee_address
 generic object: ALPeopleList
 if: x is children or x is giftee
-sets:
-  - x[i].address.address
-  - x[i].address.city
-id: gift_address_intl
-question: |
-  Enter the address for ${ x[i].name.first }.
-fields:
-  - Street Address: x[i].address.address
-  - City, State/Province, Postal Code, Country: x[i].address.city
----
-generic object: ALPeopleList
-if: (x is children or x is giftee) and x[i].us_address
 sets:
   - x[i].address.address
   - x[i].address.city
   - x[i].address.zip
   - x[i].address.unit
   - x[i].address.state
-id: gift_address_us
 question: |
   Enter the address for ${ x[i].name.first }.
 fields:
   - code: |
-      x[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
+      x[i].address_fields(country_code=x[i].address.country, show_country=not x[i].address.country)
 ---
-sets: x[i].gift_amount_in_words
 id: gift_amount
+sets: x[i].gift_amount_in_words
 generic object: ALPeopleList
 if: x is children or x is giftee
 question: |
