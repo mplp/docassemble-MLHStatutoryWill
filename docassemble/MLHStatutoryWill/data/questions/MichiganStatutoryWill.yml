@@ -106,8 +106,8 @@ code: |
 
   nav.set_section("signpost_user")
   users.number()
-  users[0].dob
-  if difference < 18:
+  users[0].birthdate
+  if users[0].age_in_years() < 18:
     emancipated_minor
     if not emancipated_minor:
       exit_minor_status
@@ -211,7 +211,7 @@ code: |
   children[i].entity_type = 'person'
   children[i].name.first
   if children[i] in giftee.elements:
-    children[i].us_address
+    children[i].us_address_yn
     children[i].address.address
     children[i].gift_amount
   children[i].complete = True
@@ -219,7 +219,7 @@ code: |
 code: |
   giftee[i].entity_type
   giftee[i].name.first
-  giftee[i].us_address
+  giftee[i].us_address_yn
   giftee[i].address.address
   giftee[i].gift_amount
   giftee[i].complete = True
@@ -524,21 +524,12 @@ fields:
   - code: |
       users[0].name_fields()
 ---
-id: users[0].dob
-field: users[0].dob
+id: users[0].birthdate
 question: |
-  What is your date of birth?
+  When were you born?
 fields:
-  - Date: users[0].dob
-    datatype: date
----
-code: |
-  from datetime import date
-  from dateutil.relativedelta import relativedelta
-  date1 = users[0].dob
-  date2 = today()
-  date3 = users[0].dob + relativedelta(years=18)
-  difference = date2.year - date1.year - ((date2.month, date2.day) < (date1.month, date1.day))
+  - Birthdate: users[0].birthdate
+    datatype: BirthDate
 ---
 id: emancipated_minor
 question: |
@@ -546,13 +537,14 @@ question: |
 fields:
   - Are you an emancipated minor?: emancipated_minor
     datatype: yesnoradio
-under: ${ collapse_template(dob_explanation_template) }
+  - note: |
+      ${ collapse_template(dob_explanation_template) }
 ---
 id: dob_explanation_template
 template: dob_explanation_template
 subject: Why do you think I am under 18?
 content: |
-  You entered ${ users[0].dob } as your date of birth.
+  You entered ${ users[0].birthdate } as your date of birth.
 
   If this date is wrong, tap **Undo** to change it.
 ---
@@ -697,48 +689,41 @@ fields:
       giftee[i].name_fields(person_or_business=giftee[i].entity_type)
 validation code: |
   giftee[i].address.invalidate_attr("address")
-  giftee[i].invalidate_attr("us_address")
+  giftee[i].invalidate_attr("us_address_yn")
   giftee[i].invalidate_attr("gift_amount")
   giftee[i].delattr("complete")
 ---
-id: us_address
+id: children_or_giftee_us_address_yn
 generic object: ALPeopleList
 if: x is children or x is giftee
 question: |
   You have named ${ x[i].name } as a cash gift recipient.
 fields:
-  - Does ${ x[i].name.first } have a U.S. address?: x[i].us_address
+  - Does ${ x[i].name.first } have a U.S. address?: x[i].us_address_yn
     datatype: yesnoradio
+validation code: |
+  if x[i].us_address_yn:
+    x[i].address.country = "US"
+  elif not x[i].us_address_yn and x[i].address.attr("country") == "US":
+    x[i].address.country = ""
 ---
+id: children_or_giftee_address
 generic object: ALPeopleList
 if: x is children or x is giftee
-sets:
-  - x[i].address.address
-  - x[i].address.city
-id: gift_address_intl
-question: |
-  Enter the address for ${ x[i].name.first }.
-fields:
-  - Street Address: x[i].address.address
-  - City, State/Province, Postal Code, Country: x[i].address.city
----
-generic object: ALPeopleList
-if: (x is children or x is giftee) and x[i].us_address
 sets:
   - x[i].address.address
   - x[i].address.city
   - x[i].address.zip
   - x[i].address.unit
   - x[i].address.state
-id: gift_address_us
 question: |
   Enter the address for ${ x[i].name.first }.
 fields:
   - code: |
-      x[i].address_fields(country_code=AL_DEFAULT_COUNTRY, default_state=AL_DEFAULT_STATE)
+      x[i].address_fields(country_code=getattr(x[i].address, "country", "Select"), show_country=x[i].address.attr("country") != "US")
 ---
-sets: x[i].gift_amount_in_words
 id: gift_amount
+sets: x[i].gift_amount_in_words
 generic object: ALPeopleList
 if: x is children or x is giftee
 question: |
@@ -1156,11 +1141,11 @@ review:
 
       - ${ users[0] }
   - Edit: |
-      users[0].dob
+      users[0].birthdate
     button: |
       **What is your date of birth?**
 
-      - ${ users[0].dob }
+      - ${ users[0].birthdate }
   - Edit: |
       county_choice
     button: |
@@ -1334,7 +1319,7 @@ columns:
 edit:
   - entity_type
   - name.first
-  - us_address
+  - us_address_yn
   - address.address
   - gift_amount
 show incomplete: True
