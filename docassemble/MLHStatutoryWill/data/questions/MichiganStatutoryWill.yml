@@ -685,37 +685,51 @@ id: residue_general_explanation
 question: |
   Everything else goes to your family
 subquestion: |
+  % if spouse:
   Everything you own when you die that you haven't already given away in this will is called the "residue" of your estate. This doesn't include property that automatically transfers to someone else when you die (like joint bank accounts or homes with survivorship rights).
 
   The cash gifts and personal items you listed will be given out first. The rest goes to your spouse if you're married when you die. If you're not married, it goes to your children. If any of your children died before you, but had children who are still living (your grandchildren), they get equal shares of what your child would have inherited.
 
   If you do not have a spouse, children, or grandchildren, your property goes to other relatives. On the next page, you'll choose how.
+
+  % else:
+  Everything you own when you die that you haven't already given away in this will is called the "residue" of your estate. This doesn't include property that automatically transfers to someone else when you die (like joint bank accounts or homes with survivorship rights).
+
+  The cash gifts and personal items you listed will be given out first. If you have children when you die, the rest goes to your children in equal parts. If any of your children die before you but have children who are still living (your grandchildren), they get equal shares of what your child would have inherited.
+  If you do not have children or other descendants (grandchildren, great-grandchildren, etc.) when you die, your property goes to other relatives in this order:
+
+  * Your parents, or if they're gone, your siblings, nieces, and nephews
+  * If none of those survive, your grandparents, or if they're gone, your aunts, uncles, and cousins
+
+  If no relatives can be found, your property goes to the state of Michigan.
+
+  % endif
 continue button field: residue_general_explanation
 ---
 id: residue_distribution
 question: |
   If you have no surviving spouse, children, or grandchildren
 subquestion: |
-  If you do not have a spouse, children, or other descendants (grandchildren, great-grandchildrn, etc) when you die, your property goes to other relatives in this order:
+  If you do not have a spouse, children, or other descendants (grandchildren, great-grandchildren, etc) when you die, your property goes to other relatives in this order:
  
-  * Your parents, or if they're gone, your siblings, nieces, and nephews
-  * If none of those survive, your grandparents, or if they're gone, your aunts, uncles, and cousins
+  * Your parents, or if they’re gone, your siblings, nieces, and nephews
+  * If none of those survive, your grandparents, or if they’re gone, your aunts, uncles, and cousins
 
   If no relatives can be found, your property goes to the state of Michigan.
 
-  You can also choose to give half of the property to your spouse's relatives in the same order-- first to their children, then to their parents, siblings, nices and nephews, then to their grandparents, aunts, uncles and cousins.
+  You can also choose to give half of the property to your spouse’s relatives in the same order: first to their children, then to their parents, siblings, nieces and nephews, then to their grandparents, aunts, uncles, and cousins.
 
   You have two choices for how to distribute your property:
 
   * **Option 1:** Give everything to your relatives.
   
-  * **Option 2:** Split everything evenly between your relatives and your spouse's relatives (who inherit in the same order). Note: If you have stepchildren, this is the only way they can inherit using this will except by leaving them cash gifts or specific personal property items in the sections you've already filled out.
+  * **Option 2:** Split everything evenly between your relatives and your spouse’s relatives (who inherit in the same order). Note: If you have stepchildren, this is the only way they can inherit using this will except, by leaving them cash gifts or specific personal property items in the sections you’ve already filled out.
 
 fields:
   - How do you want your property distributed?: residue_distribution
     datatype: radio
     choices:
-      - Give everything to your relatives: own_heirs
+      - Give everything to my relatives: own_heirs
       - Split evenly between my relatives and my spouse's relatives: own_heirs_and_spouse_heirs
 ---
 id: personal_representatives
@@ -927,11 +941,23 @@ continue button field: conservators_warning
 ---
 id: require_bond
 question: |
-  You can require bond for your personal representative and any conservator.
+  Do you want to require a bond?
 subquestion: |
-  Bond is insurance that protects your heirs in case your personal representative or conservator misuses or steals assets from the estate. It's not required. If you request bond, it will be paid for from the assets in your estate.
+  Bond is like insurance that protects your family if your personal representative or conservator steals or mismanages money from your estate. If you require bond, your personal representative or conservator will use money from your estate to pay a bond company for this insurance. The fee is not returned-- this is the cost for proteciton.
+
+  **You might want bond if:**
+
+  * Your estate has a lot of money or valuable property
+  * You're worried about the people you chose as personal representative or conservator
+  * You want extra peace of mind for your family
+
+  **You might not want bond if:**
+
+  * You completely trust your personal representative and conservator
+  * Your estate is small
+  * You don't want to reduce what your family inherits by the bond cost
 fields:
-  - Would you like to require a bond?: require_bond
+  - Do you want to require a bond?: require_bond
     datatype: yesnoradio
 ---
 if: not user_logged_in()
@@ -1006,15 +1032,15 @@ review:
   - Edit: |
       county_choice
     button: |
-      **County**
+      **What county do you live in?**
 
-      What county do you live in? ${ county_choice }
+      - ${ county_choice }
   - Edit: |
       spouse.there_are_any
     button: |
-      **Marriage status**
+      **Are you married?**
 
-      Are you married? ${ word(yesno(spouse.there_are_any)) }
+      - ${ word(yesno(spouse.there_are_any)) }
   - Edit: |
       spouse[0].name.first
     button: |
@@ -1032,17 +1058,19 @@ review:
     button: |
       **Children**
 
-      % for item in children:
-      - ${ item }
+      % if children:
+        % for item in children:
+        - ${ item }
+        % endfor
       % else:
-      ${ word("None") }
-      % endfor
+      - ${ word("None") }
+      % endif
   - Edit: |
       has_minor_child
     button: |
-      **Minor children**
+      **Do you have a child who is under the age of 18?**
 
-      Do you have a child who is under the age of 18? ${ word(yesno(has_minor_child)) }
+      - ${ word(yesno(has_minor_child)) }
   - Edit: |
       giftee.revisit
     button: |
@@ -1054,7 +1082,7 @@ review:
           - ${ item.address.on_one_line() }
       % endfor
       % else:
-      ${ word("None") }
+      - ${ word("None") }
       % endif
   - Edit: |
       tangible_property.revisit
@@ -1066,19 +1094,19 @@ review:
       - ${ item.item } &#x2192; ${ item.recipient_name }
       % endfor
       % else:
-      ${ word("None") }
+      - ${ word("None") }
       % endif
   - Edit: |
       residue_distribution
     button: |
       **Residue distribution**
 
-      How do you want the residue of your estate to be distributed?
+      How do you want your property distributed?
 
       % if residue_distribution == 'own_heirs':
-      Leave the residue of my estate entirely to my heirs
+      - Give everything to my relatives
       % else:
-      Divide it evenly between my heirs and my spouse's heirs
+      - Split evenly between my relatives and my spouse's relatives
       % endif
   - Edit: |
       representatives.revisit
@@ -1122,9 +1150,9 @@ review:
   - Edit: |
       require_bond
     button: |
-      **Require bond**
+      **Would you like to require a bond?**
 
-      Would you like to require a bond? ${ word(yesno(require_bond)) }
+      - ${ word(yesno(require_bond)) }
 ---
 id: revisit list tangible_property
 continue button field: tangible_property.revisit
