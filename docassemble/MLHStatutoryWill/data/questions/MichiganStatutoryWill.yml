@@ -264,11 +264,14 @@ subquestion: |
 
     * Have a child with special needs who might lose benefits if they inherit money
     * Are the guardian for your spouse or adult child and need to name a replacement in your will
-    * Own a business or have complicated property
+    * Own a business or have other complicated property, like property held in a {trust}
     * Have enough money or property to make legal fees worthwhile
 
   Use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help) to find lawyers or legal services in your area.
 continue button field: intro_tool_fit
+terms:
+  trust: |
+    A legal tool where someone holds and manages money or property for someone else. People can use trusts as part of their estate planning to control how property is distributed after they die. A trust can say that property goes to heirs at certain ages or under specific conditions.
 ---
 id: has_mental_capacity
 question: |
@@ -326,7 +329,7 @@ fields:
 id: exit_duress_influence
 event: exit_duress_influence
 question: |
-  Sorry, it sounds like you may be under duress or improper influence from another person.
+  It sounds like you may be under duress or improper influence from another person.
 subquestion: |
   You may want to contact a lawyer for help. If you are a low-income older adult or otherwise vulnerable, your local legal aid office may be able to help you. You can use the [Guide to Legal Help](https://michiganlegalhelp.org/guide-to-legal-help)  on Michigan Legal Help to find a lawyer or a legal services office near you.
 
@@ -373,12 +376,15 @@ continue button field: replace_existing_will
 ---
 id: has_trust
 question: |
-  Do you have a trust?
+  Do you have a {trust}?
 subquestion: |
   This could be a living trust, a revocable trust, an irrevocable trust, or any other kind of trust.
 fields:
   - Do you have a trust?: has_trust
     datatype: yesnoradio
+terms:
+  trust: |
+    A legal tool where someone holds and manages money or property for someone else. People can use trusts as part of their estate planning to control how property is distributed after they die. A trust can say that property goes to heirs at certain ages or under specific conditions.
 ---
 sets:
   - users[0].name.first
@@ -400,10 +406,13 @@ id: emancipated_minor
 question: |
   It looks like you are under the age of 18.
 fields:
-  - Are you an emancipated minor?: emancipated_minor
+  - Are you an {emancipated minor}?: emancipated_minor
     datatype: yesnoradio
   - note: |
       ${ collapse_template(dob_explanation_template) }
+terms:
+  emancipated minor: |
+    A child under the age of 18 who has been freed from the control of their parents, either by operation of law (for example, by marriage) or by order of a judge. An emancipated minor has some, but not all, of the rights of adults, and may live independently or under the control of others.
 ---
 id: dob_explanation_template
 template: dob_explanation_template
@@ -943,15 +952,15 @@ id: require_bond
 question: |
   Do you want to require a bond?
 subquestion: |
-  Bond is like insurance that protects your family if your personal representative or conservator steals or mismanages money from your estate. If you require bond, your personal representative or conservator will use money from your estate to pay a bond company for this insurance. The fee is not returned-- this is the cost for proteciton.
+  Bond is like insurance that protects your family if your personal representative or conservator steals or mismanages money from your estate. If you require a bond, your personal representative or conservator will use money from your estate to pay a bond company for this insurance as part of the probate court case after you die. The fee is not returned– this is the cost for protection.
 
-  **You might want bond if:**
+  **You might want a bond if:**
 
   * Your estate has a lot of money or valuable property
   * You're worried about the people you chose as personal representative or conservator
   * You want extra peace of mind for your family
 
-  **You might not want bond if:**
+  **You might not want a bond if:**
 
   * You completely trust your personal representative and conservator
   * Your estate is small
@@ -991,8 +1000,10 @@ attachments:
 id: DownloadScreen
 event: MLH_download
 question: |
-  Get your ${ MLH_form_type }
+  Download and sign your will
 subquestion: |
+  **Warning! Your will is not finished yet.** Completing this tool did not create a valid will. You must print your will and sign it in front of witnesses.
+  
   You can **view**, **download**, or **e-mail** your ${ MLH_form_type } to yourself below. Tap the "✎ Review / Edit" button to fix any mistakes.
 
   <h2 class="h3">Download or e-mail your ${ MLH_form_type }</h2>
