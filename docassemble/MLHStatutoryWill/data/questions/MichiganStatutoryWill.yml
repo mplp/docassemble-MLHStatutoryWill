@@ -667,6 +667,8 @@ fields:
     code: |
       set(item.recipient_name for item in tangible_property.complete_elements())
   - Full name of recipient: tangible_property[i].recipient_name
+  - note: |
+      If the person has a common name or if more information would help identify them, you can add their relationship to you in parentheses. For example, you could enter: John Smith (my son).
 ---
 id: ask_more_items
 question: |
