@@ -26,7 +26,6 @@ sections:
   - signpost_intro: "Introduction"
   - signpost_qualify: "Do you qualify?"
   - signpost_user: "Your Information"
-  - signpost_family: "Your Family"
   - signpost_cash_gifts: "Cash Gifts"
   - signpost_goods: "Personal and Household Items"
   - signpost_residue: "Residue"
@@ -34,7 +33,7 @@ sections:
   - signpost_guardians: "Guardians"
   - signpost_conservators: "Conservators"
   - signpost_bond: "Bond"
-  - signpost_done: "Done"
+  - signpost_done: "Get Your Will and Sign It"
   - review_full: "✎ <u>Review / Edit</u>"
 ---
 code:  |
@@ -99,7 +98,6 @@ code: |
     exit_not_michigan_resident
   county_choice
 
-  nav.set_section("signpost_family")
   spouse.number()
   if children.there_are_any:
     children.gather()
@@ -123,8 +121,9 @@ code: |
   representatives.number()
 
   nav.set_section("signpost_guardians")
-  guardians
+  
   if children and has_minor_child:
+    guardians
     guardians_explanation
     if not guardians.number():
       guardian_warning
@@ -140,6 +139,7 @@ code: |
 
   nav.set_section("signpost_done")
   MLH_outro_saving_answers
+  MLH_patience_assembling
   MLH_download
 ---
 # -----------------------------------------------------------------------------
@@ -176,11 +176,9 @@ objects:
       complete_attribute="complete",
       )
   - guardians: ALPeopleList.using(
-      target_number=1,
       complete_attribute="complete",
       )
   - conservators: ALPeopleList.using(
-      target_number=1,
       complete_attribute="complete",
       )
 ---
@@ -228,6 +226,29 @@ code: |
   conservators[i].name.first
   conservators[i].address.address
   conservators[i].complete = True
+---
+# review screen handling of spouse changes
+code: |
+  if spouse.there_are_any == False:
+    undefine('spouse[0]')
+    undefine('residue_distribution')
+  
+  reset_spouse = True
+---
+# review screen handling of adding children after saying there aren't any
+code: |
+  if children.there_are_any:
+    children.gather()
+    if children and has_minor_child:
+      guardians
+      guardians_explanation
+      if not guardians.number():
+        guardian_warning
+      conservators
+      if not conservators.number():
+        conservators_warning
+
+  reset_children = True
 ---
 # -----------------------------------------------------------------------------
 ## questions
@@ -464,12 +485,15 @@ fields:
       court_list._load_courts()["address_county"].unique()
 ---
 id: has_spouse
+sets:
+  - spouse.there_are_any
 question: |
   Marriage status
 fields:
   - Are you married?: spouse.there_are_any
     datatype: yesnoradio
 ---
+if: spouse.there_are_any
 sets:
   - spouse[0].name.first
 id: spouse_name
@@ -478,6 +502,10 @@ question: |
 fields:
   - code: |
       spouse[0].name_fields()
+---
+code: |
+  if not spouse.there_are_any:
+      spouse.clear()
 ---
 id: has_children
 question: |
@@ -994,6 +1022,7 @@ attachments:
     variable name: michigan_statutory_will_document[i]
     docx template file: michigan_statutory_will.docx
     tagged pdf: True
+    refresh: True
   - name: Statutory Will Instructions
     variable name: michigan_statutory_will_instructions[i]
     docx template file: michigan_statutory_will_instructions.docx
@@ -1048,8 +1077,10 @@ review:
       **What county do you live in?**
 
       - ${ county_choice }
-  - Edit: |
-      spouse.there_are_any
+  - Edit: 
+      - spouse.there_are_any
+      - recompute:
+          - reset_spouse
     button: |
       **Are you married?**
 
@@ -1059,9 +1090,13 @@ review:
     button: |
       **What is your spouse's name?**
 
-      - ${ spouse[0] }
-  - Edit: |
-      children.there_are_any
+      % if spouse:
+        - ${ spouse[0] }
+      % endif
+  - Edit: 
+      - children.there_are_any
+      - recompute:
+          - reset_children
     button: |
       **Do you have any living children?**
 
@@ -1078,8 +1113,11 @@ review:
       % else:
       - ${ word("None") }
       % endif
-  - Edit: |
-      has_minor_child
+  - Edit: 
+      - has_minor_child
+      - invalidate:
+          - guardians
+          - conservators
     button: |
       **Do you have a child who is under the age of 18?**
 
@@ -1105,6 +1143,7 @@ review:
       % if tangible_property:
       % for item in tangible_property:
       - ${ item.item } &#x2192; ${ item.recipient_name }
+      
       % endfor
       % else:
       - ${ word("None") }
