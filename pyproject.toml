@@ -1,3 +1,23 @@
 [build-system]
-requires = ["setuptools"]
+requires = [
+    "setuptools>=80.9.0",
+]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "docassemble.MLHStatutoryWill"
+version = "0.0.7"
+description = "A docassemble extension."
+readme = "README.md"
+authors = [
+    { name = "Emily Miller", email = "ekressmiller@lsscm.org" },
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://docassemble.org"
+
+[tool.setuptools.packages.find]
+where = [
+    ".",
+]
