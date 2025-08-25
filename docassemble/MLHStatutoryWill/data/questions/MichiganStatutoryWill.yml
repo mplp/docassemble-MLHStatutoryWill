@@ -18,6 +18,10 @@ metadata:
     - Pratibha Bharti
     - Anshuman Tiwari
     - Kelly McGuire
+# dependencies as of 8/25/25 (removed due to install issues):
+# - 'docassemble.ALAnyState @ git+https://github.com/SuffolkLITLab/docassemble-ALAnyState.git@main'
+# - 'docassemble.ALToolbox>=0.11.1', 'docassemble.AssemblyLine @ git+https://github.com/suffolklitlab/docassemble-assemblyline.git@main'
+# - 'docassemble.mlhframework @ git+https://github.com/mplp/docassemble-mlhframework.git@main']
 ---
 features:
   labels above fields: True
