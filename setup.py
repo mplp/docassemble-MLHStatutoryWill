@@ -44,7 +44,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.MLHStatutoryWill',
-      version='0.0.7',
+      version='0.0.8',
       description=('A docassemble extension.'),
       long_description='# docassemble.MichiganStatutoryWill\r\n\r\nA docassemble extension.\r\n\r\n## Author\r\n\r\npratibha.mobilefirst@gmail.com\r\n\r\n',
       long_description_content_type='text/markdown',
