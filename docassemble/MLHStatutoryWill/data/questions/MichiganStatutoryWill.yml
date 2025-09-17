@@ -256,7 +256,7 @@ code: |
 ---
 # add signature arrow symbol for will document
 code: |
-  sign_arrow = "→"
+  sign_arrow = "➜"
 ---
 # -----------------------------------------------------------------------------
 ## questions
