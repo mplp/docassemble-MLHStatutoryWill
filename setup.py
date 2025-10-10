@@ -46,7 +46,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.MLHStatutoryWill',
       version='0.0.9',
       description=('A docassemble extension.'),
-      long_description='# docassemble.MichiganStatutoryWill\r\n\r\nA docassemble extension.\r\n\r\n## Author\r\n\r\npratibha.mobilefirst@gmail.com\r\n\r\n',
+      long_description='# docassemble.MichiganStatutoryWill\r\n\r\nA docassemble extension.\r\n\r\n## Author\r\n\r\nMichigan Legal Help\r\nLemma Legal\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Emily Miller',
       author_email='ekressmiller@lsscm.org',
@@ -57,4 +57,3 @@ setup(name='docassemble.MLHStatutoryWill',
       zip_safe=False,
       package_data=find_package_data(where='docassemble/MLHStatutoryWill/', package='docassemble.MLHStatutoryWill'),
      )
-

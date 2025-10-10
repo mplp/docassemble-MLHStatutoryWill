@@ -4,5 +4,6 @@ A docassemble extension.
 
 ## Author
 
-pratibha.mobilefirst@gmail.com
+Michigan Legal Help
+Lemma Legal
 
