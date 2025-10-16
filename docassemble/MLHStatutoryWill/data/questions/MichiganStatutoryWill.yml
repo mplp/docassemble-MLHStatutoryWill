@@ -15,9 +15,8 @@ metadata:
     - "Family"
     - "Domicile"
   authors:
-    - Pratibha Bharti
-    - Anshuman Tiwari
-    - Kelly McGuire
+    - Michigan Legal Help
+    - Lemma Legal
 # dependencies as of 8/25/25 (removed due to install issues):
 # - 'docassemble.ALAnyState @ git+https://github.com/SuffolkLITLab/docassemble-ALAnyState.git@main'
 # - 'docassemble.ALToolbox>=0.11.1', 'docassemble.AssemblyLine @ git+https://github.com/suffolklitlab/docassemble-assemblyline.git@main'
@@ -73,6 +72,7 @@ code: |
   nav.set_section("review_full")
   nav.set_section("signpost_intro")
   MLH_intro_agree_no_pii = True
+  snapshot_start
   MLH_standard_intro_pages
   intro_tool_fit
 
@@ -144,6 +144,7 @@ code: |
   nav.set_section("signpost_done")
   MLH_outro_saving_answers
   MLH_patience_assembling
+  snapshot_download
   MLH_download
 ---
 # -----------------------------------------------------------------------------
@@ -1024,6 +1025,7 @@ objects:
   - michigan_statutory_will_document: ALDocument.using(title="Statutory Will", filename=f"Michigan Statutory Will for {str(users).replace('.', '')}.docx", enabled=True, has_addendum=False, default_overflow_message=" (Continued in Attachment)")
   - michigan_statutory_will_instructions: ALDocument.using(title="Instructions", filename="Michigan Statutory Will Instructions.docx", enabled=True, has_addendum=False)
   - al_user_bundle: ALDocumentBundle.using(elements=[michigan_statutory_will_instructions, michigan_statutory_will_document], filename="Michigan Statutory Will and Instructions", title="Will and instructions", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[michigan_statutory_will_document], filename="Michigan Statutory Will", title="Will", enabled=True)
 ---
 attachments:
   - name: Michigan Statutory Will for ${users}
