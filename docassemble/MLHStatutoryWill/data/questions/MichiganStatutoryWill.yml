@@ -1069,6 +1069,10 @@ event: review_full
 question: |
   Review your answers
 review:
+  - note: |
+      % if not defined('users[0].name.first'):
+      ${ review_empty_explainer }
+      % endif
   - Edit: |
       users[0].name.first
     button: |
