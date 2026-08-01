@@ -592,13 +592,24 @@ question: |
   What is the name of the charity you want to receive the ${ ordinal(i) } cash gift?
   % endif
 fields:
-  - Someone previously entered?: giftee[i]
-    datatype: object
-    disable others: True
+  - no label: giftee[i]
+    datatype: object_radio
+    none of the above: "(Someone else)"
     choices: |
       (person for person in children.complete_elements() if person.entity_type == giftee[i].entity_type and person not in giftee.complete_elements())
   - code: |
-      giftee[i].name_fields(person_or_business=giftee[i].entity_type)
+      giftee[i].name_fields(
+        person_or_business=giftee[i].entity_type,
+        show_if=(
+          {"variable": "giftee[i]", "is": None}
+          if any(
+            person.entity_type == giftee[i].entity_type
+            and person not in giftee.complete_elements()
+            for person in children.complete_elements()
+          )
+          else None
+        ),
+      )
 validation code: |
   giftee[i].address.invalidate_attr("address")
   giftee[i].invalidate_attr("us_address_yn")
@@ -814,13 +825,24 @@ question: |
   Enter the name of the bank you want to be your ${ ordinal(i) } personal representative.
   % endif
 fields:
-  - Someone previously entered?: representatives[i]
-    datatype: object
-    disable others: True
+  - no label: representatives[i]
+    datatype: object_radio
+    none of the above: "(Someone else)"
     choices: |
       (person for person in (*guardians.complete_elements(), *conservators.complete_elements()) if person.entity_type == representatives[i].entity_type and person not in representatives.complete_elements())
   - code: |
-      representatives[i].name_fields(person_or_business=representatives[i].entity_type)
+      representatives[i].name_fields(
+        person_or_business=representatives[i].entity_type,
+        show_if=(
+          {"variable": "representatives[i]", "is": None}
+          if any(
+            person.entity_type == representatives[i].entity_type
+            and person not in representatives.complete_elements()
+            for person in (*guardians.complete_elements(), *conservators.complete_elements())
+          )
+          else None
+        ),
+      )
 ---
 sets:
   - representatives[i].address.address
@@ -874,13 +896,23 @@ sets:
 question: |
   Enter the full name of the person you would like to be the ${ ordinal(i) } guardian for your child.
 fields:
-  - Someone previously entered?: guardians[i]
-    datatype: object
-    disable others: True
+  - no label: guardians[i]
+    datatype: object_radio
+    none of the above: "(Someone else)"
     choices: |
       (person for person in (*representatives.complete_elements(), *conservators.complete_elements()) if person.entity_type == 'person' and person not in guardians.complete_elements())
   - code: |
-      guardians[i].name_fields()
+      guardians[i].name_fields(
+        show_if=(
+          {"variable": "guardians[i]", "is": None}
+          if any(
+            person.entity_type == 'person'
+            and person not in guardians.complete_elements()
+            for person in (*representatives.complete_elements(), *conservators.complete_elements())
+          )
+          else None
+        ),
+      )
 ---
 id: guardians_address
 sets:
@@ -946,13 +978,24 @@ question: |
   Enter the name of the bank you want to be your conservator.
   % endif
 fields:
-  - Someone previously entered?: conservators[i]
-    datatype: object
-    disable others: True
+  - no label: conservators[i]
+    datatype: object_radio
+    none of the above: "(Someone else)"
     choices: |
       (person for person in (*representatives.complete_elements(), *guardians.complete_elements()) if person.entity_type == conservators[i].entity_type and person not in conservators.complete_elements())
   - code: |
-      conservators[i].name_fields(person_or_business=conservators[i].entity_type)
+      conservators[i].name_fields(
+        person_or_business=conservators[i].entity_type,
+        show_if=(
+          {"variable": "conservators[i]", "is": None}
+          if any(
+            person.entity_type == conservators[i].entity_type
+            and person not in conservators.complete_elements()
+            for person in (*representatives.complete_elements(), *guardians.complete_elements())
+          )
+          else None
+        ),
+      )
 ---
 id: conservators_address
 sets:
