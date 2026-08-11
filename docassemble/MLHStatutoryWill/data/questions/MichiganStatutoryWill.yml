@@ -193,6 +193,15 @@ code: |
   x.complete = True
 ---
 code: |
+  spouse[i].entity_type = 'person'
+  spouse[i].name.first
+  if spouse[i] in giftee.elements:
+    spouse[i].us_address_yn
+    spouse[i].address.address
+    spouse[i].gift_amount
+  spouse[i].complete = True
+---
+code: |
   children[i].entity_type = 'person'
   children[i].name.first
   if children[i] in giftee.elements:
@@ -596,7 +605,7 @@ fields:
     datatype: object_radio
     none of the above: "(Someone else)"
     choices: |
-      (person for person in children.complete_elements() if person.entity_type == giftee[i].entity_type and person not in giftee.complete_elements())
+      (person for person in (*children.complete_elements(), *spouse.complete_elements()) if person.entity_type == giftee[i].entity_type and person not in giftee.complete_elements())
   - code: |
       giftee[i].name_fields(
         person_or_business=giftee[i].entity_type,
@@ -618,7 +627,7 @@ validation code: |
 ---
 id: children_or_giftee_us_address_yn
 generic object: ALPeopleList
-if: x is children or x is giftee
+if: x is spouse or x is children or x is giftee
 question: |
   You have named ${ x[i].name } as a cash gift recipient.
 fields:
@@ -632,7 +641,7 @@ validation code: |
 ---
 id: children_or_giftee_address
 generic object: ALPeopleList
-if: x is children or x is giftee
+if: x is spouse or x is children or x is giftee
 sets:
   - x[i].address.address
   - x[i].address.city
@@ -648,7 +657,7 @@ fields:
 id: gift_amount
 sets: x[i].gift_amount_in_words
 generic object: ALPeopleList
-if: x is children or x is giftee
+if: x is spouse or x is children or x is giftee
 question: |
   Cash gift amount
 subquestion: |
@@ -1307,15 +1316,10 @@ confirm: True
 table: giftee.table
 rows: giftee
 columns:
-  - Name: f'{row_item.name} {("(Child)" if row_item in children else "")}'
+  - Name: row_item.name
   - Address: row_item.address.on_one_line()
   - Gift Amount: currency(row_item.gift_amount)
-edit:
-  - entity_type
-  - name.first
-  - us_address_yn
-  - address.address
-  - gift_amount
+delete buttons: True
 show incomplete: True
 confirm: True
 ---
