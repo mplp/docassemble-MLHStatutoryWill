@@ -695,17 +695,35 @@ subquestion: |
   % endif
 fields:
   - Item: tangible_property[i].item
-  - Select previous recipient: tangible_property[i].recipient_name
-    disable others:
-      - tangible_property[i].recipient_name
-    show if:
-      code: |
-        tangible_property.number_gathered() > 1
+  - Select someone previously entered: tangible_property[i].recipient_name
+    required: False
     code: |
-      set(item.recipient_name for item in tangible_property.complete_elements())
-  - Full name of recipient: tangible_property[i].recipient_name
+      tangible_property_options()
+  - Full name of recipient: tangible_property[i].recipient_name_text
+    js show if: |
+      (
+        val('tangible_property[i].item')
+        && ${ json.dumps(tangible_property_options()) }.length === 0
+      )
+      || !val('tangible_property[i].recipient_name')
   - note: |
       If the person has a common name or if more information would help identify them, you can add their relationship to you in parentheses. For example, you could enter: John Smith (my son).
+validation code: |
+  if not tangible_property[i].recipient_name:
+    tangible_property[i].recipient_name = tangible_property[i].recipient_name_text
+    tangible_property[i].delattr('recipient_name_text')
+---
+id: define tangible_property_options function
+code: |
+  def tangible_property_options():
+    return list(
+        dict.fromkeys(
+          [str(item) for item in spouse.complete_elements()]
+          + [str(item) for item in children.complete_elements()]
+          + [str(item) for item in giftee.complete_elements()]
+          + [item.recipient_name for item in tangible_property.complete_elements()]
+        )
+      )
 ---
 id: ask_more_items
 question: |
