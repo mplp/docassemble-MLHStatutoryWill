@@ -1215,6 +1215,7 @@ review:
       % for item in giftee:
       - ${ item }
           - ${ item.address.on_one_line() }
+          - Gift amount: ${ currency(item.gift_amount) }
       % endfor
       % else:
       - ${ word("None") }
