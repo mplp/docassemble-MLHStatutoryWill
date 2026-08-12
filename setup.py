@@ -44,13 +44,13 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.MLHStatutoryWill',
-      version='1.0.3',
+      version='1.0.4',
       description=('A docassemble extension.'),
-      long_description='# docassemble.MichiganStatutoryWill\r\n\r\nA tool to create a statutory will in Michigan. \r\n\r\n## Authors:\r\n\r\nMichigan Legal Help\r\nLemma Legal\r\n\r\n## Changelog:\r\n* 12/12/25  1.0.3 update embedded survey\r\n* 10/28/25  1.0.2 add link in instructions and improve screenreader tag in will',
+      long_description='# docassemble.MichiganStatutoryWill\r\n\r\nA tool to create a statutory will in Michigan. \r\n\r\n## Authors:\r\nMichigan Legal Help\r\nLemma Legal\r\n\r\n## Changelog:\r\n* 8/12/26   1.0.4 improve methods of picking previously entered names; add gift amt. to review screen\r\n* 12/12/25  1.0.3 update embedded survey\r\n* 10/28/25  1.0.2 add link in instructions and improve screenreader tag in will',
       long_description_content_type='text/markdown',
       author='Emily Miller',
       author_email='ekressmiller@lsscm.org',
-      license='',
+      license='MIT',
       url='https://docassemble.org',
       packages=find_namespace_packages(),
       install_requires=[],
