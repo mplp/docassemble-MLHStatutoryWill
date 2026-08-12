@@ -1085,7 +1085,7 @@ question: |
 subquestion: |
   You can save your answers so that you can come back to this tool later. This will allow you to make changes to your ${ MLH_form_type } without starting over.
 
-  Below the Continue button, tap "Sign in" if you have an account or "Sign up" to make one. You can also go to the ${ ':bars:' if device().is_mobile else '' } Menu at the top of the screen and tap "Sign in or sign up to save answers".
+  Below the Continue button, tap "Sign in" if you have an account or "Sign up" to make one. You can also go to the ${ ':bars:' if device() is None or device().is_mobile else '' } Menu at the top of the screen and tap "Sign in or sign up to save answers".
 
   Warning! If you do not save your answers and you later discover a mistake in your printed will, you will have to restart this tool from the beginning and enter all of your answers again. Remember, crossing out or adding words to your printed will may make it invalid.
 continue button field: MLH_outro_saving_answers
