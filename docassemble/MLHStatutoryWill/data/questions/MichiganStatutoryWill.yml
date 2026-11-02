@@ -44,7 +44,12 @@ code:  |
 ---
 code: |
   survey_link_url_only = "https://www.surveymonkey.com/r/XZZG2KW"
-
+---
+template: survey_embed_script
+content: |
+  <script>
+    (function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd8qZ8ON_2FyjUqTzYvfSuztE5LHX9RHhmqH6uV_2BS0dWNBE.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");
+  </script>
 ---
 # set intro landing screen variables
 code: |
@@ -1112,7 +1117,7 @@ subquestion: |
   
   You can **view**, **download**, or **e-mail** your ${ MLH_form_type } to yourself below. Tap the "✎ Review / Edit" button to fix any mistakes.
 
-  ## Download or e-mail your ${ MLH_form_type }
+  <h2 class="h3">Download or e-mail your ${ MLH_form_type }</h2>
 
   ${ action_button_html(url_action('review_full'), label='✎ Review / Edit', color='info') }
 
@@ -1120,13 +1125,9 @@ subquestion: |
 
   ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
 
-  ${ sign_in_message }
-
-under: |
-  <h2 id="survey-title">Take our quick survey!</h2>
+  <h2 class="h3">Take our quick survey!</h2>
   Answer below or [open the survey in a new tab](${ survey_link_url_only }).
-
-  <iframe class="surveyiframe" src="${survey_link_url_only}" aria-labelledby="survey-title"></iframe>
+  ${ survey_embed_script }
 progress: 100
 ---
 # -----------------------------------------------------------------------------
